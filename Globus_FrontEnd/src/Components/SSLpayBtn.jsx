@@ -1,51 +1,62 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faSpinner, faShieldAlt } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faLock,
+  faSpinner,
+  faShieldAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
 
-const SSLpayBtn = ({ 
-  total, 
-  shippingInfo, 
-  cartItems, 
+const SSLpayBtn = ({
+  total,
+  shippingInfo,
+  cartItems,
   checkoutSource,
   onPaymentStart,
   onPaymentSuccess,
   onPaymentError,
   disabled = false,
-  className = ""
+  className = "",
 }) => {
   const [processing, setProcessing] = useState(false);
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined) return '0.00';
-    const num = typeof price === 'string' ? parseFloat(price) : price;
-    return isNaN(num) ? '0.00' : num.toFixed(2);
+    if (price === null || price === undefined) return "0.00";
+    const num = typeof price === "string" ? parseFloat(price) : price;
+    return isNaN(num) ? "0.00" : num.toFixed(2);
   };
 
   const initiateSSLCommerzPayment = async () => {
     // Validation check
-    if (!shippingInfo.fullName || !shippingInfo.email || !shippingInfo.phone || !shippingInfo.address) {
-      onPaymentError?.('Please complete all shipping information before payment');
+    if (
+      !shippingInfo.fullName ||
+      !shippingInfo.email ||
+      !shippingInfo.phone ||
+      !shippingInfo.address
+    ) {
+      onPaymentError?.(
+        "Please complete all shipping information before payment",
+      );
       return;
     }
 
     if (cartItems.length === 0) {
-      onPaymentError?.('No items in cart');
+      onPaymentError?.("No items in cart");
       return;
     }
 
     try {
       setProcessing(true);
-      onPaymentStart?.(); 
+      onPaymentStart?.();
 
       const user = JSON.parse(localStorage.getItem("user"));
-      
+
       // Payment Data
       const paymentData = {
         total_amount: total,
-        currency: 'BDT',
+        currency: "BDT",
         success_url: `${window.location.origin}/payment-success`,
         fail_url: `${window.location.origin}/payment-failed`,
         cancel_url: `${window.location.origin}/cart`,
@@ -54,9 +65,9 @@ const SSLpayBtn = ({
         customer_phone: shippingInfo.phone,
         customer_address: shippingInfo.address,
         customer_city: shippingInfo.city,
-        customer_country: shippingInfo.country || 'Bangladesh',
+        customer_country: shippingInfo.country || "Bangladesh",
         shipping_info: shippingInfo,
-        cart_items: cartItems.map(item => ({
+        cart_items: cartItems.map((item) => ({
           productId: item._id || item.productId,
           name: item.productName || item.name,
           price: item.discountPrice || item.price,
@@ -64,36 +75,37 @@ const SSLpayBtn = ({
           image: item.productImage || item.images?.[0],
           size: item.selectedVariant?.size,
           color: item.selectedVariant?.color,
-          variant: item.selectedVariant
+          variant: item.selectedVariant,
         })),
         source: checkoutSource,
         user_email: user?.email,
-        user_id: user?._id
+        user_id: user?._id,
       };
 
-      console.log('Sending payment data to backend:', paymentData);
+      console.log("Sending payment data to backend:", paymentData);
 
-      // SSL Commerz 
+      // SSL Commerz
       const response = await fetch(`${API_URL}/api/sslcommerz/init`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(paymentData)
+        body: JSON.stringify(paymentData),
       });
 
       const data = await response.json();
-      
+
       if (data.GatewayPageURL) {
         onPaymentSuccess?.(data);
         window.location.href = data.GatewayPageURL;
       } else {
-        const errorMsg = data.error || data.message || 'Payment initialization failed!';
+        const errorMsg =
+          data.error || data.message || "Payment initialization failed!";
         onPaymentError?.(errorMsg);
       }
     } catch (error) {
-      console.error('SSL Commerz error:', error);
-      const errorMsg = error.message || 'Payment processing error!';
+      console.error("SSL Commerz error:", error);
+      const errorMsg = error.message || "Payment processing error!";
       onPaymentError?.(errorMsg);
     } finally {
       setProcessing(false);
@@ -127,7 +139,7 @@ const SSLpayBtn = ({
       ) : (
         <>
           <FontAwesomeIcon icon={faLock} />
-          Pay ${formatPrice(total)} with SSL Commerz
+          Pay ৳{formatPrice(total)} with SSL Commerz
         </>
       )}
     </button>

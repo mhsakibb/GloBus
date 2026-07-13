@@ -20,10 +20,12 @@ const AdminUser = () => {
     }
   };
 
-  // Delete user with confirmation 
+  // Delete user with confirmation
   const deleteUser = async (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-    if (!confirmDelete) return; 
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user?",
+    );
+    if (!confirmDelete) return;
 
     try {
       const response = await fetch(`${API_URL}/admin/user/${id}`, {
@@ -32,7 +34,7 @@ const AdminUser = () => {
 
       if (response.ok) {
         setUsers(users.filter((user) => user._id !== id));
-        alert("User deleted successfully"); 
+        alert("User deleted successfully");
       } else {
         alert("Failed to delete user");
       }
@@ -51,8 +53,8 @@ const AdminUser = () => {
       const data = await response.json();
       setUsers(
         users.map((user) =>
-          user._id === id ? { ...user, status: data.status } : user
-        )
+          user._id === id ? { ...user, status: data.status } : user,
+        ),
       );
     } catch (err) {
       console.error("Error updating user status:", err);
@@ -67,7 +69,9 @@ const AdminUser = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Admin User Management</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">
+        Admin User Management
+      </h1>
       <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="min-w-full table-auto">
           <thead>

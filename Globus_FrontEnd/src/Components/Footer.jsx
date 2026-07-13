@@ -64,7 +64,7 @@ const Footer = () => {
             <div className="flex flex-wrap items-center gap-3">
               
               {/* Visa */}
-              <div className="bg-white p-1.5 rounded flex items-center justify-center w-12 h-8">
+              <div className="bg-white dark:bg-gray-800 p-1.5 rounded flex items-center justify-center w-12 h-8">
                 <img 
                   src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" 
                   alt="Visa" 
@@ -73,7 +73,7 @@ const Footer = () => {
               </div>
               
               {/* Mastercard */}
-              <div className="bg-white p-1.5 rounded flex items-center justify-center w-12 h-8">
+              <div className="bg-white dark:bg-gray-800 p-1.5 rounded flex items-center justify-center w-12 h-8">
                 <img 
                   src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" 
                   alt="Mastercard" 
@@ -82,7 +82,7 @@ const Footer = () => {
               </div>
               
               {/* American Express */}
-              <div className="bg-white p-1.5 rounded flex items-center justify-center w-12 h-8">
+              <div className="bg-white dark:bg-gray-800 p-1.5 rounded flex items-center justify-center w-12 h-8">
                 <img 
                   src="https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" 
                   alt="American Express" 
@@ -91,7 +91,7 @@ const Footer = () => {
               </div>
               
               {/* PayPal */}
-              <div className="bg-white p-1.5 rounded flex items-center justify-center w-12 h-8">
+              <div className="bg-white dark:bg-gray-800 p-1.5 rounded flex items-center justify-center w-12 h-8">
                 <img 
                   src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" 
                   alt="PayPal" 

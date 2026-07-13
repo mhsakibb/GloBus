@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartPlus, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartPlus, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
 
-const AddToCartButton = ({ product, className = "", showIcon = true, showText = true }) => {
+const AddToCartButton = ({
+  product,
+  className = "",
+  showIcon = true,
+  showText = true,
+}) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleAddToCart = async () => {
-    console.log('Add to Cart clicked for:', product.name);
-    
+  const handleAddToCart = async (e) => {
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+    console.log("Add to Cart clicked for:", product.name);
+
     // Check authentication
     let user;
     try {
@@ -22,13 +30,13 @@ const AddToCartButton = ({ product, className = "", showIcon = true, showText = 
         return;
       }
       user = JSON.parse(userData);
-      
+
       if (!user.email) {
         navigate("/signin");
         return;
       }
     } catch (err) {
-      console.error('Error reading user data:', err);
+      console.error("Error reading user data:", err);
       navigate("/signin");
       return;
     }
@@ -36,52 +44,53 @@ const AddToCartButton = ({ product, className = "", showIcon = true, showText = 
     setLoading(true);
 
     try {
-      
       const cartData = {
         userId: user.email,
         productId: product._id,
         productName: product.name,
-        productImage: product.images?.[0] || '/placeholder.png',
+        productImage: product.images?.[0] || "/placeholder.png",
         price: product.discountPrice || product.price,
         originalPrice: product.price,
         discountPrice: product.discountPrice,
-        brand: product.brand || 'Unknown Brand',
-        category: product.category || 'General',
-        quantity: 1
+        brand: product.brand || "Unknown Brand",
+        category: product.category || "General",
+        quantity: 1,
       };
 
-      console.log('Sending cart data:', cartData);
+      console.log("Sending cart data:", cartData);
 
       const response = await fetch(`${API_URL}/cart/add`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(cartData)
+        body: JSON.stringify(cartData),
       });
 
-      console.log('Response status:', response.status);
+      console.log("Response status:", response.status);
 
       let result;
       try {
         result = await response.json();
       } catch (parseError) {
-        console.error(' Error parsing response:', parseError);
-        throw new Error('Invalid response from server');
+        console.error(" Error parsing response:", parseError);
+        throw new Error("Invalid response from server");
       }
 
       if (response.ok) {
-        console.log('Added to cart successfully:', result);
-        
-        const existingCart = localStorage.getItem('cart');
+        console.log("Added to cart successfully:", result);
+
+        const existingCart = localStorage.getItem("cart");
         let cartItems = existingCart ? JSON.parse(existingCart) : [];
-        
-        const existingItemIndex = cartItems.findIndex(item => item._id === product._id);
-        
-        // Add product & Update quantity 
+
+        const existingItemIndex = cartItems.findIndex(
+          (item) => item._id === product._id,
+        );
+
+        // Add product & Update quantity
         if (existingItemIndex >= 0) {
           cartItems[existingItemIndex].quantity += 1;
-          console.log(' Updated existing item quantity');
+          console.log(" Updated existing item quantity");
         } else {
           cartItems.push({
             _id: product._id,
@@ -91,37 +100,46 @@ const AddToCartButton = ({ product, className = "", showIcon = true, showText = 
             images: product.images,
             brand: product.brand,
             quantity: 1,
-            addedAt: new Date().toISOString()
+            addedAt: new Date().toISOString(),
           });
-          console.log('Added new item to cart');
+          console.log("Added new item to cart");
         }
-        
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        console.log('💾 Updated localStorage with cart items');
-        
+
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+        console.log("💾 Updated localStorage with cart items");
+
         // Update header cart count
-        const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-        window.dispatchEvent(new CustomEvent('cartUpdated', { 
-          detail: { count: totalCount } 
-        }));
-        
-        console.log('Dispatched cart update event, count:', totalCount);
+        const totalCount = cartItems.reduce(
+          (sum, item) => sum + item.quantity,
+          0,
+        );
+        window.dispatchEvent(
+          new CustomEvent("cartUpdated", {
+            detail: { count: totalCount },
+          }),
+        );
+
+        console.log("Dispatched cart update event, count:", totalCount);
 
         alert(` Added ${product.name} to cart!`);
       } else {
-        console.error('Backend error:', result.message);
-        alert(`Failed to add item to cart: ${result.message || 'Unknown error'}`);
+        console.error("Backend error:", result.message);
+        alert(
+          `Failed to add item to cart: ${result.message || "Unknown error"}`,
+        );
       }
     } catch (error) {
-      console.error('Network error adding to cart:', error);
-      alert('Failed to add item to cart. Please check your connection and try again.');
+      console.error("Network error adding to cart:", error);
+      alert(
+        "Failed to add item to cart. Please check your connection and try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <button 
+    <button
       onClick={handleAddToCart}
       disabled={loading}
       className={`
