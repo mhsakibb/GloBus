@@ -45,25 +45,28 @@ const MenuItem = () => {
 
   const toggleSubMenu = (index) => {
     if (openIndex === index) {
-      setOpenIndex(null); 
+      setOpenIndex(null);
     } else {
-      setOpenIndex(index); 
+      setOpenIndex(index);
     }
   };
 
   return (
     <div className="mt-10">
-      <div className="bg-gray-100 rounded-xl w-80 h-100 p-4 ">
+      <div className="bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-xl w-80 h-100 p-4 border border-transparent dark:border-gray-700">
         {menuData.map((item, index) => (
           <div key={index} className="relative">
-            
             {/* Main Menu  */}
             <div
-              className="flex items-center justify-between space-x-2 cursor-pointer hover:bg-white/10 px-3 py-2 rounded transition"
+              className="flex items-center justify-between space-x-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded transition"
               onClick={() => toggleSubMenu(index)}
             >
               <div className="flex items-center space-x-2">
-                <img src={item.icon} alt={item.name} className="w-6 h-6" />
+                <img
+                  src={item.icon}
+                  alt={item.name}
+                  className="w-6 h-6 dark:invert"
+                />
                 <span className="font-medium">{item.name}</span>
               </div>
               {item.subMenu && (
@@ -78,11 +81,11 @@ const MenuItem = () => {
 
             {/* Submenu */}
             {openIndex === index && item.subMenu && (
-              <div className="absolute top-0 left-full ml-4 bg-gray-100 rounded-xl w-64 p-4 shadow-lg z-10">
+              <div className="absolute top-0 left-full ml-4 bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-xl w-64 p-4 shadow-lg z-10 border border-transparent dark:border-gray-700">
                 {item.subMenu.map((sub, subIndex) => (
                   <div
                     key={subIndex}
-                    className="px-3 py-2 rounded cursor-pointer hover:bg-white/10 transition"
+                    className="px-3 py-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition"
                   >
                     {sub}
                   </div>

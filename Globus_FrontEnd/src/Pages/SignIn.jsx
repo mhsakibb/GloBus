@@ -58,8 +58,8 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-700">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-6">Sign In</h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -92,7 +92,7 @@ const SignIn = () => {
         </form>
 
         <div className="my-4 text-center">
-          <span className="text-gray-600">
+          <span className="text-gray-600 dark:text-gray-400">
             Don't have an account?{" "}
             <Link to="/SignUp" className="text-blue-600 underline">
               Sign Up

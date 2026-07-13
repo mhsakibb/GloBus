@@ -9,6 +9,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 ### For Users
 
 - **Browse & Search Products**: Categorized product browsing (Top Deals, New Arrivals, Food, Electronics, etc.).
+- **Dark & Light Mode**: Seamlessly toggle between themes with persistent user preference using Tailwind CSS v4 and Context API.
 - **Multi-language Support**: Fully localized interface using `i18next`.
 - **Shopping Cart & Checkout**: Interactive cart management and seamless checkout process.
 - **Secure Payments**: Integrated with **SSLCommerz** for secure online transactions in Bangladesh.
@@ -58,12 +59,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    cd GloBus
    ```
 
-2. **Backend Setup:**
-
-   ```bash
-   cd Globus_Backend
-   npm install
-   ```
+2. **Environment Variables Setup:**
 
    Create a `.env` file in the `Globus_Backend` directory:
 
@@ -72,18 +68,8 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    MONGODB_URI=your_mongodb_connection_string
    ```
 
-   Start the backend server:
-
-   ```bash
-   npm run dev
-   ```
-
-3. **Frontend Setup:**
-   ```bash
-   cd ../Globus_FrontEnd
-   npm install
-   ```
    Create a `.env.local` file in the `Globus_FrontEnd` directory:
+
    ```env
    VITE_FIREBASE_API_KEY=your_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -94,7 +80,17 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
    VITE_API_URL=http://localhost:5000
    ```
-   Start the frontend development server:
+
+3. **Install Dependencies:**
+   From the root folder (`GloBus`), run the following command to install dependencies for both the frontend and backend simultaneously:
+
+   ```bash
+   npm run install:all
+   ```
+
+4. **Run the Application:**
+   Start both the frontend and backend concurrently from the root folder:
+
    ```bash
    npm run dev
    ```
@@ -103,6 +99,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 
 ```text
 GloBus/
+├── package.json        # Root package to run concurrently
 ├── Globus_FrontEnd/    # React/Vite Frontend
 │   ├── src/            # Components, Pages, Assets
 │   ├── package.json    # Frontend dependencies

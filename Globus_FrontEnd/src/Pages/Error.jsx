@@ -2,7 +2,7 @@ import React from 'react';
 
 const Error = () => {
     return (
-        <div className="flex flex-col items-center justify-center w-screen h-screen bg-white">
+        <div className="flex flex-col items-center justify-center w-screen h-screen bg-white dark:bg-gray-800">
             <img
                 src="/Images/ErrorPage/errorPage.png"
                 alt="Error Page"

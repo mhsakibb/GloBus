@@ -22,14 +22,20 @@ const AdminProducts = () => {
     unit: "",
     tags: "",
     variants: [],
-    specifications: { material: "", weight: "", dimensions: "", origin: "", washable: "" },
+    specifications: {
+      material: "",
+      weight: "",
+      dimensions: "",
+      origin: "",
+      washable: "",
+    },
     shipping: { weight: "", height: "", width: "", deliveryTime: "" },
     seo: { metaTitle: "", metaDescription: "", metaKeywords: [] },
     flashSale: { isActive: false, startDate: "", endDate: "", flashPrice: "" },
     wholesale: [],
     isFeatured: false,
     isActive: true,
-    offerText: ""
+    offerText: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -103,7 +109,8 @@ const AdminProducts = () => {
   };
 
   // Dynamic array handlers
-  const addImage = () => setFormData({ ...formData, images: [...formData.images, ""] });
+  const addImage = () =>
+    setFormData({ ...formData, images: [...formData.images, ""] });
   const updateImage = (index, value) => {
     const newImages = [...formData.images];
     newImages[index] = value;
@@ -114,7 +121,11 @@ const AdminProducts = () => {
     setFormData({ ...formData, images: newImages });
   };
 
-  const addVariant = () => setFormData({ ...formData, variants: [...formData.variants, { color: "", size: "", stock: "" }] });
+  const addVariant = () =>
+    setFormData({
+      ...formData,
+      variants: [...formData.variants, { color: "", size: "", stock: "" }],
+    });
   const updateVariant = (index, key, value) => {
     const newVariants = [...formData.variants];
     newVariants[index][key] = value;
@@ -145,7 +156,7 @@ const AdminProducts = () => {
   };
 
   const handleCategoryKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       const newCategory = e.target.value.trim();
       if (newCategory && !customCategories.includes(newCategory)) {
@@ -156,7 +167,7 @@ const AdminProducts = () => {
   };
 
   const handleSubCategoryKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       e.preventDefault();
       const newSubCategory = e.target.value.trim();
       if (newSubCategory && !customSubCategories.includes(newSubCategory)) {
@@ -167,30 +178,29 @@ const AdminProducts = () => {
   };
 
   const getSubCategories = () => {
-    const category = menuData.find(item => item.name === formData.category);
+    const category = menuData.find((item) => item.name === formData.category);
     const baseSubCategories = category ? category.subMenu : [];
     return [...baseSubCategories, ...customSubCategories];
   };
 
   const getAllCategories = () => {
-    const baseCategories = menuData.map(item => item.name);
+    const baseCategories = menuData.map((item) => item.name);
     return [...baseCategories, ...customCategories];
   };
 
-
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.category-dropdown')) {
+      if (!event.target.closest(".category-dropdown")) {
         setShowCategoryDropdown(false);
       }
-      if (!event.target.closest('.subcategory-dropdown')) {
+      if (!event.target.closest(".subcategory-dropdown")) {
         setShowSubCategoryDropdown(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -198,7 +208,9 @@ const AdminProducts = () => {
   const deleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        const res = await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
+        const res = await fetch(`${API_URL}/products/${id}`, {
+          method: "DELETE",
+        });
         if (res.ok) fetchProducts();
       } catch (err) {
         console.log(err);
@@ -210,7 +222,9 @@ const AdminProducts = () => {
   const handleEditProduct = (product) => {
     setFormData({
       ...product,
-      tags: Array.isArray(product.tags) ? product.tags.join(', ') : product.tags
+      tags: Array.isArray(product.tags)
+        ? product.tags.join(", ")
+        : product.tags,
     });
     setActiveTab("basic");
     setIsEditing(true);
@@ -222,12 +236,37 @@ const AdminProducts = () => {
   // Reset form
   const resetForm = () => {
     setFormData({
-      name: "", description: "", price: "", discountPrice: "", category: "", subCategory: "", brand: "", images: [],
-      stock: "", unit: "", tags: "", variants: [], specifications: { material: "", weight: "", dimensions: "", origin: "", washable: "" },
+      name: "",
+      description: "",
+      price: "",
+      discountPrice: "",
+      category: "",
+      subCategory: "",
+      brand: "",
+      images: [],
+      stock: "",
+      unit: "",
+      tags: "",
+      variants: [],
+      specifications: {
+        material: "",
+        weight: "",
+        dimensions: "",
+        origin: "",
+        washable: "",
+      },
       shipping: { weight: "", height: "", width: "", deliveryTime: "" },
       seo: { metaTitle: "", metaDescription: "", metaKeywords: [] },
-      flashSale: { isActive: false, startDate: "", endDate: "", flashPrice: "" },
-      wholesale: [], isFeatured: false, isActive: true, offerText: ""
+      flashSale: {
+        isActive: false,
+        startDate: "",
+        endDate: "",
+        flashPrice: "",
+      },
+      wholesale: [],
+      isFeatured: false,
+      isActive: true,
+      offerText: "",
     });
     setIsEditing(false);
     setEditingProductId(null);
@@ -246,19 +285,26 @@ const AdminProducts = () => {
       !formData.unit.trim() ||
       !formData.price ||
       formData.images.length === 0 ||
-      formData.images.some(img => img.trim() === "")
+      formData.images.some((img) => img.trim() === "")
     ) {
-      alert("Please fill all required fields: Name, Category, SubCategory, Stock, Unit, Price, and at least one Image");
+      alert(
+        "Please fill all required fields: Name, Category, SubCategory, Stock, Unit, Price, and at least one Image",
+      );
       return;
     }
 
     const body = {
       ...formData,
-      tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+      tags: formData.tags
+        ? formData.tags
+            .split(",")
+            .map((tag) => tag.trim())
+            .filter((tag) => tag)
+        : [],
       reviews: [],
       faq: [],
       relatedProducts: [],
-      ratings: { average: 0, count: 0 }
+      ratings: { average: 0, count: 0 },
     };
 
     try {
@@ -281,7 +327,7 @@ const AdminProducts = () => {
         const res = await fetch(`${API_URL}/addProducts`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body)
+          body: JSON.stringify(body),
         });
         if (res.ok) {
           alert("Product added successfully");
@@ -324,13 +370,15 @@ const AdminProducts = () => {
                 { id: "basic", label: "Basic Info" },
                 { id: "pricing", label: "Pricing" },
                 { id: "variants", label: "Variants" },
-                { id: "specs", label: "Specifications" }
+                { id: "specs", label: "Specifications" },
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  className={`px-6 py-3 font-medium text-sm ${activeTab === tab.id
-                    ? "text-indigo-600 border-b-2 border-indigo-600"
-                    : "text-gray-500 hover:text-gray-700"}`}
+                  className={`px-6 py-3 font-medium text-sm ${
+                    activeTab === tab.id
+                      ? "text-indigo-600 border-b-2 border-indigo-600"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                   onClick={() => setActiveTab(tab.id)}
                 >
                   {tab.label}
@@ -341,13 +389,14 @@ const AdminProducts = () => {
 
           {/* Form */}
           <form ref={formRef} className="p-6" onSubmit={handleSubmit}>
-
             {/* Basics */}
             {activeTab === "basic" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Product Name *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Product Name *
+                    </label>
                     <input
                       placeholder="Enter product name"
                       name="name"
@@ -359,7 +408,9 @@ const AdminProducts = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Description
+                    </label>
                     <textarea
                       placeholder="Product description"
                       name="description"
@@ -371,7 +422,9 @@ const AdminProducts = () => {
                   </div>
 
                   <div className="relative category-dropdown">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Category *
+                    </label>
                     <input
                       placeholder="Select or type category"
                       name="category"
@@ -392,7 +445,9 @@ const AdminProducts = () => {
                           >
                             <span>{category}</span>
                             {customCategories.includes(category) && (
-                              <span className="text-xs text-gray-500">(Custom)</span>
+                              <span className="text-xs text-gray-500">
+                                (Custom)
+                              </span>
                             )}
                           </div>
                         ))}
@@ -401,7 +456,9 @@ const AdminProducts = () => {
                   </div>
 
                   <div className="relative subcategory-dropdown">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Sub Category *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sub Category *
+                    </label>
                     <input
                       placeholder="Select or type sub category"
                       name="subCategory"
@@ -423,7 +480,9 @@ const AdminProducts = () => {
                           >
                             {subCategory}
                             {customSubCategories.includes(subCategory) && (
-                              <span className="text-xs text-gray-500 ml-2">(Custom)</span>
+                              <span className="text-xs text-gray-500 ml-2">
+                                (Custom)
+                              </span>
                             )}
                           </div>
                         ))}
@@ -434,7 +493,9 @@ const AdminProducts = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Brand</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Brand
+                    </label>
                     <input
                       placeholder="Brand"
                       name="brand"
@@ -446,7 +507,9 @@ const AdminProducts = () => {
 
                   <div className="grid grid-cols-2 gap-4 w-4/5">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Stock *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Stock *
+                      </label>
                       <input
                         placeholder="Stock"
                         type="number"
@@ -459,7 +522,9 @@ const AdminProducts = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Unit *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Unit *
+                      </label>
                       <select
                         name="unit"
                         value={formData.unit}
@@ -467,16 +532,22 @@ const AdminProducts = () => {
                         required
                         className="w-full rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black"
                       >
-                        <option value="" className="text-gray-500">Select Unit</option>
+                        <option value="" className="text-gray-500">
+                          Select Unit
+                        </option>
                         {unitOptions.map((u) => (
-                          <option key={u} value={u} className="text-black">{u}</option>
+                          <option key={u} value={u} className="text-black">
+                            {u}
+                          </option>
                         ))}
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Tags
+                    </label>
                     <input
                       placeholder="Tags (comma separated)"
                       name="tags"
@@ -487,7 +558,9 @@ const AdminProducts = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Product Images *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Product Images *
+                    </label>
                     <div className="space-y-2 w-4/5">
                       {formData.images.map((img, i) => (
                         <div key={i} className="flex gap-2">
@@ -524,9 +597,13 @@ const AdminProducts = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Price *</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Price *
+                    </label>
                     <div className="relative w-4/5">
-                      <span className="absolute left-3 top-2 text-gray-500">$</span>
+                      <span className="absolute left-3 top-2 text-gray-500">
+                        ৳
+                      </span>
                       <input
                         placeholder="0.00"
                         name="price"
@@ -541,9 +618,13 @@ const AdminProducts = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Discount Price</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Discount Price
+                    </label>
                     <div className="relative w-4/5">
-                      <span className="absolute left-3 top-2 text-gray-500">$</span>
+                      <span className="absolute left-3 top-2 text-gray-500">
+                        ৳
+                      </span>
                       <input
                         placeholder="0.00"
                         name="discountPrice"
@@ -559,7 +640,9 @@ const AdminProducts = () => {
 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Offer Text</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Offer Text
+                    </label>
                     <input
                       placeholder="Special offer text"
                       name="offerText"
@@ -578,7 +661,10 @@ const AdminProducts = () => {
                       onChange={handleChange}
                       className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     />
-                    <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-700">
+                    <label
+                      htmlFor="isFeatured"
+                      className="ml-2 block text-sm text-gray-700"
+                    >
                       Feature this product
                     </label>
                   </div>
@@ -590,7 +676,9 @@ const AdminProducts = () => {
             {activeTab === "variants" && (
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium text-gray-900">Product Variants</h3>
+                  <h3 className="text-lg font-medium text-gray-900">
+                    Product Variants
+                  </h3>
                   <button
                     type="button"
                     onClick={addVariant}
@@ -602,35 +690,50 @@ const AdminProducts = () => {
 
                 <div className="space-y-4">
                   {formData.variants.map((v, i) => (
-                    <div key={i} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div
+                      key={i}
+                      className="border border-gray-200 rounded-lg p-4 bg-gray-50"
+                    >
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Color
+                          </label>
                           <input
                             placeholder="Color"
                             value={v.color}
-                            onChange={(e) => updateVariant(i, "color", e.target.value)}
+                            onChange={(e) =>
+                              updateVariant(i, "color", e.target.value)
+                            }
                             className="w-full rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Size</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Size
+                          </label>
                           <input
                             placeholder="Size"
                             value={v.size}
-                            onChange={(e) => updateVariant(i, "size", e.target.value)}
+                            onChange={(e) =>
+                              updateVariant(i, "size", e.target.value)
+                            }
                             className="w-full rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Stock</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Stock
+                          </label>
                           <input
                             placeholder="Stock"
                             type="number"
                             value={v.stock}
-                            onChange={(e) => updateVariant(i, "stock", e.target.value)}
+                            onChange={(e) =>
+                              updateVariant(i, "stock", e.target.value)
+                            }
                             className="w-full rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                           />
                         </div>
@@ -650,7 +753,10 @@ const AdminProducts = () => {
 
                   {formData.variants.length === 0 && (
                     <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
-                      <p className="text-gray-500">No variants added yet. Click "Add Variant" to create one.</p>
+                      <p className="text-gray-500">
+                        No variants added yet. Click "Add Variant" to create
+                        one.
+                      </p>
                     </div>
                   )}
                 </div>
@@ -661,34 +767,66 @@ const AdminProducts = () => {
             {activeTab === "specs" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Product Specifications</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Product Specifications
+                  </h3>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Material</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Material
+                    </label>
                     <input
                       placeholder="Material"
                       value={formData.specifications.material}
-                      onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, material: e.target.value } })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          specifications: {
+                            ...formData.specifications,
+                            material: e.target.value,
+                          },
+                        })
+                      }
                       className="w-4/5 rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Weight</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Weight
+                    </label>
                     <input
                       placeholder="Weight"
                       value={formData.specifications.weight}
-                      onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, weight: e.target.value } })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          specifications: {
+                            ...formData.specifications,
+                            weight: e.target.value,
+                          },
+                        })
+                      }
                       className="w-4/5 rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Dimensions</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Dimensions
+                    </label>
                     <input
                       placeholder="Dimensions"
                       value={formData.specifications.dimensions}
-                      onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, dimensions: e.target.value } })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          specifications: {
+                            ...formData.specifications,
+                            dimensions: e.target.value,
+                          },
+                        })
+                      }
                       className="w-4/5 rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                     />
                   </div>
@@ -696,21 +834,41 @@ const AdminProducts = () => {
 
                 <div className="space-y-4 mt-8">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Origin</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Origin
+                    </label>
                     <input
                       placeholder="Origin"
                       value={formData.specifications.origin}
-                      onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, origin: e.target.value } })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          specifications: {
+                            ...formData.specifications,
+                            origin: e.target.value,
+                          },
+                        })
+                      }
                       className="w-4/5 rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Washable</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Washable
+                    </label>
                     <input
                       placeholder="Washable"
                       value={formData.specifications.washable}
-                      onChange={(e) => setFormData({ ...formData, specifications: { ...formData.specifications, washable: e.target.value } })}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          specifications: {
+                            ...formData.specifications,
+                            washable: e.target.value,
+                          },
+                        })
+                      }
                       className="w-4/5 rounded-lg px-4 py-2 bg-gray-50 transition shadow-sm text-black placeholder-gray-500"
                     />
                   </div>
@@ -755,18 +913,25 @@ const AdminProducts = () => {
       {/* Products List */}
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
         <div className="bg-gradient-to-r from-indigo-600 to-purple-600 p-4 text-white">
-          <h2 className="text-xl font-semibold">All Products ({products.length})</h2>
+          <h2 className="text-xl font-semibold">
+            All Products ({products.length})
+          </h2>
         </div>
 
         <div className="p-4">
           {products.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500">No products found. Add your first product!</p>
+              <p className="text-gray-500">
+                No products found. Add your first product!
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {products.map((p) => (
-                <div key={p._id} className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
+                <div
+                  key={p._id}
+                  className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="relative">
                     <img
                       src={p.images?.[0] || "/placeholder-image.jpg"}
@@ -786,19 +951,29 @@ const AdminProducts = () => {
                   </div>
 
                   <div className="p-4">
-                    <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">{p.name}</h3>
-                    <p className="text-gray-600 text-sm mb-2 truncate">{p.category} / {p.subCategory}</p>
+                    <h3 className="font-semibold text-lg text-gray-800 mb-1 truncate">
+                      {p.name}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-2 truncate">
+                      {p.category} / {p.subCategory}
+                    </p>
 
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center">
                         {/* এখানে সংশোধন করুন */}
-                        <span className="text-lg font-bold text-indigo-600">${p.discountPrice || p.price}</span>
+                        <span className="text-lg font-bold text-indigo-600">
+                          ৳{p.discountPrice || p.price}
+                        </span>
                         {p.discountPrice && (
-                          <span className="ml-2 text-sm text-gray-500 line-through">${p.price}</span>
+                          <span className="ml-2 text-sm text-gray-500 line-through">
+                            ৳{p.price}
+                          </span>
                         )}
                       </div>
-                      <span className={`text-sm px-2 py-1 rounded-full ${p.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                        {p.stock > 0 ? `${p.stock} in stock` : 'Out of stock'}
+                      <span
+                        className={`text-sm px-2 py-1 rounded-full ${p.stock > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
+                      >
+                        {p.stock > 0 ? `${p.stock} in stock` : "Out of stock"}
                       </span>
                     </div>
 
@@ -823,7 +998,6 @@ const AdminProducts = () => {
           )}
         </div>
       </div>
-
     </div>
   );
 };

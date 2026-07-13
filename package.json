@@ -1,0 +1,12 @@
+{
+  "name": "glo-bus",
+  "version": "1.0.0",
+  "description": "Root package for Glo_Bus to run both backend and frontend",
+  "scripts": {
+    "install:all": "npm install --prefix Globus_Backend && npm install --prefix Globus_FrontEnd",
+    "dev": "concurrently \"npm run dev --prefix Globus_Backend\" \"npm run dev --prefix Globus_FrontEnd\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

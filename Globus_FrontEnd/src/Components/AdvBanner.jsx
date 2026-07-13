@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const AdvBanner = () => {
-  const slides = ["Images/FlashSale.png", "Images/Electronics.png", "Images/HomeAppliance.png"];
+  const slides = [
+    "Images/FlashSale.png",
+    "Images/Electronics.png",
+    "Images/HomeAppliance.png",
+  ];
   const [cur, setCur] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -24,7 +31,10 @@ const AdvBanner = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="flex transition-transform duration-700" style={{ transform: `translateX(-${cur * 100}%)` }}>
+      <div
+        className="flex transition-transform duration-700"
+        style={{ transform: `translateX(-${cur * 100}%)` }}
+      >
         {slides.map((src, i) => (
           <div key={i} className="w-full flex-shrink-0">
             <img
@@ -55,7 +65,9 @@ const AdvBanner = () => {
             key={i}
             onClick={() => setCur(i)}
             className={`w-3 h-3 rounded-full transition-colors ${
-              cur === i ? "bg-white" : "bg-white/50"
+              cur === i
+                ? "bg-white dark:bg-gray-800"
+                : "bg-white dark:bg-gray-800/50"
             }`}
           />
         ))}

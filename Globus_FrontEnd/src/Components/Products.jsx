@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faFire, faRocket, faAppleAlt, faMobile, faEye } from '@fortawesome/free-solid-svg-icons';
-import AddToCartButton from "./AddToCartButton"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faStar,
+  faFire,
+  faRocket,
+  faAppleAlt,
+  faMobile,
+  faEye,
+} from "@fortawesome/free-solid-svg-icons";
+import AddToCartButton from "./AddToCartButton";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,22 +19,25 @@ const Products = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [topDeals, setTopDeals] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch products 
+  // Fetch products
   useEffect(() => {
     fetch(`${API_URL}/browseProduct`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
-        
-        // Featured products 
-        const featured = data.filter(product => product.isFeatured).slice(0, 10);
+
+        // Featured products
+        const featured = data
+          .filter((product) => product.isFeatured)
+          .slice(0, 10);
         setFeaturedProducts(featured);
-        
-        // Top deals 
+
+        // Top deals
         const deals = data
-          .filter(product => product.discountPrice)
+          .filter((product) => product.discountPrice)
           .sort((a, b) => {
             const discountA = ((a.price - a.discountPrice) / a.price) * 100;
             const discountB = ((b.price - b.discountPrice) / b.price) * 100;
@@ -35,8 +45,12 @@ const Products = () => {
           })
           .slice(0, 4);
         setTopDeals(deals);
+        setLoading(false);
       })
-      .catch((err) => console.error("Error fetching products:", err));
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        setLoading(false);
+      });
   }, []);
 
   // slider for featured products
@@ -69,12 +83,16 @@ const Products = () => {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length);
+    setCurrentSlide(
+      (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length,
+    );
   };
 
   // Filter products by category
   const getProductsByCategory = (category) => {
-    return products.filter(product => product.category === category).slice(0, 8);
+    return products
+      .filter((product) => product.category === category)
+      .slice(0, 8);
   };
 
   const getNewArrivals = () => {
@@ -84,7 +102,8 @@ const Products = () => {
   const ProductCard = ({ product }) => (
     <div
       key={product._id}
-      className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 cursor-pointer"
+      onClick={() => handleViewDetail(product)}
+      className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer"
     >
       <div className="relative">
         <img
@@ -94,38 +113,53 @@ const Products = () => {
         />
         {product.discountPrice && (
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-            {Math.round(((product.price - product.discountPrice) / product.price) * 100)}% OFF
+            {Math.round(
+              ((product.price - product.discountPrice) / product.price) * 100,
+            )}
+            % OFF
           </div>
         )}
       </div>
       <div className="p-4">
-        <h3 className="font-semibold text-gray-800 leading-tight line-clamp-2 min-h-[48px]">
+        <h3 className="font-semibold text-gray-800 dark:text-gray-200 dark:text-gray-100 leading-tight line-clamp-2 min-h-[48px]">
           {product.name}
         </h3>
-        <p className="text-gray-500 text-sm mt-1">{product.brand}</p>
-        
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+          {product.brand}
+        </p>
+
         <div className="flex items-center justify-between mt-2">
           <div className="flex items-center gap-2">
-            <p className="text-lg font-bold text-blue-600">
-              ${product.discountPrice || product.price}
+            <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+              ৳{product.discountPrice || product.price}
             </p>
             {product.discountPrice && (
-              <p className="text-sm text-gray-500 line-through">${product.price}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                ৳{product.price}
+              </p>
             )}
           </div>
           {product.ratings && (
             <div className="flex items-center gap-1">
-              <FontAwesomeIcon icon={faStar} className="text-yellow-400 text-sm" />
-              <span className="text-sm text-gray-600">{product.ratings.average}</span>
+              <FontAwesomeIcon
+                icon={faStar}
+                className="text-yellow-400 text-sm"
+              />
+              <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-300">
+                {product.ratings.average}
+              </span>
             </div>
           )}
         </div>
 
         <div className="flex justify-between mt-4">
           <AddToCartButton product={product} />
-          
+
           <button
-            onClick={() => handleViewDetail(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewDetail(product);
+            }}
             className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-black transition flex items-center gap-2"
           >
             <FontAwesomeIcon icon={faEye} />
@@ -137,55 +171,62 @@ const Products = () => {
   );
 
   const sections = [
-    { 
-      title: "Top Deals", 
+    {
+      title: "Top Deals",
       key: "top-deals",
       icon: faFire,
       products: topDeals,
-      color: "text-red-600"
+      color: "text-red-600",
     },
-    { 
-      title: "New Arrivals", 
+    {
+      title: "New Arrivals",
       key: "new-arrivals",
       icon: faRocket,
       products: getNewArrivals(),
-      color: "text-green-600"
+      color: "text-green-600",
     },
-    { 
-      title: "Food - Feed Your Hunger", 
+    {
+      title: "Food - Feed Your Hunger",
       key: "fruits",
       icon: faAppleAlt,
       products: getProductsByCategory("Food"),
-      color: "text-green-600"
+      color: "text-green-600",
     },
-    { 
-      title: "Electronics", 
+    {
+      title: "Electronics",
       key: "electronics",
       icon: faMobile,
       products: getProductsByCategory("Electronics"),
-      color: "text-blue-600"
+      color: "text-blue-600",
     },
   ];
 
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen space-y-16 mx-20">
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid border-gray-200 dark:border-gray-700"></div>
+      </div>
+    );
+  }
 
+  return (
+    <div className="p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 min-h-screen space-y-16 mx-20 transition-colors duration-300">
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
         <section className="relative">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold flex items-center gap-3">
+            <h2 className="text-3xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100">
               <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
               Featured Products
             </h2>
             <div className="flex gap-2">
-              <button 
+              <button
                 onClick={prevSlide}
                 className="bg-gray-800 text-white p-2 rounded-lg hover:bg-black transition"
               >
                 ‹
               </button>
-              <button 
+              <button
                 onClick={nextSlide}
                 className="bg-gray-800 text-white p-2 rounded-lg hover:bg-black transition"
               >
@@ -194,8 +235,8 @@ const Products = () => {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-xl bg-white p-4">
-            <div 
+          <div className="relative overflow-hidden rounded-xl bg-white dark:bg-gray-800 p-4 shadow-md dark:shadow-none border border-gray-200 dark:border-gray-700">
+            <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
@@ -210,22 +251,28 @@ const Products = () => {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-800 mb-2">{product.name}</h3>
-                      <p className="text-gray-600 mb-4">{product.description}</p>
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 dark:text-gray-100 mb-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 dark:text-gray-300 mb-4">
+                        {product.description}
+                      </p>
                       <div className="flex items-center gap-4 mb-4">
-                        <p className="text-3xl font-bold text-blue-600">
-                          ${product.discountPrice || product.price}
+                        <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                          ৳{product.discountPrice || product.price}
                         </p>
                         {product.discountPrice && (
-                          <p className="text-xl text-gray-500 line-through">${product.price}</p>
+                          <p className="text-xl text-gray-500 line-through">
+                            ৳{product.price}
+                          </p>
                         )}
                       </div>
                       <div className="flex gap-3">
-                        <AddToCartButton 
-                          product={product} 
+                        <AddToCartButton
+                          product={product}
                           className="px-6 py-3 text-lg"
                         />
-                        
+
                         <button
                           onClick={() => handleViewDetail(product)}
                           className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-black transition flex items-center gap-2"
@@ -239,7 +286,7 @@ const Products = () => {
                 </div>
               ))}
             </div>
-            
+
             {/* Slide Indicators */}
             <div className="flex justify-center gap-2 mt-4">
               {featuredProducts.map((_, index) => (
@@ -247,7 +294,7 @@ const Products = () => {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentSlide ? 'bg-blue-600' : 'bg-gray-300'
+                    index === currentSlide ? "bg-blue-600" : "bg-gray-300"
                   }`}
                 />
               ))}
@@ -263,7 +310,7 @@ const Products = () => {
 
         return (
           <section key={section.key}>
-            <h2 className="text-3xl font-bold mb-4 flex items-center gap-3">
+            <h2 className="text-3xl font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
               <FontAwesomeIcon icon={section.icon} className={section.color} />
               {section.title}
             </h2>
