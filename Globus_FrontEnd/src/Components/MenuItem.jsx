@@ -97,14 +97,24 @@ const MenuItem = () => {
     );
   };
 
+  const matchField = (field, query) => {
+    if (!field) return false;
+    if (typeof field === "string") return field.toLowerCase().includes(query);
+    if (Array.isArray(field)) {
+      return field.some((item) => typeof item === "string" && item.toLowerCase().includes(query));
+    }
+    return String(field).toLowerCase().includes(query);
+  };
+
   // Subcategory click → redirect with subcategory match inside parent category
   const handleSubCategoryClick = (categoryName, subName) => {
     setOpenIndex(null);
+    const query = subName.toLowerCase();
     const filtered = allProducts.filter((p) => {
       const matchesCategory = p.category === categoryName;
       const matchesSubCategory =
-        (p.subCategory && p.subCategory.toLowerCase() === subName.toLowerCase()) ||
-        (p.name && p.name.toLowerCase().includes(subName.toLowerCase()));
+        (p.subCategory && typeof p.subCategory === "string" && p.subCategory.toLowerCase() === query) ||
+        matchField(p.name, query);
       return matchesCategory && matchesSubCategory;
     });
     navigate(

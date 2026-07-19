@@ -56,8 +56,8 @@ const initSSLCommerz = async (req, res) => {
                 name: item.productName || item.name,
                 price: item.discountPrice || item.price,
                 quantity: item.quantity || 1,
-                image: item.productImage || item.images?.[0],
-                variant: item.selectedVariant
+                image: item.image || item.productImage || item.images?.[0] || item.img || "/placeholder.png",
+                variant: item.selectedVariant || item.variant
             })),
             orderSummary: {
                 subtotal: total_amount,

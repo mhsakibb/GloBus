@@ -35,16 +35,25 @@ const SearchResults = () => {
     }
   }, [state]);
 
+  const matchField = (field, query) => {
+    if (!field) return false;
+    if (typeof field === "string") return field.toLowerCase().includes(query);
+    if (Array.isArray(field)) {
+      return field.some((item) => typeof item === "string" && item.toLowerCase().includes(query));
+    }
+    return String(field).toLowerCase().includes(query);
+  };
+
   const searchResults = state?.searchResults || allProducts.filter((p) => {
     if (category !== "All" && p.category !== category) return false;
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
-    const matchesText =
-      (p.name && p.name.toLowerCase().includes(query)) ||
-      (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
-      (p.brand && p.brand.toLowerCase().includes(query)) ||
-      (p.tags && p.tags.toLowerCase().includes(query));
-    return matchesText;
+    return (
+      matchField(p.name, query) ||
+      matchField(p.subCategory, query) ||
+      matchField(p.brand, query) ||
+      matchField(p.tags, query)
+    );
   });
 
   const handleViewDetail = (product) => {

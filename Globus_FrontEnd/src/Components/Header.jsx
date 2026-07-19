@@ -126,6 +126,15 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", close);
   }, []);
 
+  const matchField = (field, query) => {
+    if (!field) return false;
+    if (typeof field === "string") return field.toLowerCase().includes(query);
+    if (Array.isArray(field)) {
+      return field.some((item) => typeof item === "string" && item.toLowerCase().includes(query));
+    }
+    return String(field).toLowerCase().includes(query);
+  };
+
   // Filter Search suggestions
   useEffect(() => {
     if (!searchQuery) {
@@ -137,10 +146,10 @@ const Header = () => {
     const filtered = allProducts.filter((p) => {
       const query = searchQuery.toLowerCase();
       const matchesText =
-        (p.name && p.name.toLowerCase().includes(query)) ||
-        (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
-        (p.brand && p.brand.toLowerCase().includes(query)) ||
-        (p.tags && p.tags.toLowerCase().includes(query));
+        matchField(p.name, query) ||
+        matchField(p.subCategory, query) ||
+        matchField(p.brand, query) ||
+        matchField(p.tags, query);
       const matchesCategory = cat === "All" || p.category === cat;
       return matchesText && matchesCategory;
     });
@@ -154,10 +163,10 @@ const Header = () => {
       const filtered = allProducts.filter((p) => {
         const query = searchQuery.toLowerCase();
         const matchesText =
-          (p.name && p.name.toLowerCase().includes(query)) ||
-          (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
-          (p.brand && p.brand.toLowerCase().includes(query)) ||
-          (p.tags && p.tags.toLowerCase().includes(query));
+          matchField(p.name, query) ||
+          matchField(p.subCategory, query) ||
+          matchField(p.brand, query) ||
+          matchField(p.tags, query);
         const matchesCategory = cat === "All" || p.category === cat;
         return matchesText && matchesCategory;
       });

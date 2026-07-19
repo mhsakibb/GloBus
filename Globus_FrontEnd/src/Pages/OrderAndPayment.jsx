@@ -27,6 +27,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const OrderAndPayment = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [activeTab, setActiveTab] = useState("all");
@@ -38,7 +39,20 @@ const OrderAndPayment = () => {
       return;
     }
     fetchUserOrders();
+    fetchAllProducts();
   }, [navigate]);
+
+  const fetchAllProducts = async () => {
+    try {
+      const res = await fetch(`${API_URL}/browseProduct`);
+      if (res.ok) {
+        const data = await res.json();
+        setAllProducts(data);
+      }
+    } catch (err) {
+      console.error("Error fetching all products:", err);
+    }
+  };
 
   const fetchUserOrders = async () => {
     try {
@@ -94,11 +108,92 @@ const OrderAndPayment = () => {
     }
   };
 
+  const extractUrl = (val) => {
+    if (!val) return null;
+    if (typeof val === "string") {
+      const clean = val.trim();
+      if (clean !== "" && clean !== "undefined" && clean !== "null" && !clean.includes("placeholder")) {
+        return clean;
+      }
+      return null;
+    }
+    if (Array.isArray(val)) {
+      for (const el of val) {
+        const u = extractUrl(el);
+        if (u) return u;
+      }
+    }
+    return null;
+  };
+
   // Improved image URL getter function
   const getImageUrl = (item) => {
-    return (
-      item.image || item.productImage || item.images?.[0] || "/placeholder.png"
-    );
+    // 1. Check direct item properties first
+    const directUrl = 
+      extractUrl(item?.image) ||
+      extractUrl(item?.images) ||
+      extractUrl(item?.productImage) ||
+      extractUrl(item?.img) ||
+      extractUrl(item?.photo) ||
+      extractUrl(item?.picture);
+    
+    if (directUrl) return directUrl;
+
+    // 2. Lookup in allProducts if direct property is missing or invalid
+    if (allProducts && allProducts.length > 0) {
+      // 2a. By ID
+      const targetId = item?.productId || item?._id || item?.id;
+      if (targetId) {
+        const foundById = allProducts.find((p) => 
+          String(p._id) === String(targetId) || String(p.id) === String(targetId) || p._id === targetId
+        );
+        if (foundById) {
+          const foundUrl = extractUrl(foundById.images) || extractUrl(foundById.image) || extractUrl(foundById.img);
+          if (foundUrl) return foundUrl;
+        }
+      }
+
+      // 2b. Exact or Substring Name
+      const targetName = (item?.name || item?.productName || item?.title || "").trim().toLowerCase();
+      if (targetName) {
+        const foundByName = allProducts.find((p) => {
+          const pName = (p.name || p.productName || p.title || "").trim().toLowerCase();
+          return pName && (pName === targetName || pName.includes(targetName) || targetName.includes(pName));
+        });
+        if (foundByName) {
+          const foundUrl = extractUrl(foundByName.images) || extractUrl(foundByName.image) || extractUrl(foundByName.img);
+          if (foundUrl) return foundUrl;
+        }
+
+        // 2c. Token / Keyword fuzzy matching
+        const tokens = targetName
+          .replace(/[^\w\s]/g, "")
+          .split(/\s+/)
+          .filter((w) => w.length > 2 && !["the", "and", "for", "with", "item", "product"].includes(w));
+        
+        if (tokens.length > 0) {
+          let bestMatch = null;
+          let maxScore = 0;
+          for (const p of allProducts) {
+            const pName = (p.name || p.productName || p.title || "").toLowerCase();
+            let score = 0;
+            for (const t of tokens) {
+              if (pName.includes(t)) score++;
+            }
+            if (score > maxScore) {
+              maxScore = score;
+              bestMatch = p;
+            }
+          }
+          if (bestMatch && maxScore >= 1) {
+            const foundUrl = extractUrl(bestMatch.images) || extractUrl(bestMatch.image) || extractUrl(bestMatch.img);
+            if (foundUrl) return foundUrl;
+          }
+        }
+      }
+    }
+
+    return "/Images/logo.png";
   };
 
   // Improved product name getter function
@@ -384,9 +479,9 @@ const OrderAndPayment = () => {
                             <img
                               src={getImageUrl(item)}
                               alt={getProductName(item)}
-                              className="w-16 h-16 object-cover rounded-lg"
+                              className="w-16 h-16 object-cover rounded-lg bg-white border border-gray-200 dark:border-gray-700"
                               onError={(e) => {
-                                e.target.src = "/placeholder.png";
+                                e.target.src = "/Images/logo.png";
                               }}
                             />
                             <div className="flex-1">
