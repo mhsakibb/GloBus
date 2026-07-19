@@ -113,8 +113,11 @@ async function run() {
     app.post("/api/sslcommerz/init", initSSLCommerz);
     app.post("/api/sslcommerz/ipn", handleIPN);
     app.post("/api/sslcommerz/success/:tran_id", paymentSuccess);
+    app.get("/api/sslcommerz/success/:tran_id", paymentSuccess);
     app.post("/api/sslcommerz/fail/:tran_id", paymentFailed);
+    app.get("/api/sslcommerz/fail/:tran_id", paymentFailed);
     app.post("/api/sslcommerz/cancel/:tran_id", paymentCancel);
+    app.get("/api/sslcommerz/cancel/:tran_id", paymentCancel);
     app.get("/api/orders", getUserOrders);
 
     // Admin Order Management Routes

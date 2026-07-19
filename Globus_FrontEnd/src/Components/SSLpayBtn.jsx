@@ -57,8 +57,8 @@ const SSLpayBtn = ({
       const paymentData = {
         total_amount: total,
         currency: "BDT",
-        success_url: `${window.location.origin}/payment-success`,
-        fail_url: `${window.location.origin}/payment-failed`,
+        success_url: `${window.location.origin}/orderHistory`,
+        fail_url: `${window.location.origin}/orderHistory?status=failed`,
         cancel_url: `${window.location.origin}/cart`,
         customer_name: shippingInfo.fullName,
         customer_email: shippingInfo.email,

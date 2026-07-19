@@ -82,6 +82,7 @@ const initSSLCommerz = async (req, res) => {
         console.log('Order created with ID:', orderResult.insertedId);
 
         // 2. Create Transaction collection
+        const frontendUrl = pay.success_url ? new URL(pay.success_url).origin : (process.env.FRONTEND_URL || 'http://localhost:5173');
         const transactionData = {
             orderId: orderResult.insertedId,
             orderNumber: order_number,
@@ -91,6 +92,7 @@ const initSSLCommerz = async (req, res) => {
             currency: currency,
             paymentMethod: 'SSLCommerz',
             paymentStatus: 'pending',
+            frontendUrl: frontendUrl,
             timestamps: {
                 initiated: new Date()
             }
@@ -99,17 +101,18 @@ const initSSLCommerz = async (req, res) => {
         // Insert transaction
         const transactionsCollection = db.collection("transactions");
         await transactionsCollection.insertOne(transactionData);
-        console.log('Transaction created with ID:', tran_id);
+        console.log('Transaction created with ID:', tran_id, 'Frontend URL:', frontendUrl);
 
         // SSL Commerz data
+        const backendUrl = process.env.BACKEND_URL || `${req.protocol}://${req.get('host')}`;
         const data = {
             total_amount: total_amount,
             currency: currency,
             tran_id: tran_id,
-            success_url: `http://localhost:5000/api/sslcommerz/success/${tran_id}`,
-            fail_url: `http://localhost:5000/api/sslcommerz/fail/${tran_id}`,
-            cancel_url: `http://localhost:5000/api/sslcommerz/cancel/${tran_id}`,
-            ipn_url: `http://localhost:5000/api/sslcommerz/ipn`,
+            success_url: `${backendUrl}/api/sslcommerz/success/${tran_id}`,
+            fail_url: `${backendUrl}/api/sslcommerz/fail/${tran_id}`,
+            cancel_url: `${backendUrl}/api/sslcommerz/cancel/${tran_id}`,
+            ipn_url: `${backendUrl}/api/sslcommerz/ipn`,
             shipping_method: 'Courier',
             product_name: cart_items.length === 1 ? cart_items[0].name : `Multiple Items (${cart_items.length})`,
             product_category: 'Ecommerce',
@@ -290,10 +293,12 @@ const paymentSuccess = async (req, res) => {
             }
         }
 
-        return res.redirect(`http://localhost:3000/payment-success?tran_id=${tran_id}&status=success`);
+        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/orderHistory?tran_id=${tran_id}&status=success`);
     } catch (error) {
         console.error('Payment Success Error:', error);
-        return res.redirect(`http://localhost:3000/payment-failed?error=Payment verification failed`);
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/orderHistory?error=Payment verification failed`);
     }
 };
 
@@ -333,10 +338,12 @@ const paymentFailed = async (req, res) => {
             );
         }
 
-        return res.redirect(`http://localhost:3000/payment-failed?tran_id=${tran_id}&status=failed`);
+        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/orderHistory?tran_id=${tran_id}&status=failed`);
     } catch (error) {
         console.error('Payment Failed Error:', error);
-        return res.redirect(`http://localhost:3000/payment-failed?error=Payment processing error`);
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/orderHistory?error=Payment processing error`);
     }
 };
 
@@ -376,10 +383,12 @@ const paymentCancel = async (req, res) => {
             );
         }
 
-        return res.redirect(`http://localhost:3000/cart?message=Payment cancelled&tran_id=${tran_id}`);
+        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/cart?message=Payment cancelled&tran_id=${tran_id}`);
     } catch (error) {
         console.error('Payment Cancel Error:', error);
-        return res.redirect(`http://localhost:3000/cart?message=Payment cancellation failed`);
+        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        return res.redirect(`${frontendUrl}/cart?message=Payment cancellation failed`);
     }
 };
 
