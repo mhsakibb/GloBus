@@ -6,6 +6,7 @@ import SignUp from "../Pages/SignUp";
 import Error from "../Pages/Error";
 import ProductsDetail from "../Pages/ProductsDetail";
 import Checkout from '../Pages/Checkout';
+import SearchResults from '../Pages/SearchResults';
 
 import AdminLayout from "../Admin/AdminLayout";
 import AdminDashboard from "../Admin/AdminDashboard";
@@ -33,6 +34,7 @@ const AllRoutes = () => {
         <Route path="/productDetail/:id" element={<ProductsDetail />} />
         <Route path="/checkout" element={<Checkout/>} />
         <Route path="/orderHistory" element={<OrderAndPayment/>}/>
+        <Route path="/search" element={<SearchResults/>}/>
       </Route>
 
       {/* Private Admin Routes */}

@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+
+// Backend Api
+const API_URL = import.meta.env.VITE_API_URL;
 
 const menuData = [
   {
@@ -42,50 +46,130 @@ const menuData = [
 
 const MenuItem = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [allProducts, setAllProducts] = useState([]);
+  const navigate = useNavigate();
+  const containerRef = useRef(null);
 
-  const toggleSubMenu = (index) => {
-    if (openIndex === index) {
-      setOpenIndex(null);
-    } else {
-      setOpenIndex(index);
-    }
+  // Fetch all products once
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const res = await fetch(`${API_URL}/browseProduct`);
+        const data = await res.json();
+        setAllProducts(data);
+      } catch (err) {
+        console.error("Fetch all products error:", err);
+      }
+    };
+    fetchAllProducts();
+  }, []);
+
+  // Close submenu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setOpenIndex(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Arrow click / hover → toggle submenu ONLY
+  const handleArrowToggle = (e, index) => {
+    e.stopPropagation();
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  // Category name click → redirect to search results
+  const handleCategoryClick = (categoryName) => {
+    setOpenIndex(null);
+    const filtered = allProducts.filter((p) => p.category === categoryName);
+    navigate(
+      `/search?q=&category=${encodeURIComponent(categoryName)}`,
+      {
+        state: {
+          searchResults: filtered,
+          searchQuery: "",
+          category: categoryName,
+        },
+      }
+    );
+  };
+
+  // Subcategory click → redirect with subcategory match inside parent category
+  const handleSubCategoryClick = (categoryName, subName) => {
+    setOpenIndex(null);
+    const filtered = allProducts.filter((p) => {
+      const matchesCategory = p.category === categoryName;
+      const matchesSubCategory =
+        (p.subCategory && p.subCategory.toLowerCase() === subName.toLowerCase()) ||
+        (p.name && p.name.toLowerCase().includes(subName.toLowerCase()));
+      return matchesCategory && matchesSubCategory;
+    });
+    navigate(
+      `/search?q=${encodeURIComponent(subName)}&category=${encodeURIComponent(categoryName)}`,
+      {
+        state: {
+          searchResults: filtered,
+          searchQuery: subName,
+          category: categoryName,
+        },
+      }
+    );
   };
 
   return (
-    <div className="mt-10">
-      <div className="bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-xl w-80 h-100 p-4 border border-transparent dark:border-gray-700">
+    <div className="mt-10" ref={containerRef}>
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-80 p-4 border border-transparent dark:border-gray-700">
         {menuData.map((item, index) => (
           <div key={index} className="relative">
-            {/* Main Menu  */}
-            <div
-              className="flex items-center justify-between space-x-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-2 rounded transition"
-              onClick={() => toggleSubMenu(index)}
-            >
-              <div className="flex items-center space-x-2">
-                <img
-                  src={item.icon}
-                  alt={item.name}
-                  className="w-6 h-6 dark:invert"
-                />
-                <span className="font-medium">{item.name}</span>
+
+            {/* Main Row */}
+            <div className="flex items-center justify-between px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition group">
+
+              {/* Left: icon + name → click to redirect */}
+              <div
+                className="flex items-center space-x-2 flex-1 cursor-pointer"
+                onClick={() => handleCategoryClick(item.name)}
+              >
+                <img src={item.icon} alt={item.name} className="w-6 h-6 dark:invert" />
+                <span className="font-medium text-gray-800 dark:text-gray-200 transition">
+                  {item.name}
+                </span>
               </div>
+
+              {/* Right: arrow → hover or click to open submenu */}
               {item.subMenu && (
-                <FontAwesomeIcon
-                  icon={faChevronRight}
-                  className={`text-gray-500 transition-transform ${
-                    openIndex === index ? "rotate-90" : ""
-                  }`}
-                />
+                <div
+                  className="p-1 rounded cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                  onClick={(e) => handleArrowToggle(e, index)}
+                  onMouseEnter={() => setOpenIndex(index)}
+                >
+                  <FontAwesomeIcon
+                    icon={faChevronRight}
+                    className={`text-gray-500 dark:text-gray-400 text-base transition-transform duration-200 ${
+                      openIndex === index ? "rotate-90 text-gray-700 dark:text-gray-200" : ""
+                    }`}
+                  />
+                </div>
               )}
             </div>
 
-            {/* Submenu */}
+            {/* Submenu — appears to the right on hover/click of arrow */}
             {openIndex === index && item.subMenu && (
-              <div className="absolute top-0 left-full ml-4 bg-gray-100 dark:bg-gray-700 dark:bg-gray-800 rounded-xl w-64 p-4 shadow-lg z-10 border border-transparent dark:border-gray-700">
+              <div
+                className="absolute top-0 left-full ml-3 bg-white dark:bg-gray-800 rounded-xl w-52 py-2 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
+                onMouseLeave={() => setOpenIndex(null)}
+              >
+                <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 pb-1 border-b border-gray-100 dark:border-gray-700 mb-1">
+                  {item.name}
+                </p>
                 {item.subMenu.map((sub, subIndex) => (
                   <div
                     key={subIndex}
-                    className="px-3 py-2 rounded cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+                    className="px-4 py-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-gray-100 text-gray-700 dark:text-gray-300 text-sm font-medium transition"
+                    onClick={() => handleSubCategoryClick(item.name, sub)}
                   >
                     {sub}
                   </div>

@@ -135,11 +135,14 @@ const Header = () => {
     }
 
     const filtered = allProducts.filter((p) => {
-      const matchesName = p.name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
+      const query = searchQuery.toLowerCase();
+      const matchesText =
+        (p.name && p.name.toLowerCase().includes(query)) ||
+        (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
+        (p.brand && p.brand.toLowerCase().includes(query)) ||
+        (p.tags && p.tags.toLowerCase().includes(query));
       const matchesCategory = cat === "All" || p.category === cat;
-      return matchesName && matchesCategory;
+      return matchesText && matchesCategory;
     });
 
     setSuggestions(filtered.slice(0, 10));
@@ -149,23 +152,24 @@ const Header = () => {
   const handleSearch = () => {
     if (searchQuery.trim()) {
       const filtered = allProducts.filter((p) => {
-        const matchesName = p.name
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
+        const query = searchQuery.toLowerCase();
+        const matchesText =
+          (p.name && p.name.toLowerCase().includes(query)) ||
+          (p.subCategory && p.subCategory.toLowerCase().includes(query)) ||
+          (p.brand && p.brand.toLowerCase().includes(query)) ||
+          (p.tags && p.tags.toLowerCase().includes(query));
         const matchesCategory = cat === "All" || p.category === cat;
-        return matchesName && matchesCategory;
+        return matchesText && matchesCategory;
       });
 
-      if (filtered.length > 0) {
-        navigate(
-          `/search?q=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(cat)}`,
-          {
-            state: { searchResults: filtered, searchQuery, category: cat },
-          },
-        );
-        setSearchQuery("");
-        setSuggestions([]);
-      }
+      navigate(
+        `/search?q=${encodeURIComponent(searchQuery)}&category=${encodeURIComponent(cat)}`,
+        {
+          state: { searchResults: filtered, searchQuery, category: cat },
+        },
+      );
+      setSearchQuery("");
+      setSuggestions([]);
     }
   };
 
