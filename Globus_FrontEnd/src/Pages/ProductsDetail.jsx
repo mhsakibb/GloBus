@@ -97,6 +97,22 @@ const ProductsDetail = () => {
     );
   };
 
+  const handleAddToWishlist = () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      const targetId = String(productData._id || productData.productId || productData.id);
+      const exists = saved.some((w) => String(w._id || w.productId || w.id) === targetId);
+      if (!exists) {
+        saved.push(productData);
+        localStorage.setItem("wishlist", JSON.stringify(saved));
+        window.dispatchEvent(new Event("wishlist-updated"));
+      }
+      alert(`${productData.name || "Product"} added to wishlist!`);
+    } catch (err) {
+      console.error("Wishlist save error:", err);
+    }
+  };
+
   // Buy Now Function
   const handleBuyNow = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -228,7 +244,10 @@ const ProductsDetail = () => {
 
           {/* Product Actions */}
           <div className="flex gap-3 mt-6">
-            <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold flex items-center justify-center gap-2">
+            <button
+              onClick={handleAddToWishlist}
+              className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold flex items-center justify-center gap-2"
+            >
               <svg
                 className="w-5 h-5"
                 fill="none"

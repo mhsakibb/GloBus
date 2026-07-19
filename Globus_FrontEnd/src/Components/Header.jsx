@@ -50,6 +50,25 @@ const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const [openProfile, setOpenProfile] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
+  const [wishlistCount, setWishlistCount] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("wishlist") || "[]").length;
+    } catch (e) {
+      return 0;
+    }
+  });
+
+  useEffect(() => {
+    const updateCount = () => {
+      try {
+        setWishlistCount(JSON.parse(localStorage.getItem("wishlist") || "[]").length);
+      } catch (e) {
+        setWishlistCount(0);
+      }
+    };
+    window.addEventListener("wishlist-updated", updateCount);
+    return () => window.removeEventListener("wishlist-updated", updateCount);
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [allProducts, setAllProducts] = useState([]);
@@ -439,14 +458,22 @@ const Header = () => {
 
           {/* Wishlist */}
           <div
-            className="text-white cursor-pointer flex items-center hover:text-gray-300 transition"
+            className="text-white cursor-pointer flex items-center hover:text-gray-300 transition relative"
+            onClick={() => navigate("/wishlist")}
             onMouseEnter={() => setWishlistHover(true)}
             onMouseLeave={() => setWishlistHover(false)}
           >
-            <FontAwesomeIcon
-              icon={faHeart}
-              className="text-red-600 font-bold text-xl"
-            />
+            <div className="relative flex items-center">
+              <FontAwesomeIcon
+                icon={faHeart}
+                className="text-red-600 font-bold text-xl"
+              />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-3 bg-red-500 text-white font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center border border-gray-900">
+                  {wishlistCount}
+                </span>
+              )}
+            </div>
             <h1 className="mx-2 font-medium text-base">{t.wishlist}</h1>
           </div>
 

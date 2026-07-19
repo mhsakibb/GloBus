@@ -17,6 +17,7 @@ import PrivateRoute from "../Admin/PrivateRoute";
 import HeaderFooterWrap from "../Components/HeaderFooterWrap";
 import Cart from "../Pages/Cart";
 import OrderAndPayment from "../Pages/OrderAndPayment";
+import Wishlist from "../Pages/Wishlist";
 
 const AllRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AllRoutes = () => {
       <Route element={<HeaderFooterWrap />}>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/productDetail" element={<ProductsDetail />} />
         <Route path="/productDetail/:id" element={<ProductsDetail />} />
         <Route path="/checkout" element={<Checkout/>} />
