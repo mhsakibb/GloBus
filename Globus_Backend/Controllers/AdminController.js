@@ -11,6 +11,7 @@ const createAdmin = async (db) => {
     if (adminExists) {
       console.log("Admin already exists");
       return;
+
     }
 
     const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
@@ -20,7 +21,7 @@ const createAdmin = async (db) => {
       email: process.env.ADMIN_EMAIL,
       password: hashedPassword,
       role: "admin",
-      status: "active" 
+      status: "active"
     };
 
     await usersCollection.insertOne(admin);
@@ -33,15 +34,15 @@ const createAdmin = async (db) => {
 // Get user role
 const getRole = async (req, res) => {
   try {
-    const db = req.app.locals.mongoClient.db("globusDB"); 
+    const db = req.app.locals.mongoClient.db("globusDB");
     const usersCollection = db.collection("users");
 
-    const email = req.query.email; 
+    const email = req.query.email;
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
-    const user = await usersCollection.findOne({ email }); 
+    const user = await usersCollection.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -61,7 +62,7 @@ const showUsers = async (req, res) => {
 
     const users = await usersCollection.find({ role: "user" }).toArray();
 
-    
+
     const cleanUsers = users.map(({ password, ...rest }) => rest);
 
     res.json(cleanUsers);

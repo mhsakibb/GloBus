@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 
-// Sign Up
+// Sign Up user
 const signupUser = async (req, res) => {
   try {
     const client = req.app.locals.mongoClient;
@@ -12,15 +12,15 @@ const signupUser = async (req, res) => {
     const exists = await usersCollection.findOne({ email });
     if (exists) return res.status(400).json({ message: "User already exists!" });
 
-    
-    const hashedPassword = await bcrypt.hash(password, 10); 
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await usersCollection.insertOne({
       name,
       email,
       phone,
       password: hashedPassword,
-      role: "user" 
+      role: "user"
     });
 
     res.json({
@@ -28,7 +28,7 @@ const signupUser = async (req, res) => {
       name,
       email,
       phone,
-      role: "user" 
+      role: "user"
     });
 
   } catch (err) {
@@ -47,18 +47,18 @@ const signinUser = async (req, res) => {
     const user = await usersCollection.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid email or password" });
 
-    
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid email or password" });
 
-    
+
     const { password: pwd, ...userData } = user;
     res.json({
       _id: userData._id,
       name: userData.name,
       email: userData.email,
       phone: userData.phone,
-      role: userData.role 
+      role: userData.role
     });
 
   } catch (err) {
