@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { sendWelcomeEmail } = require("../utils/emailService");
 
 // Sign Up user
 const signupUser = async (req, res) => {
@@ -12,7 +13,6 @@ const signupUser = async (req, res) => {
     const exists = await usersCollection.findOne({ email });
     if (exists) return res.status(400).json({ message: "User already exists!" });
 
-
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await usersCollection.insertOne({
@@ -22,6 +22,9 @@ const signupUser = async (req, res) => {
       password: hashedPassword,
       role: "user"
     });
+
+    // Send welcome email asynchronously (don't block the response)
+    sendWelcomeEmail(email, name).catch(console.error);
 
     res.json({
       _id: result.insertedId,
