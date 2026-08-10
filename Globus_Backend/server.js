@@ -54,6 +54,7 @@ const cors = require("cors");
 app.use(cors({
   origin: [
     "http://localhost:5173",
+    "https://glo-bus-virid.vercel.app",
     "https://glo-bus-virid.vercel.app/"
   ],
   credentials: true
