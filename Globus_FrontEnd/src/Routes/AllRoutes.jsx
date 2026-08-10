@@ -48,8 +48,9 @@ const AllRoutes = () => {
           </PrivateRoute>
         }
       >
-        {/* Default admin route - automatically redirect to orders */}
-        <Route index element={<Navigate to="orders" replace />} />
+        {/* Default admin route - automatically redirect to dashboard */}
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="orders" element={<AdminOrder />} />
         <Route path="products" element={<AdminProducts />} />
         <Route path="customers" element={<AdminUser />} />

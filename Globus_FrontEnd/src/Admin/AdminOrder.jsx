@@ -336,131 +336,71 @@ const AdminOrder = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="animate-fade-in-up">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Order Management
-          </h1>
-          <p className="text-gray-600">Manage and track all customer orders</p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
+              <FontAwesomeIcon icon={faShoppingBag} className="text-indigo-500" />
+              Order Management
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage, track, and update all customer orders from one place.</p>
+          </div>
+          <div className="flex gap-3">
+            <button className="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm flex items-center gap-2">
+              <FontAwesomeIcon icon={faDownload} /> Export
+            </button>
+          </div>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Total Orders
-                </p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stats.total}
-                </p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          {[
+            { label: 'Total', value: stats.total, icon: faShoppingBag, color: 'text-indigo-600 dark:text-indigo-400', bg: 'bg-indigo-100 dark:bg-indigo-500/10' },
+            { label: 'Pending', value: stats.pending, icon: faClock, color: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-100 dark:bg-amber-500/10' },
+            { label: 'Processing', value: stats.processing, icon: faBox, color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-500/10' },
+            { label: 'Shipped', value: stats.shipped, icon: faShippingFast, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-500/10' },
+            { label: 'Delivered', value: stats.delivered, icon: faCheckCircle, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-500/10' },
+            { label: 'Cancelled', value: stats.cancelled, icon: faTimesCircle, color: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-100 dark:bg-rose-500/10' },
+          ].map((stat, idx) => (
+            <div key={idx} className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-100 dark:border-slate-800/60 hover:shadow-md transition-shadow">
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{stat.label}</p>
+                <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center`}>
+                  <FontAwesomeIcon icon={stat.icon} className={`text-sm ${stat.color}`} />
+                </div>
               </div>
-              <FontAwesomeIcon
-                icon={faShoppingBag}
-                className="text-blue-600 text-xl"
-              />
+              <p className="text-2xl font-bold text-slate-800 dark:text-white">{stat.value}</p>
             </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Pending</p>
-                <p className="text-2xl font-bold text-yellow-600">
-                  {stats.pending}
-                </p>
-              </div>
-              <FontAwesomeIcon
-                icon={faClock}
-                className="text-yellow-600 text-xl"
-              />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Processing</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {stats.processing}
-                </p>
-              </div>
-              <FontAwesomeIcon
-                icon={faClock}
-                className="text-blue-600 text-xl"
-              />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Shipped</p>
-                <p className="text-2xl font-bold text-purple-600">
-                  {stats.shipped}
-                </p>
-              </div>
-              <FontAwesomeIcon
-                icon={faShippingFast}
-                className="text-purple-600 text-xl"
-              />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Delivered</p>
-                <p className="text-2xl font-bold text-green-600">
-                  {stats.delivered}
-                </p>
-              </div>
-              <FontAwesomeIcon
-                icon={faCheckCircle}
-                className="text-green-600 text-xl"
-              />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Cancelled</p>
-                <p className="text-2xl font-bold text-red-600">
-                  {stats.cancelled}
-                </p>
-              </div>
-              <FontAwesomeIcon
-                icon={faTimesCircle}
-                className="text-red-600 text-xl"
-              />
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow mb-6 p-4">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800/60 mb-6 p-4">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
                 <FontAwesomeIcon
                   icon={faSearch}
-                  className="absolute left-3 top-3 text-gray-400"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
                 />
                 <input
                   type="text"
                   placeholder="Search orders, customers, emails..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-11 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 outline-none transition-all dark:text-white"
                 />
               </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all cursor-pointer"
               >
-                <option value="all">All Status</option>
+                <option value="all">All Statuses</option>
                 <option value="pending">Pending</option>
                 <option value="processing">Processing</option>
                 <option value="shipped">Shipped</option>
@@ -469,7 +409,7 @@ const AdminOrder = () => {
               </select>
               <button
                 onClick={fetchAllOrders}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                className="bg-slate-800 dark:bg-slate-700 text-white px-5 py-2.5 rounded-xl hover:bg-slate-700 dark:hover:bg-slate-600 transition-colors text-sm font-medium shadow-sm"
               >
                 Refresh
               </button>
@@ -478,128 +418,123 @@ const AdminOrder = () => {
         </div>
 
         {/* Orders Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800/60 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800/60">
+              <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
                     onClick={() => handleSort("orderNumber")}
                   >
                     <div className="flex items-center gap-2">
                       Order ID
-                      <FontAwesomeIcon
-                        icon={getSortIcon("orderNumber")}
-                        className="text-gray-400"
-                      />
+                      <FontAwesomeIcon icon={getSortIcon("orderNumber")} className="opacity-50" />
                     </div>
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Customer
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Items
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Amount
                   </th>
                   <th
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
                     onClick={() => handleSort("createdAt")}
                   >
                     <div className="flex items-center gap-2">
                       Date
-                      <FontAwesomeIcon
-                        icon={getSortIcon("createdAt")}
-                        className="text-gray-400"
-                      />
+                      <FontAwesomeIcon icon={getSortIcon("createdAt")} className="opacity-50" />
                     </div>
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-100 dark:divide-slate-800/60">
                 {currentOrders.map((order) => (
-                  <tr key={order._id} className="hover:bg-gray-50">
+                  <tr key={order._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
                         #{order.orderNumber}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <FontAwesomeIcon
-                            icon={faUser}
-                            className="text-blue-600"
-                          />
+                      <div className="flex items-center gap-3">
+                        <div className="flex-shrink-0 h-10 w-10 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl flex items-center justify-center border border-indigo-100 dark:border-indigo-800/30">
+                          <FontAwesomeIcon icon={faUser} className="text-indigo-500" />
                         </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">
+                        <div>
+                          <div className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                             {order.shippingInfo?.fullName || "N/A"}
                           </div>
-                          <div className="text-sm text-gray-500">
+                          <div className="text-xs text-slate-500 dark:text-slate-400">
                             {order.shippingInfo?.email || "N/A"}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {order.orderSummary?.itemsCount || 0} items
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+                      <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
                         ${order.orderSummary?.totalAmount || 0}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {order.timestamps?.created
-                          ? new Date(
-                              order.timestamps.created,
-                            ).toLocaleDateString()
+                          ? new Date(order.timestamps.created).toLocaleDateString()
                           : "N/A"}
                       </div>
-                      <div className="text-sm text-gray-500">
+                      <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {order.timestamps?.created
-                          ? new Date(
-                              order.timestamps.created,
-                            ).toLocaleTimeString()
+                          ? new Date(order.timestamps.created).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                           : ""}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <select
                         value={order.orderStatus || "pending"}
-                        onChange={(e) =>
-                          updateOrderStatus(order._id, e.target.value)
-                        }
-                        className={`text-xs font-medium px-2 py-1 rounded-full border ${getStatusColor(order.orderStatus)} focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
+                        onChange={(e) => updateOrderStatus(order._id, e.target.value)}
+                        className={`text-xs font-semibold px-3 py-1.5 rounded-full border focus:ring-2 focus:ring-indigo-500/50 outline-none transition-colors cursor-pointer
+                          ${order.orderStatus === 'delivered' ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-800/30' : ''}
+                          ${order.orderStatus === 'pending' ? 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-800/30' : ''}
+                          ${order.orderStatus === 'processing' ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-800/30' : ''}
+                          ${order.orderStatus === 'shipped' ? 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/10 dark:text-purple-400 dark:border-purple-800/30' : ''}
+                          ${order.orderStatus === 'cancelled' ? 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-800/30' : ''}
+                        `}
                       >
-                        <option value="pending">Pending</option>
-                        <option value="processing">Processing</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="delivered">Delivered</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="pending" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Pending</option>
+                        <option value="processing" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Processing</option>
+                        <option value="shipped" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Shipped</option>
+                        <option value="delivered" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Delivered</option>
+                        <option value="cancelled" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Cancelled</option>
                       </select>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex gap-2">
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <div className="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => setSelectedOrder(order)}
-                          className="text-blue-600 hover:text-blue-900 transition-colors"
+                          title="View Details"
+                          className="p-2 rounded-lg text-indigo-600 bg-indigo-50 hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 transition-colors"
                         >
                           <FontAwesomeIcon icon={faEye} />
                         </button>
-                        <button className="text-green-600 hover:text-green-900 transition-colors">
+                        <button 
+                          title="Download Invoice"
+                          className="p-2 rounded-lg text-emerald-600 bg-emerald-50 hover:bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 transition-colors"
+                        >
                           <FontAwesomeIcon icon={faDownload} />
                         </button>
                       </div>
@@ -612,18 +547,17 @@ const AdminOrder = () => {
 
           {/* Empty State */}
           {currentOrders.length === 0 && (
-            <div className="text-center py-12">
-              <FontAwesomeIcon
-                icon={faBox}
-                className="text-gray-400 text-5xl mb-4"
-              />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <div className="text-center py-16 px-4">
+              <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <FontAwesomeIcon icon={faBox} className="text-slate-300 dark:text-slate-600 text-3xl" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-2">
                 No orders found
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">
                 {searchTerm || statusFilter !== "all"
-                  ? "Try adjusting your search or filter criteria"
-                  : "No orders have been placed yet"}
+                  ? "We couldn't find any orders matching your current search or filters. Try adjusting them."
+                  : "You don't have any orders yet. Once customers place orders, they will appear here."}
               </p>
               {(searchTerm || statusFilter !== "all") && (
                 <button
@@ -631,9 +565,9 @@ const AdminOrder = () => {
                     setSearchTerm("");
                     setStatusFilter("all");
                   }}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  className="bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-medium px-5 py-2.5 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors shadow-sm text-sm"
                 >
-                  Clear Filters
+                  Clear All Filters
                 </button>
               )}
             </div>
