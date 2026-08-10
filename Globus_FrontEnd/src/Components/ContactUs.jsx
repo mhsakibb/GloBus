@@ -28,23 +28,45 @@ const ContactUs = () => {
     return () => unsubscribe();
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (message.trim() === "") return;
 
-    setMessages((prev) => [...prev, { text: message, from: "user" }]);
+    const userMessage = message;
+    setMessages((prev) => [...prev, { text: userMessage, from: "user" }]);
     setMessage("");
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const response = await fetch(`${apiUrl}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await response.json();
+
+      setIsTyping(false);
+      
+      if (response.ok) {
+        setMessages((prev) => [
+          ...prev,
+          { text: data.reply, from: "bot" },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { text: data.error || "দুঃখিত, কোনো সমস্যা হয়েছে।", from: "bot" },
+        ]);
+      }
+    } catch (error) {
+      console.error("Chat API error:", error);
       setIsTyping(false);
       setMessages((prev) => [
         ...prev,
-        {
-          text: "দুঃখিত, কিছু সময়ের জন্য আমাদের অনলাইন সাপোর্ট বন্ধ আছে।",
-          from: "bot",
-        },
+        { text: "নেটওয়ার্ক সমস্যা। দয়া করে আবার চেষ্টা করুন।", from: "bot" },
       ]);
-    }, 1500);
+    }
   };
 
   useEffect(() => {

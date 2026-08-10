@@ -45,6 +45,8 @@ const {
   deleteOrder,
 } = require("./Controllers/orderController");
 
+const { chatWithBot } = require("./Controllers/chatbotController");
+
 const app = express();
 const cors = require("cors");
 
@@ -101,6 +103,9 @@ async function run() {
 
     // NewsLetter
     app.post("/api/newsletter/subscribe", subscribeNewsletter);
+
+    // Chatbot Route
+    app.post("/api/chat", chatWithBot);
 
     // Cart Route
     app.post("/cart/add", addToCart);
