@@ -11,6 +11,8 @@ import {
   faCreditCard,
   faBars,
   faTimes,
+  faCamera,
+  faMicrophone,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
@@ -53,6 +55,9 @@ const Header = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isVisionSearching, setIsVisionSearching] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const fileInputRef = useRef(null);
   const [wishlistCount, setWishlistCount] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("wishlist") || "[]").length;
@@ -84,6 +89,63 @@ const Header = () => {
 
   const auth = getAuth();
   const navigate = useNavigate();
+
+  // Visual Search handler
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsVisionSearching(true);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      try {
+        const base64Data = reader.result;
+        const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+        const response = await fetch(`${apiUrl}/api/vision-search`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ imageBase64: base64Data })
+        });
+        const data = await response.json();
+        setIsVisionSearching(false);
+        if (response.ok) {
+          navigate(
+            `/search?q=${encodeURIComponent(data.query)}`,
+            { state: { searchResults: data.products, searchQuery: data.query, category: "All" } }
+          );
+        } else {
+          alert("Failed to search by image: " + (data.error || "Unknown error"));
+        }
+      } catch (err) {
+        console.error(err);
+        setIsVisionSearching(false);
+        alert("Network error during visual search");
+      }
+    };
+  };
+
+  // Voice Search Handler
+  const startVoiceSearch = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Your browser does not support voice search.");
+      return;
+    }
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = lang.code === 'bd' ? 'bn-BD' : 'en-US';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setSearchQuery(transcript);
+    };
+    recognition.onerror = (event) => console.error(event.error);
+    recognition.onend = () => setIsListening(false);
+
+    recognition.start();
+  };
 
   // Fetch all products
   useEffect(() => {
@@ -354,17 +416,49 @@ const Header = () => {
 
             {/* Search Input */}
             <div className="relative flex-1">
-              <input
-                type="text"
-                placeholder={`${t.searchPlaceholder} ${cat}...`}
-                className="flex-1 px-4 h-12 text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 outline-none bg-white dark:bg-gray-800 border-t border-b border-gray-300 dark:border-gray-600 w-full text-base"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setActiveIndex(-1);
-                }}
-                onKeyDown={handleKeyDown}
-              />
+              <div className="flex items-center bg-white dark:bg-gray-800 border-t border-b border-gray-300 dark:border-gray-600 h-12 w-full">
+                <input
+                  type="text"
+                  placeholder={`${t.searchPlaceholder} ${cat}...`}
+                  className="flex-1 px-4 h-full text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 outline-none bg-transparent w-full text-base"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setActiveIndex(-1);
+                  }}
+                  onKeyDown={handleKeyDown}
+                />
+
+                {/* Voice Search Button */}
+                <button
+                  className={`px-3 h-full flex items-center justify-center transition ${isListening ? 'text-red-500 animate-pulse' : 'text-gray-500 hover:text-orange-500'}`}
+                  onClick={startVoiceSearch}
+                  title="Search by Voice"
+                >
+                  <FontAwesomeIcon icon={faMicrophone} className="text-lg" />
+                </button>
+
+                {/* Visual Search Button */}
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  ref={fileInputRef} 
+                  className="hidden" 
+                  onChange={handleImageUpload} 
+                />
+                <button
+                  className="px-3 h-full flex items-center justify-center text-gray-500 hover:text-orange-500 transition"
+                  onClick={() => fileInputRef.current?.click()}
+                  title="Search by Image"
+                  disabled={isVisionSearching}
+                >
+                  {isVisionSearching ? (
+                    <div className="w-5 h-5 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <FontAwesomeIcon icon={faCamera} className="text-xl" />
+                  )}
+                </button>
+              </div>
 
               {/* Suggestions */}
               {suggestions.length > 0 && (

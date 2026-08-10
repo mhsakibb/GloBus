@@ -46,6 +46,7 @@ const {
 } = require("./Controllers/orderController");
 
 const { chatWithBot } = require("./Controllers/chatbotController");
+const { visionSearch } = require("./Controllers/visionController");
 
 const app = express();
 const cors = require("cors");
@@ -59,7 +60,8 @@ app.use(cors({
   ],
   credentials: true
 }));
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 const uri = process.env.MONGODB_URI;
 const port = process.env.PORT || 5000;
@@ -105,8 +107,9 @@ async function run() {
     // NewsLetter
     app.post("/api/newsletter/subscribe", subscribeNewsletter);
 
-    // Chatbot Route
+    // Chatbot & Vision Route
     app.post("/api/chat", chatWithBot);
+    app.post("/api/vision-search", visionSearch);
 
     // Cart Route
     app.post("/cart/add", addToCart);
