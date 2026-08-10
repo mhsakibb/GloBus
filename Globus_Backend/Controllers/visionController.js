@@ -34,7 +34,7 @@ const visionSearch = async (req, res) => {
             mimeType: mimeType
           }
         },
-        "What is the primary product in this image? Reply with 1 or 2 simple English keywords only (e.g. 'Red Shirt', 'Laptop', 'Watch'). Do not include any other text."
+        "What is the primary product in this image? Reply with a comma-separated list of 3 to 5 related keywords, synonyms, or spelling variations of the product name (e.g. 'lichy, litchi, lychee', 'mango, mangoes', 'shoe, sneaker'). Do not include any other text."
       ]
     });
 
@@ -45,9 +45,10 @@ const visionSearch = async (req, res) => {
     const database = client.db("globusDB");
     const productsCollection = database.collection("products");
 
-    // Create a flexible regex search based on the keywords
-    // We split by space and search for any of the words
-    const keywords = searchQuery.replace(/[^\w\s]/gi, '').split(" ").filter(w => w.length > 2);
+    // Split by commas or spaces, keep words longer than 2 characters
+    const keywords = searchQuery.replace(/[^\w\s,]/gi, '').split(/[\s,]+/).filter(w => w.length > 2);
+    
+    // Create a regex pattern that matches ANY of the keywords
     const regexPattern = keywords.length > 0 ? keywords.join("|") : searchQuery;
     const regex = new RegExp(regexPattern, "i");
 
