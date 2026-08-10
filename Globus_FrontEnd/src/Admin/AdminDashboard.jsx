@@ -9,28 +9,44 @@ const AdminDashboard = () => {
     revenue: 0,
     orders: 0,
     products: 0,
-    customers: 0
+    customers: 0,
+    recentOrders: []
   });
 
   const [loading, setLoading] = useState(true);
 
-  // Mock fetching data for dashboard (Ideally, these would be real API calls)
+  // Fetch real data for dashboard
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Here we simulate API calls to get real dashboard data. 
-        // For now, we mock some impressive numbers.
-        setTimeout(() => {
-          setStats({
-            revenue: 124500,
-            orders: 342,
-            products: 89,
-            customers: 1250
-          });
-          setLoading(false);
-        }, 1000);
+        setLoading(true);
+        
+        // Fetch all data concurrently
+        const [ordersRes, usersRes, productsRes] = await Promise.all([
+          fetch(`${API_URL}/api/orders/stats`),
+          fetch(`${API_URL}/admin/users`),
+          fetch(`${API_URL}/browseProduct`)
+        ]);
+
+        let ordersData = { data: { total: 0, revenue: 0 } };
+        let usersData = [];
+        let productsData = [];
+
+        if (ordersRes.ok) ordersData = await ordersRes.json();
+        if (usersRes.ok) usersData = await usersRes.json();
+        if (productsRes.ok) productsData = await productsRes.json();
+
+        setStats({
+          revenue: ordersData.data?.revenue || 0,
+          orders: ordersData.data?.total || 0,
+          products: productsData?.length || 0,
+          customers: usersData?.length || 0,
+          recentOrders: ordersData.data?.recentOrders || []
+        });
+        
       } catch (error) {
         console.error("Error fetching stats:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -84,7 +100,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard 
           title="Total Revenue" 
-          value={`$${stats.revenue.toLocaleString()}`}
+          value={`৳${stats.revenue.toLocaleString()}`}
           icon={<FaDollarSign className="text-emerald-500 text-xl" />}
           trend="12.5%"
           isPositive={true}
@@ -142,23 +158,41 @@ const AdminDashboard = () => {
         <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800/60">
           <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-6">Recent Orders</h2>
           <div className="space-y-4">
-            {[1,2,3,4].map((i) => (
-              <div key={i} className="flex items-center justify-between p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
-                    #{1000 + i}
+            {stats.recentOrders.length > 0 ? (
+              stats.recentOrders.map((order, i) => (
+                <div key={order._id} className="flex items-center justify-between p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-xl transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs">
+                      #{order.orderNumber || (1000 + i)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
+                        {order.shippingInfo?.fullName || "Guest"}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {order.createdAt ? new Date(order.createdAt).toLocaleDateString() : "Just now"}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-slate-800 dark:text-slate-200">Order from John</p>
-                    <p className="text-xs text-slate-500">2 mins ago</p>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
+                      ৳{(order.orderSummary?.totalAmount || 0).toLocaleString()}
+                    </p>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
+                      order.orderStatus === 'delivered' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' :
+                      order.orderStatus === 'pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400' :
+                      order.orderStatus === 'processing' ? 'bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400' :
+                      order.orderStatus === 'cancelled' ? 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-400' :
+                      'bg-purple-100 text-purple-700 dark:bg-purple-500/10 dark:text-purple-400'
+                    }`}>
+                      {order.orderStatus || 'pending'}
+                    </span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm font-bold text-slate-800 dark:text-slate-200">$124.00</p>
-                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 font-medium">Paid</span>
-                </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-sm text-slate-500 text-center py-4">No recent orders found</p>
+            )}
           </div>
           <button className="w-full mt-4 py-2 text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors">
             View All Orders

@@ -488,7 +488,7 @@ const AdminOrder = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
-                        ${order.orderSummary?.totalAmount || 0}
+                        ৳{order.orderSummary?.totalAmount || 0}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
