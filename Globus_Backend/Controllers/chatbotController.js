@@ -38,7 +38,7 @@ ${JSON.stringify(products)}
     `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-flash-latest',
       contents: message,
       config: {
         systemInstruction: systemInstruction,

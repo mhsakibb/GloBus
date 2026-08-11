@@ -5,7 +5,7 @@ async function testGenerate() {
   try {
     const ai = new GoogleGenAI({});
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-flash-latest',
       contents: "Hello, how are you?",
       config: {
         systemInstruction: "You are a helpful assistant.",

@@ -26,7 +26,7 @@ const visionSearch = async (req, res) => {
 
     // Ask Gemini to describe the primary product in 1 or 2 keywords
     const response = await ai.models.generateContent({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-flash-latest',
       contents: [
         {
           inlineData: {
