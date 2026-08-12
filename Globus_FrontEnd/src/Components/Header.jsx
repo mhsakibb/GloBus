@@ -9,6 +9,8 @@ import {
   faMoon,
   faSun,
   faCreditCard,
+  faBars,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
@@ -50,6 +52,7 @@ const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const [openProfile, setOpenProfile] = useState(false);
   const [wishlistHover, setWishlistHover] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [wishlistCount, setWishlistCount] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("wishlist") || "[]").length;
@@ -286,8 +289,8 @@ const Header = () => {
 
   return (
     <>
-      <section className="bg-gray-900 flex items-center justify-between px-20 py-3 sticky z-50 top-0 shadow-lg border-b border-gray-700">
-        <div className="flex items-center space-x-6">
+      <section className="bg-gray-900 flex flex-wrap md:flex-nowrap items-center justify-between px-4 md:px-20 py-3 sticky z-50 top-0 shadow-lg border-b border-gray-700">
+        <div className="flex items-center justify-between w-full md:w-auto">
           <div
             className="flex items-center cursor-pointer"
             onClick={() => navigate("/")}
@@ -298,7 +301,7 @@ const Header = () => {
           </div>
 
           {/* Location */}
-          <div className="text-white flex items-center">
+          <div className="hidden md:flex text-white items-center ml-6">
             <FontAwesomeIcon icon={faLocationDot} className="text-lg mr-2" />
             <div className="font-semibold leading-tight">
               <h1 className="text-sm">{t.deliverTo}</h1>
@@ -307,9 +310,16 @@ const Header = () => {
               </h1>
             </div>
           </div>
+          
+          <button 
+            className="md:hidden text-white text-2xl"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <FontAwesomeIcon icon={mobileMenuOpen ? faTimes : faBars} />
+          </button>
         </div>
 
-        <div className="flex flex-1 max-w-xl mx-8">
+        <div className={`w-full md:flex md:flex-1 md:max-w-xl mx-0 md:mx-8 mt-3 md:mt-0 ${mobileMenuOpen ? "flex" : "hidden"}`}>
           <div className="flex w-full relative">
             {/* Category Button */}
             <div className="relative" ref={catRef}>
@@ -394,7 +404,7 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className={`w-full md:w-auto flex-col md:flex-row items-center md:space-x-6 space-y-4 md:space-y-0 mt-4 md:mt-0 pb-4 md:pb-0 ${mobileMenuOpen ? "flex" : "hidden"} md:flex`}>
           {/* Language */}
           <div className="relative" ref={langRef}>
             <button

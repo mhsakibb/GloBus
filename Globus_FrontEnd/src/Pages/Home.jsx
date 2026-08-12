@@ -11,7 +11,7 @@ import Newsletter from "../Components/Newsletter";
 const Home = () => {
   return (
     <>
-      <div className="flex space-x-2 justify-center items-center mx-10">
+      <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 justify-center items-center lg:items-start mx-2 md:mx-10 mt-6">
         <div className="flex flex-col ">
           <MenuItem></MenuItem>
           <Timer></Timer>
