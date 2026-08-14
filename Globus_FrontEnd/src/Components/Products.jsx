@@ -103,7 +103,7 @@ const Products = () => {
     <div
       key={product._id}
       onClick={() => handleViewDetail(product)}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer"
+      className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer flex flex-col h-full"
     >
       <div className="relative">
         <img
@@ -120,54 +120,56 @@ const Products = () => {
           </div>
         )}
       </div>
-      <div className="p-4">
+      <div className="p-4 flex-1 flex flex-col">
         <h3 className="font-semibold text-gray-800 dark:text-gray-200 dark:text-gray-100 leading-tight line-clamp-2 min-h-[48px]">
           {product.name}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 min-h-[20px]">
           {product.brand}
         </p>
 
-        <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center gap-2">
-            <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
-              ৳{product.discountPrice || product.price}
-            </p>
-            {product.discountPrice && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
-                ৳{product.price}
+        <div className="flex items-end justify-between mt-auto pt-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                ৳{product.discountPrice || product.price}
               </p>
+              {product.discountPrice && (
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-through">
+                  ৳{product.price}
+                </p>
+              )}
+            </div>
+            {product.ratings && (
+              <div className="flex items-center gap-1 mt-1">
+                <FontAwesomeIcon
+                  icon={faStar}
+                  className="text-yellow-400 text-sm"
+                />
+                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-300">
+                  {product.ratings.average}
+                </span>
+              </div>
             )}
           </div>
-          {product.ratings && (
-            <div className="flex items-center gap-1">
-              <FontAwesomeIcon
-                icon={faStar}
-                className="text-yellow-400 text-sm"
-              />
-              <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-300">
-                {product.ratings.average}
-              </span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex flex-wrap gap-2 mt-4">
-          <AddToCartButton 
-            product={product} 
-            className="flex-1 justify-center text-xs sm:text-sm px-2 min-w-[100px]" 
-          />
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleViewDetail(product);
-            }}
-            className="bg-gray-800 text-white flex-1 justify-center text-xs sm:text-sm px-2 py-2 rounded-lg hover:bg-black transition flex items-center gap-1 min-w-[100px]"
-          >
-            <FontAwesomeIcon icon={faEye} />
-            Details
-          </button>
+          
+          <div className="flex items-center gap-4 pb-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleViewDetail(product);
+              }}
+              className="text-black dark:text-gray-300 hover:text-gray-600 dark:hover:text-white transition"
+              title="Details"
+            >
+              <FontAwesomeIcon icon={faEye} size="lg" />
+            </button>
+            <AddToCartButton 
+              product={product} 
+              showText={false}
+              className="!bg-transparent !text-black dark:!text-gray-300 !p-0 !m-0 hover:!text-orange-500 hover:!bg-transparent transition shadow-none text-xl" 
+            />
+          </div>
         </div>
       </div>
     </div>
