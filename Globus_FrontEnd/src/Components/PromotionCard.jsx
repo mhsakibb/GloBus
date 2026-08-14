@@ -115,7 +115,7 @@ const PromotionCard = () => {
   };
 
   return (
-    <div className="max-w-md  flex flex-col items-center gap-8 p-6">
+    <div className="max-w-md flex flex-col items-center justify-start gap-8 p-6">
       {/* 2x2 Rubik's Grid */}
       <div className="relative w-64 h-64 grid grid-cols-2 grid-rows-2 gap-4 perspective-1000">
         {gridState.flat().map((featureId, index) => {

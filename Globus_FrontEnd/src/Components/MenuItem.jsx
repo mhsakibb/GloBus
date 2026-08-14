@@ -130,7 +130,7 @@ const MenuItem = () => {
   };
 
   return (
-    <div className="mt-10" ref={containerRef}>
+    <div ref={containerRef}>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-80 p-4 border border-transparent dark:border-gray-700">
         {menuData.map((item, index) => (
           <div key={index} className="relative">

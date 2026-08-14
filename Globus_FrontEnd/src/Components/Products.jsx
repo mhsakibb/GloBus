@@ -8,6 +8,7 @@ import {
   faAppleAlt,
   faMobile,
   faEye,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "./AddToCartButton";
 
@@ -32,7 +33,7 @@ const Products = () => {
         // Featured products
         const featured = data
           .filter((product) => product.isFeatured)
-          .slice(0, 10);
+          .slice(0, 4);
         setFeaturedProducts(featured);
 
         // Top deals
@@ -89,18 +90,40 @@ const Products = () => {
     return products.slice(0, 12);
   };
 
+  const handleAddToWishlist = (e, product) => {
+    e.stopPropagation();
+    try {
+      const saved = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      if (!saved.some((item) => item._id === product._id)) {
+        saved.push(product);
+        localStorage.setItem("wishlist", JSON.stringify(saved));
+        window.dispatchEvent(new Event("wishlist-updated"));
+      }
+      alert(`${product.name || "Product"} added to wishlist!`);
+    } catch (err) {
+      console.error("Wishlist save error:", err);
+    }
+  };
+
   const ProductCard = ({ product }) => (
     <div
       key={product._id}
       onClick={() => handleViewDetail(product)}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 cursor-pointer flex flex-col h-full"
+      className="group bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 cursor-pointer flex flex-col h-full"
     >
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-t-xl">
         <img
           src={product.images?.[0]}
           alt={product.name}
-          className="w-full h-56 object-cover rounded-t-xl"
+          className="w-full h-56 object-cover transition-transform duration-500 ease-out group-hover:scale-110"
         />
+        <button
+          onClick={(e) => handleAddToWishlist(e, product)}
+          className="absolute top-3 right-3 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10"
+          title="Add to Wishlist"
+        >
+          <FontAwesomeIcon icon={faHeart} size="lg" />
+        </button>
         {product.discountPrice && (
           <div
             className="absolute top-0 left-4 bg-[#e60000] text-white w-12 pt-2 pb-3 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
@@ -123,7 +146,7 @@ const Products = () => {
         <h3 className="font-semibold text-gray-800 dark:text-gray-200 dark:text-gray-100 leading-tight line-clamp-2 min-h-[48px]">
           {product.name}
         </h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 min-h-[20px]">
+        <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 min-h-[20px] truncate">
           {product.brand}
         </p>
 
@@ -166,7 +189,7 @@ const Products = () => {
             <AddToCartButton 
               product={product} 
               showText={false}
-              className="!bg-transparent !text-black dark:!text-gray-300 !p-0 !m-0 hover:!text-orange-500 hover:!bg-transparent transition shadow-none text-xl" 
+              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-xl" 
             />
           </div>
         </div>
@@ -318,7 +341,7 @@ const Products = () => {
               <FontAwesomeIcon icon={section.icon} className={section.color} />
               {section.title}
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">
               {sectionProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}

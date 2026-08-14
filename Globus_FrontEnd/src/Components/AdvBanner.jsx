@@ -27,7 +27,7 @@ const AdvBanner = () => {
 
   return (
     <div
-      className="relative w-full max-w-[1200px] h-[600px] overflow-hidden mx-5 rounded-md my-10"
+      className="relative w-full max-w-[1200px] h-[600px] overflow-hidden rounded-xl"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -40,7 +40,7 @@ const AdvBanner = () => {
             <img
               src={src}
               alt="Advertisement Banner"
-              className="w-full h-[750px] object-cover object-center rounded-md"
+              className="w-full h-[600px] object-cover object-center"
             />
           </div>
         ))}
