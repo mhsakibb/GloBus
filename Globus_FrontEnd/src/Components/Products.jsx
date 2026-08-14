@@ -43,7 +43,7 @@ const Products = () => {
             const discountB = ((b.price - b.discountPrice) / b.price) * 100;
             return discountB - discountA;
           })
-          .slice(0, 4);
+          .slice(0, 6);
         setTopDeals(deals);
         setLoading(false);
       })
@@ -92,11 +92,11 @@ const Products = () => {
   const getProductsByCategory = (category) => {
     return products
       .filter((product) => product.category === category)
-      .slice(0, 8);
+      .slice(0, 12);
   };
 
   const getNewArrivals = () => {
-    return products.slice(0, 8);
+    return products.slice(0, 12);
   };
 
   const ProductCard = ({ product }) => (
@@ -152,15 +152,18 @@ const Products = () => {
           )}
         </div>
 
-        <div className="flex justify-between mt-4">
-          <AddToCartButton product={product} />
+        <div className="flex flex-wrap gap-2 mt-4">
+          <AddToCartButton 
+            product={product} 
+            className="flex-1 justify-center text-xs sm:text-sm px-2 min-w-[100px]" 
+          />
 
           <button
             onClick={(e) => {
               e.stopPropagation();
               handleViewDetail(product);
             }}
-            className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-black transition flex items-center gap-2"
+            className="bg-gray-800 text-white flex-1 justify-center text-xs sm:text-sm px-2 py-2 rounded-lg hover:bg-black transition flex items-center gap-1 min-w-[100px]"
           >
             <FontAwesomeIcon icon={faEye} />
             Details
@@ -267,7 +270,7 @@ const Products = () => {
                           </p>
                         )}
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex flex-wrap gap-3">
                         <AddToCartButton
                           product={product}
                           className="px-6 py-3 text-lg"
@@ -314,7 +317,7 @@ const Products = () => {
               <FontAwesomeIcon icon={section.icon} className={section.color} />
               {section.title}
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
               {sectionProducts.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
