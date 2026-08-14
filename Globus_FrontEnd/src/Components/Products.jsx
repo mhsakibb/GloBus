@@ -65,17 +65,7 @@ const Products = () => {
 
   // View detail button
   const handleViewDetail = (product) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user && user.email) {
-        navigate("/productDetail", { state: { product } });
-      } else {
-        navigate("/signin");
-      }
-    } catch (err) {
-      console.error("Error reading user from localStorage:", err);
-      navigate("/signin");
-    }
+    navigate("/productDetail", { state: { product } });
   };
 
   const nextSlide = () => {
@@ -112,11 +102,20 @@ const Products = () => {
           className="w-full h-56 object-cover rounded-t-xl"
         />
         {product.discountPrice && (
-          <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-sm font-bold">
-            {Math.round(
-              ((product.price - product.discountPrice) / product.price) * 100,
-            )}
-            % OFF
+          <div
+            className="absolute top-0 left-4 bg-[#e60000] text-white w-12 pt-2 pb-3 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
+            style={{
+              clipPath:
+                "polygon(0 0, 100% 0, 100% 100%, 83% 85%, 66% 100%, 50% 85%, 33% 100%, 16% 85%, 0 100%)",
+            }}
+          >
+            <span className="text-[13px] font-extrabold leading-none">
+              {Math.round(
+                ((product.price - product.discountPrice) / product.price) * 100,
+              )}
+              %
+            </span>
+            <span className="text-[10px] font-bold leading-none mt-1">OFF</span>
           </div>
         )}
       </div>

@@ -57,16 +57,7 @@ const SearchResults = () => {
   });
 
   const handleViewDetail = (product) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user && user.email) {
-        navigate(`/productDetail/${product._id}`, { state: { product } });
-      } else {
-        navigate("/signin");
-      }
-    } catch {
-      navigate("/signin");
-    }
+    navigate(`/productDetail/${product._id}`, { state: { product } });
   };
 
   return (
