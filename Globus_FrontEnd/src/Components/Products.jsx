@@ -336,16 +336,59 @@ const Products = () => {
         if (!sectionProducts.length) return null;
 
         return (
-          <section key={section.key}>
+          <section key={section.key} className="mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
               <FontAwesomeIcon icon={section.icon} className={section.color} />
               {section.title}
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">
-              {sectionProducts.map((product) => (
-                <ProductCard key={product._id} product={product} />
-              ))}
-            </div>
+            
+            {section.key === "fruits" ? (
+              <div className="flex flex-col">
+                {/* Horizontal Promo Banner (White bg area) */}
+                <div className="w-full h-40 sm:h-56 md:h-72 overflow-hidden rounded-xl mb-6">
+                   <img src="/Images/Banner/food_banner.png" alt="Fresh Food Banner" className="w-full h-full object-cover object-top" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1498837167386-84fae9f506b3?auto=format&fit=crop&w=1200&q=80' }} />
+                </div>
+                
+                {/* Product Grid (Pure Green Theme) */}
+                <div className="bg-gradient-to-br from-green-900 to-green-950 p-6 md:p-8 rounded-[2rem] shadow-2xl relative overflow-hidden border border-green-800">
+                  {/* Texture */}
+                  <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
+                  
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 relative z-10">
+                    {sectionProducts.map((product) => (
+                       <ProductCard key={product._id} product={product} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : section.key === "electronics" ? (
+              <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
+                {/* Side Promo Banner */}
+                <div className="lg:w-1/4 xl:w-1/5 relative overflow-hidden rounded-xl min-h-[250px] shadow-sm bg-gray-100 flex flex-col justify-end p-4 border border-gray-200 dark:border-gray-700">
+                  <img 
+                    src="/Images/Banner/electronics_banner.jpg" 
+                    alt="Electronics Banner" 
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&w=800&q=80' }}
+                  />
+                  <div className="relative z-10 w-full bg-white text-gray-900 font-bold py-3 px-4 rounded-xl text-center text-sm shadow-md cursor-pointer hover:bg-gray-100 transition-all duration-300">
+                    LATEST GADGETS
+                  </div>
+                </div>
+                {/* Product Grid */}
+                <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
+                  {sectionProducts.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">
+                {sectionProducts.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
+              </div>
+            )}
           </section>
         );
       })}
