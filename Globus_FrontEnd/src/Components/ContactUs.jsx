@@ -6,7 +6,8 @@ import {
   FaMicrophone,
 } from "react-icons/fa";
 import { FaCircleChevronRight } from "react-icons/fa6";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase.config";
 
 const ContactUs = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +22,6 @@ const ContactUs = () => {
   const handleToggle = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
-    const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUserName(user ? user.displayName || "User" : "");
     });

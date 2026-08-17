@@ -557,7 +557,7 @@ const Cart = () => {
                       Discount (10%)
                     </span>
                     <span className="font-semibold">
-                      -${formatPrice(discount)}
+                      -৳{formatPrice(discount)}
                     </span>
                   </div>
                 )}

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Newsletter = () => {
+const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ const Newsletter = () => {
     } catch (error) {
       console.error("Subscription error:", error);
       setMessage(
-        "Failed to subscribe. Please check your connection and try again.",
+        "Failed to subscribe. Please check your connection and try again."
       );
     } finally {
       setIsLoading(false);
@@ -49,16 +49,25 @@ const Newsletter = () => {
     });
   };
 
+  const handleButtonClick = () => {
+    if (onToggleFeed) {
+      onToggleFeed();
+    } else {
+      scrollToTop();
+    }
+  };
+
   return (
     <div className="bg-gray-800 py-8 px-4 mt-40 relative">
-      {/* Back to Top Button - Simple with FontAwesome */}
+      {/* Dynamic Show More / Back to Top Button */}
       <div className="absolute -top-24 left-1/2 transform -translate-x-1/2">
         <button
-          onClick={scrollToTop}
-          className="bg-black text-white font-bold py-3 px-6 rounded-4xl hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl drop-shadow-2xl flex items-center gap-2"
+          onClick={handleButtonClick}
+          className="bg-black text-white font-bold py-3 px-8 rounded-4xl hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl drop-shadow-2xl flex items-center gap-2"
+          title={isAllSectionsVisible ? "Back to top" : "Show more categories"}
         >
-          <FontAwesomeIcon icon={faArrowUp} />
-          Back
+          <FontAwesomeIcon icon={isAllSectionsVisible ? faArrowUp : faArrowDown} />
+          {isAllSectionsVisible ? "Back" : "Show More"}
         </button>
       </div>
 

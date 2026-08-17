@@ -63,8 +63,9 @@ const MenuItem = () => {
     const fetchAllProducts = async () => {
       try {
         const res = await fetch(`${API_URL}/browseProduct`);
+        if (!res.ok) return;
         const data = await res.json();
-        setAllProducts(data);
+        setAllProducts(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Fetch all products error:", err);
       }

@@ -127,11 +127,11 @@ const SearchResults = () => {
                 <div className="flex items-center justify-between mt-2">
                   <div className="flex items-center gap-2">
                     <p className="text-base font-bold text-blue-600 dark:text-blue-400">
-                      ${product.discountPrice || product.price}
+                      ৳{product.discountPrice || product.price}
                     </p>
                     {product.discountPrice && (
                       <p className="text-xs text-gray-400 dark:text-gray-500 line-through">
-                        ${product.price}
+                        ৳{product.price}
                       </p>
                     )}
                   </div>

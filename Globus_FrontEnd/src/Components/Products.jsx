@@ -16,13 +16,17 @@ import {
   faGamepad,
   faPlus,
   faMinus,
+  faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "./AddToCartButton";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
+const CACHE_KEY = "globus_products_cache";
+const CACHE_TIME_KEY = "globus_products_cache_time";
+const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache TTL
 
-const Products = () => {
+const Products = ({ visibleSectionCount = 4 }) => {
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [topDeals, setTopDeals] = useState([]);
@@ -31,30 +35,74 @@ const Products = () => {
   const [visibleCountMap, setVisibleCountMap] = useState({});
   const navigate = useNavigate();
 
-  // Fetch products
+  // Optimized Fetch & Cache Strategy (0 unnecessary API requests)
   useEffect(() => {
-    fetch(`${API_URL}/browseProduct`)
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-
-        // Featured products
-        const featured = data
-          .filter((product) => product.isFeatured)
-          .slice(0, 4);
-        setFeaturedProducts(featured);
-
-        // Top deals
-        const deals = data
-          .filter((product) => product.discountPrice)
-          .sort((a, b) => {
-            const discountA = ((a.price - a.discountPrice) / a.price) * 100;
-            const discountB = ((b.price - b.discountPrice) / b.price) * 100;
-            return discountB - discountA;
-          })
-          .slice(0, 6);
-        setTopDeals(deals);
+    const processProductData = (data) => {
+      if (!Array.isArray(data)) {
+        console.warn("Expected array of products, got:", data);
+        setProducts([]);
+        setFeaturedProducts([]);
+        setTopDeals([]);
         setLoading(false);
+        return;
+      }
+
+      setProducts(data);
+
+      // Featured products
+      const featured = data
+        .filter((product) => product && product.isFeatured)
+        .slice(0, 4);
+      setFeaturedProducts(featured);
+
+      // Top deals
+      const deals = data
+        .filter((product) => product && product.discountPrice)
+        .sort((a, b) => {
+          const discountA = ((a.price - a.discountPrice) / a.price) * 100;
+          const discountB = ((b.price - b.discountPrice) / b.price) * 100;
+          return discountB - discountA;
+        })
+        .slice(0, 6);
+      setTopDeals(deals);
+      setLoading(false);
+    };
+
+    // Check Session Storage Cache
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY);
+      const cacheTime = sessionStorage.getItem(CACHE_TIME_KEY);
+
+      if (cached && cacheTime && Date.now() - Number(cacheTime) < CACHE_TTL_MS) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          processProductData(parsed);
+          return;
+        }
+      }
+    } catch (e) {
+      console.warn("Session cache read warning:", e);
+    }
+
+    // Single Network Fetch when cache is empty or expired
+    fetch(`${API_URL}/browseProduct`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          try {
+            sessionStorage.setItem(CACHE_KEY, JSON.stringify(data));
+            sessionStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+          } catch (e) {
+            console.warn("Session cache write warning:", e);
+          }
+          processProductData(data);
+        } else {
+          console.warn("Non-array response from browseProduct:", data);
+          processProductData([]);
+        }
       })
       .catch((err) => {
         console.error("Error fetching products:", err);
@@ -78,21 +126,27 @@ const Products = () => {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % featuredProducts.length);
+    if (featuredProducts.length > 0) {
+      setCurrentSlide((prev) => (prev + 1) % featuredProducts.length);
+    }
   };
 
   const prevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length
-    );
+    if (featuredProducts.length > 0) {
+      setCurrentSlide(
+        (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length
+      );
+    }
   };
 
   // Filter products by category
   const getProductsByCategory = (category) => {
-    return products.filter((product) => product.category === category);
+    if (!Array.isArray(products)) return [];
+    return products.filter((product) => product && product.category === category);
   };
 
   const getNewArrivals = () => {
+    if (!Array.isArray(products)) return [];
     return products;
   };
 
@@ -127,7 +181,7 @@ const Products = () => {
     });
   };
 
-  // Original ProductCard exactly as requested
+  // Original ProductCard
   const ProductCard = ({ product }) => (
     <div
       key={product._id}
@@ -223,7 +277,8 @@ const Products = () => {
     </div>
   );
 
-  const sections = [
+  // All available store sections in order
+  const allSections = [
     {
       title: "Top Deals",
       key: "top-deals",
@@ -288,6 +343,8 @@ const Products = () => {
       color: "text-orange-600",
     },
   ];
+
+  const renderedSections = allSections.slice(0, visibleSectionCount);
 
   if (loading) {
     return (
@@ -390,8 +447,8 @@ const Products = () => {
         </section>
       )}
 
-      {/* Product Sections */}
-      {sections.map((section) => {
+      {/* Product Sections (Up to Kitchen Utils on initial render) */}
+      {renderedSections.map((section) => {
         const allSectionProducts = section.products;
         if (!allSectionProducts.length) return null;
 
@@ -478,7 +535,7 @@ const Products = () => {
               </div>
             )}
 
-            {/* Show More (+) and Show Less (-) buttons side-by-side */}
+            {/* Show More (+) and Show Less (-) buttons side-by-side per category */}
             {section.key !== "top-deals" && allSectionProducts.length > 12 && (
               <div className="flex items-center justify-center gap-4 mt-6">
                 {hasMore && (

@@ -16,7 +16,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebase.config";
 import { useTheme } from "../Contexts/ThemeContext";
 
 // Backend Api
@@ -87,7 +88,6 @@ const Header = () => {
   const catRef = useRef(null);
   const profRef = useRef(null);
 
-  const auth = getAuth();
   const navigate = useNavigate();
 
   // Visual Search handler
@@ -152,8 +152,9 @@ const Header = () => {
     const fetchAllProducts = async () => {
       try {
         const res = await fetch(`${API_URL}/browseProduct`);
+        if (!res.ok) return;
         const data = await res.json();
-        setAllProducts(data);
+        setAllProducts(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Fetch all products error:", err);
       }
