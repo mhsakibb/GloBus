@@ -9,6 +9,13 @@ import {
   faMobile,
   faEye,
   faHeart,
+  faShirt,
+  faUtensils,
+  faSpa,
+  faBookOpen,
+  faGamepad,
+  faPlus,
+  faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "./AddToCartButton";
 
@@ -21,6 +28,7 @@ const Products = () => {
   const [topDeals, setTopDeals] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [visibleCountMap, setVisibleCountMap] = useState({});
   const navigate = useNavigate();
 
   // Fetch products
@@ -54,7 +62,7 @@ const Products = () => {
       });
   }, []);
 
-  // slider for featured products
+  // Slider for featured products
   useEffect(() => {
     if (featuredProducts.length > 0) {
       const interval = setInterval(() => {
@@ -75,19 +83,17 @@ const Products = () => {
 
   const prevSlide = () => {
     setCurrentSlide(
-      (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length,
+      (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length
     );
   };
 
   // Filter products by category
   const getProductsByCategory = (category) => {
-    return products
-      .filter((product) => product.category === category)
-      .slice(0, 12);
+    return products.filter((product) => product.category === category);
   };
 
   const getNewArrivals = () => {
-    return products.slice(0, 12);
+    return products;
   };
 
   const handleAddToWishlist = (e, product) => {
@@ -105,6 +111,23 @@ const Products = () => {
     }
   };
 
+  const handleShowMore = (key, total) => {
+    setVisibleCountMap((prev) => {
+      const current = prev[key] || 12;
+      const next = current + 12;
+      return { ...prev, [key]: next >= total ? total : next };
+    });
+  };
+
+  const handleShowLess = (key) => {
+    setVisibleCountMap((prev) => {
+      const current = prev[key] || 12;
+      const next = current - 12;
+      return { ...prev, [key]: next <= 12 ? 12 : next };
+    });
+  };
+
+  // Original ProductCard exactly as requested
   const ProductCard = ({ product }) => (
     <div
       key={product._id}
@@ -113,9 +136,12 @@ const Products = () => {
     >
       <div className="relative overflow-hidden rounded-t-xl">
         <img
-          src={product.images?.[0]}
+          src={product.images?.[0] || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"}
           alt={product.name}
           className="w-full h-56 object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
+          }}
         />
         <button
           onClick={(e) => handleAddToWishlist(e, product)}
@@ -134,7 +160,7 @@ const Products = () => {
           >
             <span className="text-[13px] font-extrabold leading-none">
               {Math.round(
-                ((product.price - product.discountPrice) / product.price) * 100,
+                ((product.price - product.discountPrice) / product.price) * 100
               )}
               %
             </span>
@@ -143,7 +169,7 @@ const Products = () => {
         )}
       </div>
       <div className="p-4 flex-1 flex flex-col">
-        <h3 className="font-semibold text-gray-800 dark:text-gray-200 dark:text-gray-100 leading-tight line-clamp-2 min-h-[48px]">
+        <h3 className="font-semibold text-gray-800 dark:text-gray-100 leading-tight line-clamp-2 min-h-[48px]">
           {product.name}
         </h3>
         <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 min-h-[20px] truncate">
@@ -168,13 +194,13 @@ const Products = () => {
                   icon={faStar}
                   className="text-yellow-400 text-sm"
                 />
-                <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-300">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
                   {product.ratings.average}
                 </span>
               </div>
             )}
           </div>
-          
+
           <div className="flex items-center gap-4 pb-1">
             <button
               onClick={(e) => {
@@ -186,10 +212,10 @@ const Products = () => {
             >
               <FontAwesomeIcon icon={faEye} size="lg" />
             </button>
-            <AddToCartButton 
-              product={product} 
+            <AddToCartButton
+              product={product}
               showText={false}
-              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-xl" 
+              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-xl"
             />
           </div>
         </div>
@@ -226,6 +252,41 @@ const Products = () => {
       products: getProductsByCategory("Electronics"),
       color: "text-blue-600",
     },
+    {
+      title: "Fashion",
+      key: "fashion",
+      icon: faShirt,
+      products: getProductsByCategory("Fashion"),
+      color: "text-purple-600",
+    },
+    {
+      title: "Kitchen Utils",
+      key: "kitchen",
+      icon: faUtensils,
+      products: getProductsByCategory("Kitchen Utils"),
+      color: "text-amber-600",
+    },
+    {
+      title: "Skin Care",
+      key: "skincare",
+      icon: faSpa,
+      products: getProductsByCategory("Skin Care"),
+      color: "text-rose-600",
+    },
+    {
+      title: "Stationary",
+      key: "stationary",
+      icon: faBookOpen,
+      products: getProductsByCategory("Stationary"),
+      color: "text-indigo-600",
+    },
+    {
+      title: "Toys",
+      key: "toys",
+      icon: faGamepad,
+      products: getProductsByCategory("Toys"),
+      color: "text-orange-600",
+    },
   ];
 
   if (loading) {
@@ -237,8 +298,8 @@ const Products = () => {
   }
 
   return (
-    <div className="p-4 md:p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 min-h-screen space-y-10 md:space-y-16 mx-2 md:mx-20 transition-colors duration-300">
-      {/* Featured Products */}
+    <div className="p-4 md:p-6 bg-gray-50 dark:bg-gray-900 min-h-screen space-y-10 md:space-y-16 mx-2 md:mx-20 transition-colors duration-300">
+      {/* Featured Products Carousel */}
       {featuredProducts.length > 0 && (
         <section className="relative">
           <div className="flex items-center justify-between mb-6">
@@ -278,10 +339,10 @@ const Products = () => {
                       />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 dark:text-gray-100 mb-2">
+                      <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                         {product.name}
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 dark:text-gray-300 mb-4">
+                      <p className="text-gray-600 dark:text-gray-300 mb-4">
                         {product.description}
                       </p>
                       <div className="flex items-center gap-4 mb-4">
@@ -299,7 +360,6 @@ const Products = () => {
                           product={product}
                           className="px-6 py-3 text-lg"
                         />
-
                         <button
                           onClick={() => handleViewDetail(product)}
                           className="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-black transition flex items-center gap-2"
@@ -330,33 +390,47 @@ const Products = () => {
         </section>
       )}
 
-      {/* Other Sections */}
+      {/* Product Sections */}
       {sections.map((section) => {
-        const sectionProducts = section.products;
-        if (!sectionProducts.length) return null;
+        const allSectionProducts = section.products;
+        if (!allSectionProducts.length) return null;
+
+        const limit = visibleCountMap[section.key] || 12;
+        const displayed = section.key === "top-deals" ? allSectionProducts : allSectionProducts.slice(0, limit);
+        const hasMore = allSectionProducts.length > limit;
+        const canShowLess = limit > 12;
 
         return (
           <section key={section.key} className="mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
-              <FontAwesomeIcon icon={section.icon} className={section.color} />
-              {section.title}
-            </h2>
-            
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold flex items-center gap-3 text-gray-900 dark:text-gray-100">
+                <FontAwesomeIcon icon={section.icon} className={section.color} />
+                {section.title}
+              </h2>
+            </div>
+
             {section.key === "fruits" ? (
               <div className="flex flex-col">
-                {/* Horizontal Promo Banner (White bg area) */}
+                {/* Horizontal Promo Banner */}
                 <div className="w-full h-40 sm:h-56 md:h-72 overflow-hidden rounded-xl mb-6">
-                   <img src="/Images/Banner/food_banner.png" alt="Fresh Food Banner" className="w-full h-full object-cover object-top" onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1498837167386-84fae9f506b3?auto=format&fit=crop&w=1200&q=80' }} />
+                  <img
+                    src="/Images/Banner/food_banner.png"
+                    alt="Fresh Food Banner"
+                    className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1498837167386-84fae9f506b3?auto=format&fit=crop&w=1200&q=80";
+                    }}
+                  />
                 </div>
-                
-                {/* Product Grid (Pure Green Theme) */}
+
+                {/* Product Grid (Green Theme) */}
                 <div className="bg-gradient-to-br from-green-900 to-green-950 p-6 md:p-8 rounded-[2rem] shadow-2xl relative overflow-hidden border border-green-800">
-                  {/* Texture */}
                   <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
-                  
+
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6 relative z-10">
-                    {sectionProducts.map((product) => (
-                       <ProductCard key={product._id} product={product} />
+                    {displayed.map((product) => (
+                      <ProductCard key={product._id} product={product} />
                     ))}
                   </div>
                 </div>
@@ -365,11 +439,14 @@ const Products = () => {
               <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
                 {/* Side Promo Banner */}
                 <div className="lg:w-1/4 xl:w-1/5 relative overflow-hidden rounded-xl min-h-[250px] shadow-sm bg-gray-100 flex flex-col justify-end p-4 border border-gray-200 dark:border-gray-700">
-                  <img 
-                    src="/Images/Banner/electronics_banner.jpg" 
-                    alt="Electronics Banner" 
+                  <img
+                    src="/Images/Banner/electronics_banner.jpg"
+                    alt="Electronics Banner"
                     className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&w=800&q=80' }}
+                    onError={(e) => {
+                      e.target.src =
+                        "https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&w=800&q=80";
+                    }}
                   />
                   <div className="relative z-10 w-full bg-white text-gray-900 font-bold py-3 px-4 rounded-xl text-center text-sm shadow-md cursor-pointer hover:bg-gray-100 transition-all duration-300">
                     LATEST GADGETS
@@ -377,16 +454,43 @@ const Products = () => {
                 </div>
                 {/* Product Grid */}
                 <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
-                  {sectionProducts.map((product) => (
+                  {displayed.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                 </div>
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">
-                {sectionProducts.map((product) => (
+                {displayed.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
+              </div>
+            )}
+
+            {/* Show More (+) and Show Less (-) buttons side-by-side */}
+            {section.key !== "top-deals" && allSectionProducts.length > 12 && (
+              <div className="flex items-center justify-center gap-4 mt-6">
+                {hasMore && (
+                  <button
+                    onClick={() => handleShowMore(section.key, allSectionProducts.length)}
+                    className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
+                    title="Show More Products"
+                  >
+                    <FontAwesomeIcon icon={faPlus} className="text-xs text-blue-600 dark:text-blue-400" />
+                    <span>Show More ({allSectionProducts.length - limit} more)</span>
+                  </button>
+                )}
+
+                {canShowLess && (
+                  <button
+                    onClick={() => handleShowLess(section.key)}
+                    className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-5 py-2 rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
+                    title="Show Less Products"
+                  >
+                    <FontAwesomeIcon icon={faMinus} className="text-xs text-red-500" />
+                    <span>Show Less</span>
+                  </button>
+                )}
               </div>
             )}
           </section>

@@ -49,37 +49,45 @@ const AdminProducts = () => {
     {
       name: "Food",
       icon: "/Images/ImageMenu/healthy-food.png",
-      subMenu: ["Fruits", "Vegetables", "Snacks"],
+      subMenu: ["Fruits", "Vegetables", "Snacks", "Beverages", "Dairy & Bakery"],
     },
     {
       name: "Kitchen Utils",
       icon: "/Images/ImageMenu/kitchen.png",
-      subMenu: ["Pots & Pans", "Cutlery", "Appliances"],
+      subMenu: ["Pots & Pans", "Cutlery", "Appliances", "Cookware", "Storage"],
     },
     {
       name: "Fashion",
       icon: "/Images/ImageMenu/fashion.png",
-      subMenu: ["Men", "Women", "Kids"],
+      subMenu: ["Men", "Women", "Kids", "Footwear", "Watches & Jewelry", "Bags"],
     },
     {
       name: "Skin Care",
       icon: "/Images/ImageMenu/skin-care.png",
-      subMenu: ["Creams", "Lotions", "Oils"],
+      subMenu: ["Creams", "Lotions", "Oils", "Cleansers & Serums", "Sunscreen"],
     },
     {
       name: "Electronics",
       icon: "/Images/ImageMenu/device.png",
-      subMenu: ["Mobiles", "Laptops", "Cameras"],
+      subMenu: [
+        "Mobiles",
+        "Laptops",
+        "Audio & Headphones",
+        "Smartwatches & Wearables",
+        "Cameras",
+        "Drones",
+        "Accessories",
+      ],
     },
     {
       name: "Stationary",
       icon: "/Images/ImageMenu/stationary.png",
-      subMenu: ["Pens", "Notebooks", "Art Supplies"],
+      subMenu: ["Pens", "Notebooks", "Art Supplies", "Office Supplies"],
     },
     {
       name: "Toys",
       icon: "/Images/ImageMenu/teddy-bear.png",
-      subMenu: ["Soft Toys", "Educational", "Action Figures"],
+      subMenu: ["Soft Toys", "Educational", "Action Figures", "Board Games"],
     },
   ];
 
