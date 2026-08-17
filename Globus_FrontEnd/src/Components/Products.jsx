@@ -239,7 +239,7 @@ const Products = () => {
       color: "text-green-600",
     },
     {
-      title: "Food - Feed Your Hunger",
+      title: "Vegetables & Fresh Foods",
       key: "fruits",
       icon: faAppleAlt,
       products: getProductsByCategory("Food"),
@@ -415,7 +415,7 @@ const Products = () => {
                 <div className="w-full h-40 sm:h-56 md:h-72 overflow-hidden rounded-xl mb-6">
                   <img
                     src="/Images/Banner/food_banner.png"
-                    alt="Fresh Food Banner"
+                    alt="Vegetables & Fresh Foods Banner"
                     className="w-full h-full object-cover object-top"
                     onError={(e) => {
                       e.target.src =
@@ -436,28 +436,39 @@ const Products = () => {
                 </div>
               </div>
             ) : section.key === "electronics" ? (
-              <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
-                {/* Side Promo Banner */}
-                <div className="lg:w-1/4 xl:w-1/5 relative overflow-hidden rounded-xl min-h-[250px] shadow-sm bg-gray-100 flex flex-col justify-end p-4 border border-gray-200 dark:border-gray-700">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
+                {/* 2-Row Side Promo Banner on 6-Column Grid */}
+                <div className="col-span-2 row-span-2 min-h-[460px] lg:min-h-full relative overflow-hidden rounded-xl shadow-lg bg-gray-900 flex flex-col justify-end p-5 border border-gray-200 dark:border-gray-700 group">
                   <img
                     src="/Images/Banner/electronics_banner.jpg"
                     alt="Electronics Banner"
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     onError={(e) => {
                       e.target.src =
                         "https://images.unsplash.com/photo-1526406915894-7bcd65f60845?auto=format&fit=crop&w=800&q=80";
                     }}
                   />
-                  <div className="relative z-10 w-full bg-white text-gray-900 font-bold py-3 px-4 rounded-xl text-center text-sm shadow-md cursor-pointer hover:bg-gray-100 transition-all duration-300">
-                    LATEST GADGETS
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  <div className="relative z-10 w-full">
+                    <span className="text-xs font-bold uppercase tracking-wider text-yellow-400 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-md">
+                      Featured Tech
+                    </span>
+                    <h3 className="text-xl font-extrabold text-white mt-2 mb-1">
+                      Latest Flagship Gadgets
+                    </h3>
+                    <p className="text-xs text-gray-200 mb-3">
+                      Smartphones, Laptops, Audio & Premium Drones
+                    </p>
+                    <div className="bg-white text-gray-900 font-bold py-2.5 px-4 rounded-xl text-center text-sm shadow-md cursor-pointer hover:bg-gray-100 transition-all duration-300">
+                      EXPLORE GADGETS
+                    </div>
                   </div>
                 </div>
-                {/* Product Grid */}
-                <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 md:gap-6">
-                  {displayed.map((product) => (
-                    <ProductCard key={product._id} product={product} />
-                  ))}
-                </div>
+
+                {/* Products starting from row 1 next to banner and spanning all 6 columns below */}
+                {displayed.map((product) => (
+                  <ProductCard key={product._id} product={product} />
+                ))}
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">

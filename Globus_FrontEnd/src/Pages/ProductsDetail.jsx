@@ -56,25 +56,40 @@ const ProductsDetail = () => {
     }
   }, [productData]);
 
-  // Load related products based on category
+  // Load related products based on subCategory first, then category
   const loadRelatedProducts = async () => {
-    if (!productData?.category) return;
+    if (!productData) return;
 
     setLoadingRelated(true);
     try {
       const response = await fetch(`${API_URL}/browseProduct`);
       const allProducts = await response.json();
 
-      // Filter products by same category, exclude current product, and limit to 3
-      const related = allProducts
-        .filter(
-          (product) =>
-            product.category === productData.category &&
-            product._id !== productData._id,
-        )
-        .slice(0, 3);
+      const currentId = String(productData._id || productData.productId || productData.id);
 
-      setRelatedProducts(related);
+      // Filter by same subCategory first
+      let related = [];
+      if (productData.subCategory) {
+        related = allProducts.filter(
+          (product) =>
+            String(product._id) !== currentId &&
+            product.subCategory &&
+            product.subCategory.toLowerCase() === productData.subCategory.toLowerCase()
+        );
+      }
+
+      // If fewer than 4 items, backfill with same category
+      if (related.length < 4 && productData.category) {
+        const sameCategory = allProducts.filter(
+          (product) =>
+            String(product._id) !== currentId &&
+            product.category === productData.category &&
+            !related.some((r) => String(r._id) === String(product._id))
+        );
+        related = [...related, ...sameCategory];
+      }
+
+      setRelatedProducts(related.slice(0, 6));
     } catch (error) {
       console.error("Error loading related products:", error);
     } finally {
