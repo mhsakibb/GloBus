@@ -139,21 +139,21 @@ const MenuItem = () => {
   };
 
   return (
-    <div ref={containerRef}>
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-80 p-4 border border-transparent dark:border-gray-700">
+    <div ref={containerRef} className="w-full">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-full lg:w-52 xl:w-64 2xl:w-72 p-2.5 lg:p-3 xl:p-4 border border-transparent dark:border-gray-700 shadow-sm">
         {menuData.map((item, index) => (
           <div key={index} className="relative">
 
             {/* Main Row */}
-            <div className="flex items-center justify-between px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition group">
+            <div className="flex items-center justify-between px-2 py-1 lg:py-1.5 xl:py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition group">
 
               {/* Left: icon + name → click to redirect */}
               <div
-                className="flex items-center space-x-2 flex-1 cursor-pointer"
+                className="flex items-center space-x-2 flex-1 cursor-pointer min-w-0"
                 onClick={() => handleCategoryClick(item.name)}
               >
-                <img src={item.icon} alt={item.name} className="w-6 h-6 dark:invert" />
-                <span className="font-medium text-gray-800 dark:text-gray-200 transition">
+                <img src={item.icon} alt={item.name} className="w-4 h-4 xl:w-5 xl:h-5 dark:invert flex-shrink-0" />
+                <span className="font-medium text-xs xl:text-sm text-gray-800 dark:text-gray-200 transition truncate">
                   {item.name}
                 </span>
               </div>

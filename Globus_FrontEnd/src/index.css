@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Proportional Global UI Scaling for Laptops and Desktops */
+html {
+  font-size: 13.5px;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 15px;
+  }
+}
+
 /* Google Fonts */
 
 .indie{

@@ -33,13 +33,17 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 justify-center items-center lg:items-start mx-2 md:mx-20 px-4 md:px-6 mt-6">
-        <div className="flex flex-col ">
-          <MenuItem></MenuItem>
-          <Timer></Timer>
+      <div className="flex flex-col lg:flex-row gap-3.5 lg:gap-4 xl:gap-6 justify-center items-center lg:items-start mx-2 sm:mx-4 md:mx-6 lg:mx-8 xl:mx-14 2xl:mx-20 px-2 sm:px-3 md:px-4 lg:px-6 mt-4 lg:mt-6">
+        <div className="flex flex-col flex-shrink-0 w-full lg:w-auto items-center lg:items-start">
+          <MenuItem />
+          <Timer />
         </div>
-        <AdvBanner></AdvBanner>
-        <PromotionCard></PromotionCard>
+        <div className="flex-1 w-full min-w-0 flex justify-center">
+          <AdvBanner />
+        </div>
+        <div className="flex-shrink-0 w-full lg:w-auto flex justify-center">
+          <PromotionCard />
+        </div>
       </div>
       <Products visibleSectionCount={visibleSectionCount} />
       <Newsletter

@@ -115,9 +115,9 @@ const PromotionCard = () => {
   };
 
   return (
-    <div className="max-w-md flex flex-col items-center justify-start gap-8 p-6">
+    <div className="w-full lg:w-52 xl:w-64 2xl:w-80 flex flex-col items-center justify-start gap-2.5 lg:gap-3 xl:gap-6 p-2 lg:p-2.5 xl:p-4">
       {/* 2x2 Rubik's Grid */}
-      <div className="relative w-64 h-64 grid grid-cols-2 grid-rows-2 gap-4 perspective-1000">
+      <div className="relative w-36 h-36 lg:w-36 lg:h-36 xl:w-48 xl:h-48 2xl:w-56 2xl:h-56 grid grid-cols-2 grid-rows-2 gap-2 lg:gap-2.5 xl:gap-3.5 perspective-1000">
         {gridState.flat().map((featureId, index) => {
           const feature = getFeatureById(featureId);
           const row = Math.floor(index / 2);
@@ -126,13 +126,13 @@ const PromotionCard = () => {
           return (
             <div
               key={`${featureId}-${row}-${col}`}
-              className={`bg-gradient-to-br from-red-600 to-red-700 rounded-2xl border-2 border-red-400 flex items-center justify-center transition-all duration-700 ease-in-out transform ${
+              className={`bg-gradient-to-br from-red-600 to-red-700 rounded-lg lg:rounded-xl border border-red-400 flex items-center justify-center transition-all duration-700 ease-in-out transform ${
                 isAnimating ? "rotate-y-180" : ""
               }`}
             >
               <FontAwesomeIcon
                 icon={feature.icon}
-                className="text-white text-2xl"
+                className="text-white text-base lg:text-lg xl:text-xl"
               />
             </div>
           );
@@ -140,17 +140,17 @@ const PromotionCard = () => {
       </div>
 
       {/* Title Display */}
-      <div className="w-80 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-2xl border border-gray-200 dark:border-gray-700 transform transition-all duration-500">
+      <div className="w-full max-w-[210px] lg:max-w-[210px] xl:max-w-[280px] bg-white dark:bg-gray-800 rounded-xl lg:rounded-2xl p-2.5 lg:p-3 xl:p-5 shadow-md border border-gray-200 dark:border-gray-700 transform transition-all duration-500">
         <div className="text-center">
-          <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-200 dark:text-gray-100 mb-2">
+          <h3 className="text-sm lg:text-base xl:text-xl font-bold text-gray-800 dark:text-gray-100 mb-0.5 lg:mb-1">
             {getCurrentFeature().title}
           </h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
+          <p className="text-gray-600 dark:text-gray-400 text-[11px] lg:text-xs xl:text-sm mb-1.5 lg:mb-2 line-clamp-2">
             {getCurrentFeature().description}
           </p>
-          <div className="flex items-center justify-center space-x-2">
-            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-            <span className="text-red-600 text-xs font-medium">
+          <div className="flex items-center justify-center space-x-1.5">
+            <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-red-600 text-[10px] lg:text-xs font-medium">
               {getCurrentFeature().status}
             </span>
           </div>

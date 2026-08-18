@@ -61,103 +61,111 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-8 py-10 transition-colors duration-200">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <FontAwesomeIcon icon={faSearch} className="text-gray-600 dark:text-gray-300 text-xl" />
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {searchQuery
-              ? `Results for "${searchQuery}"`
-              : `Browse: ${category}`}
-          </h1>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 lg:py-10 transition-colors duration-200">
+      <div className="mx-2 sm:mx-4 md:mx-6 lg:mx-8 xl:mx-14 2xl:mx-20 px-2 sm:px-3 md:px-4 lg:px-6">
+        {/* Header */}
+        <div className="mb-6 lg:mb-8">
+          <div className="flex items-center gap-2.5 lg:gap-3 mb-2">
+            <FontAwesomeIcon icon={faSearch} className="text-gray-600 dark:text-gray-300 text-lg lg:text-xl" />
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100">
+              {searchQuery
+                ? `Results for "${searchQuery}"`
+                : `Browse: ${category}`}
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+            <FontAwesomeIcon icon={faTag} />
+            <span>Category: <span className="font-semibold text-gray-700 dark:text-gray-300">{category}</span></span>
+            <span className="mx-1.5 sm:mx-2">·</span>
+            <span>{searchResults.length} product{searchResults.length !== 1 ? "s" : ""} found</span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-          <FontAwesomeIcon icon={faTag} />
-          <span>Category: <span className="font-semibold text-gray-700 dark:text-gray-300">{category}</span></span>
-          <span className="mx-2">·</span>
-          <span>{searchResults.length} product{searchResults.length !== 1 ? "s" : ""} found</span>
-        </div>
-      </div>
-
-      {/* Results Grid */}
-      {searchResults.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-gray-400 dark:text-gray-500">
-          <FontAwesomeIcon icon={faSearch} className="text-6xl mb-4 opacity-30" />
-          <p className="text-xl font-medium">No products found</p>
-          <p className="text-sm mt-1">Try a different search term or category</p>
-          <button
-            onClick={() => navigate("/")}
-            className="mt-6 bg-gray-800 dark:bg-gray-700 text-white px-6 py-2 rounded-lg hover:bg-black dark:hover:bg-gray-600 transition"
-          >
-            Back to Home
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {searchResults.map((product) => (
-            <div
-              key={product._id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+        {/* Results Grid */}
+        {searchResults.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
+            <FontAwesomeIcon icon={faSearch} className="text-5xl lg:text-6xl mb-4 opacity-30" />
+            <p className="text-lg sm:text-xl font-medium">No products found</p>
+            <p className="text-xs sm:text-sm mt-1">Try a different search term or category</p>
+            <button
+              onClick={() => navigate("/")}
+              className="mt-6 bg-gray-800 dark:bg-gray-700 text-white px-5 py-2 text-sm rounded-lg hover:bg-black dark:hover:bg-gray-600 transition"
             >
-              {/* Image */}
-              <div className="relative">
-                <img
-                  src={product.images?.[0] || "/placeholder.png"}
-                  alt={product.name}
-                  className="w-full h-48 object-cover rounded-t-xl"
-                />
-                {product.discountPrice && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-bold">
-                    {Math.round(
-                      ((product.price - product.discountPrice) / product.price) * 100
-                    )}% OFF
-                  </div>
-                )}
-              </div>
-
-              {/* Info */}
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-sm leading-tight line-clamp-2 min-h-[40px]">
-                  {product.name}
-                </h3>
-                <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">{product.brand}</p>
-
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-base font-bold text-blue-600 dark:text-blue-400">
-                      ৳{product.discountPrice || product.price}
-                    </p>
-                    {product.discountPrice && (
-                      <p className="text-xs text-gray-400 dark:text-gray-500 line-through">
-                        ৳{product.price}
-                      </p>
-                    )}
-                  </div>
-                  {product.ratings && (
-                    <div className="flex items-center gap-1">
-                      <FontAwesomeIcon icon={faStar} className="text-yellow-400 text-xs" />
-                      <span className="text-xs text-gray-600 dark:text-gray-400">{product.ratings.average}</span>
+              Back to Home
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3.5 sm:gap-4 md:gap-5 lg:gap-6">
+            {searchResults.map((product) => (
+              <div
+                key={product._id}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-200 dark:border-gray-700 flex flex-col justify-between"
+              >
+                {/* Image */}
+                <div className="relative">
+                  <img
+                    src={product.images?.[0] || "/placeholder.png"}
+                    alt={product.name}
+                    className="w-full h-36 sm:h-44 md:h-48 object-cover rounded-t-xl"
+                  />
+                  {product.discountPrice && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded text-[10px] sm:text-xs font-bold">
+                      {Math.round(
+                        ((product.price - product.discountPrice) / product.price) * 100
+                      )}% OFF
                     </div>
                   )}
                 </div>
 
-                <div className="flex justify-between gap-2 mt-3">
-                  <AddToCartButton product={product} />
-                  <button
-                    onClick={() => handleViewDetail(product)}
-                    className="bg-gray-800 dark:bg-gray-700 text-white px-3 py-2 rounded-lg hover:bg-black dark:hover:bg-gray-600 transition flex items-center gap-1 text-sm"
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                    Details
-                  </button>
+                {/* Info */}
+                <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-xs sm:text-sm leading-tight line-clamp-2 min-h-[32px] sm:min-h-[40px]">
+                      {product.name}
+                    </h3>
+                    <p className="text-gray-400 dark:text-gray-500 text-[11px] sm:text-xs mt-1 truncate">{product.brand}</p>
+                  </div>
+
+                  <div className="mt-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-baseline gap-1.5">
+                        <p className="text-sm sm:text-base font-bold text-blue-600 dark:text-blue-400">
+                          ৳{product.discountPrice || product.price}
+                        </p>
+                        {product.discountPrice && (
+                          <p className="text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 line-through">
+                            ৳{product.price}
+                          </p>
+                        )}
+                      </div>
+                      {product.ratings && (
+                        <div className="flex items-center gap-1">
+                          <FontAwesomeIcon icon={faStar} className="text-yellow-400 text-xs" />
+                          <span className="text-[11px] text-gray-600 dark:text-gray-400">{product.ratings.average}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between items-center gap-2 mt-2">
+                      <div className="flex-1">
+                        <AddToCartButton product={product} />
+                      </div>
+                      <button
+                        onClick={() => handleViewDetail(product)}
+                        className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-2.5 py-2 rounded-lg transition flex items-center gap-1 text-xs"
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                        Details
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

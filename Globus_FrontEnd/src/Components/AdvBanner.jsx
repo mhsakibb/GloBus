@@ -27,20 +27,20 @@ const AdvBanner = () => {
 
   return (
     <div
-      className="relative w-full max-w-[1200px] h-[600px] overflow-hidden rounded-xl"
+      className="relative w-full h-[300px] sm:h-[360px] md:h-[400px] lg:h-[390px] xl:h-[460px] 2xl:h-[530px] overflow-hidden rounded-xl shadow-md"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div
-        className="flex transition-transform duration-700"
+        className="flex transition-transform duration-700 h-full"
         style={{ transform: `translateX(-${cur * 100}%)` }}
       >
         {slides.map((src, i) => (
-          <div key={i} className="w-full flex-shrink-0">
+          <div key={i} className="w-full h-full flex-shrink-0">
             <img
               src={src}
               alt="Advertisement Banner"
-              className="w-full h-[600px] object-cover object-center"
+              className="w-full h-full object-cover object-center"
             />
           </div>
         ))}
