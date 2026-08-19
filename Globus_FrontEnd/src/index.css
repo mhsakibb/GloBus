@@ -1,15 +1,15 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Proportional Global UI Scaling for Laptops and Desktops */
+/* Proportional Global UI Scaling: Mid screens use 13.5px, Big screens (1440px+) use original 16px */
 html {
   font-size: 13.5px;
   -webkit-text-size-adjust: 100%;
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1440px) {
   html {
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 

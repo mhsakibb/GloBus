@@ -181,7 +181,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
     });
   };
 
-  // Original ProductCard
+  // Original ProductCard (Compact & Optimized Height)
   const ProductCard = ({ product }) => (
     <div
       key={product._id}
@@ -192,54 +192,54 @@ const Products = ({ visibleSectionCount = 4 }) => {
         <img
           src={product.images?.[0] || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"}
           alt={product.name}
-          className="w-full h-36 sm:h-40 md:h-44 xl:h-48 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          className="w-full h-28 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           onError={(e) => {
             e.target.src = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
           }}
         />
         <button
           onClick={(e) => handleAddToWishlist(e, product)}
-          className="absolute top-2 right-2 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10 p-1"
+          className="absolute top-1.5 right-1.5 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10 p-1"
           title="Add to Wishlist"
         >
-          <FontAwesomeIcon icon={faHeart} className="text-sm sm:text-base" />
+          <FontAwesomeIcon icon={faHeart} className="text-xs sm:text-sm 2xl:text-base" />
         </button>
         {product.discountPrice && (
           <div
-            className="absolute top-0 left-2.5 bg-[#e60000] text-white w-10 pt-1.5 pb-2 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
+            className="absolute top-0 left-2 2xl:left-3 bg-[#e60000] text-white w-9 2xl:w-10 pt-1 pb-1.5 2xl:pt-1.5 2xl:pb-2 flex flex-col items-center justify-start z-10 drop-shadow-md rounded-t-md"
             style={{
               clipPath:
                 "polygon(0 0, 100% 0, 100% 100%, 83% 85%, 66% 100%, 50% 85%, 33% 100%, 16% 85%, 0 100%)",
             }}
           >
-            <span className="text-[11px] font-extrabold leading-none">
+            <span className="text-[10px] 2xl:text-[11px] font-extrabold leading-none">
               {Math.round(
                 ((product.price - product.discountPrice) / product.price) * 100
               )}
               %
             </span>
-            <span className="text-[8px] font-bold leading-none mt-0.5">OFF</span>
+            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">OFF</span>
           </div>
         )}
       </div>
-      <div className="p-2.5 sm:p-3 xl:p-3.5 flex-1 flex flex-col justify-between">
+      <div className="p-2 sm:p-2.5 2xl:p-3 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-xs sm:text-sm leading-snug line-clamp-2 min-h-[32px] sm:min-h-[36px]">
+          <h3 className="font-semibold text-gray-800 dark:text-gray-100 text-xs sm:text-sm leading-snug line-clamp-2 min-h-[28px] sm:min-h-[32px] 2xl:min-h-[36px]">
             {product.name}
           </h3>
-          <p className="text-gray-500 dark:text-gray-400 text-[11px] sm:text-xs mt-0.5 min-h-[16px] truncate">
+          <p className="text-gray-500 dark:text-gray-400 text-[10px] sm:text-[11px] 2xl:text-xs mt-0.5 min-h-[14px] truncate">
             {product.brand}
           </p>
         </div>
 
-        <div className="flex items-end justify-between pt-2.5 sm:pt-3">
+        <div className="flex items-end justify-between pt-1.5 sm:pt-2">
           <div>
-            <div className="flex items-center gap-1.5">
-              <p className="text-xs sm:text-sm xl:text-base font-bold text-blue-600 dark:text-blue-400">
+            <div className="flex items-center gap-1">
+              <p className="text-xs sm:text-sm font-bold text-blue-600 dark:text-blue-400">
                 ৳{product.discountPrice || product.price}
               </p>
               {product.discountPrice && (
-                <p className="text-[10px] sm:text-xs text-gray-400 line-through">
+                <p className="text-[9px] sm:text-[10px] text-gray-400 line-through">
                   ৳{product.price}
                 </p>
               )}
@@ -248,16 +248,16 @@ const Products = ({ visibleSectionCount = 4 }) => {
               <div className="flex items-center gap-1 mt-0.5">
                 <FontAwesomeIcon
                   icon={faStar}
-                  className="text-yellow-400 text-[10px] sm:text-xs"
+                  className="text-yellow-400 text-[9px] sm:text-[10px]"
                 />
-                <span className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-300">
+                <span className="text-[9px] sm:text-[10px] text-gray-600 dark:text-gray-300">
                   {product.ratings.average}
                 </span>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-2.5 pb-0.5">
+          <div className="flex items-center gap-2 pb-0.5">
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -266,12 +266,12 @@ const Products = ({ visibleSectionCount = 4 }) => {
               className="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white transition"
               title="Details"
             >
-              <FontAwesomeIcon icon={faEye} className="text-sm" />
+              <FontAwesomeIcon icon={faEye} className="text-xs sm:text-sm" />
             </button>
             <AddToCartButton
               product={product}
               showText={false}
-              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-base sm:text-lg"
+              className="!bg-transparent !text-orange-500 !p-0 !m-0 hover:!text-orange-600 hover:!bg-transparent transition shadow-none text-sm sm:text-base"
             />
           </div>
         </div>
@@ -469,8 +469,8 @@ const Products = ({ visibleSectionCount = 4 }) => {
 
             {section.key === "fruits" ? (
               <div className="flex flex-col">
-                {/* Horizontal Promo Banner */}
-                <div className="w-full h-36 sm:h-48 md:h-60 lg:h-72 overflow-hidden rounded-xl mb-4 lg:mb-6">
+                {/* Compact Horizontal Promo Banner */}
+                <div className="w-full h-24 sm:h-32 md:h-40 lg:h-48 overflow-hidden rounded-xl mb-3 lg:mb-4">
                   <img
                     src="/Images/Banner/food_banner.png"
                     alt="Vegetables & Fresh Foods Banner"
@@ -482,19 +482,50 @@ const Products = ({ visibleSectionCount = 4 }) => {
                   />
                 </div>
 
-                {/* Product Grid (Green Theme) */}
-                <div className="bg-gradient-to-br from-green-900 to-green-950 p-4 sm:p-6 lg:p-8 rounded-2xl lg:rounded-[2rem] shadow-2xl relative overflow-hidden border border-green-800">
+                {/* Product Grid (Green Theme Container with Clean Bottom-Right Corner Bite) */}
+                <div className="bg-gradient-to-br from-green-900 to-green-950 p-3 sm:p-4 lg:p-5 rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-none lg:rounded-tl-[1.5rem] lg:rounded-tr-[1.5rem] lg:rounded-bl-[1.5rem] lg:rounded-br-none relative overflow-hidden border-t border-l border-green-800">
                   <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6 relative z-10">
-                    {displayed.map((product) => (
+                  {/* Partial Bottom Border (stops exactly where the bite begins) */}
+                  <div className="absolute bottom-0 left-0 right-24 sm:right-32 md:right-36 lg:right-44 2xl:right-48 h-[1px] bg-green-800 pointer-events-none"></div>
+
+                  {/* Partial Right Border (stops exactly where the bite begins) */}
+                  <div className="absolute top-0 right-0 bottom-24 sm:bottom-32 md:bottom-36 lg:bottom-44 2xl:bottom-48 w-[1px] bg-green-800 pointer-events-none"></div>
+
+                  {/* Strictly 2 Rows of Products (6 columns on laptop/desktop) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 sm:gap-3 lg:gap-3.5 relative z-10">
+                    {displayed.slice(0, 11).map((product) => (
                       <ProductCard key={product._id} product={product} />
                     ))}
+                    {/* Empty 12th cell reserved for the Bite cutout - No product shown here */}
+                    <div aria-hidden="true" className="pointer-events-none opacity-0 invisible" />
+                  </div>
+
+                  {/* Clean Scalloped Teeth Bite Cutout perfectly flush with the borders and body background */}
+                  <div className="absolute -bottom-[2px] -right-[2px] z-20 pointer-events-none w-24 sm:w-32 md:w-36 lg:w-44 2xl:w-48 h-24 sm:h-32 md:h-36 lg:h-44 2xl:h-48 overflow-visible">
+                    <svg
+                      viewBox="0 0 200 200"
+                      className="w-full h-full text-gray-50 dark:text-gray-900 fill-current overflow-visible"
+                    >
+                      {/* Pure seamless bite cutout with natural smooth arcs and zero green border remnants */}
+                      <path
+                        d="
+                          M 205 -5
+                          L 205 205
+                          L -5 205
+                          L 0 200
+                          A 35 35 0 0 1 65 160
+                          A 50 50 0 0 1 145 90
+                          A 35 35 0 0 1 200 0
+                          Z
+                        "
+                      />
+                    </svg>
                   </div>
                 </div>
               </div>
             ) : section.key === "electronics" ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 sm:gap-3 lg:gap-3.5">
                 {/* 2-Row Side Promo Banner on Grid */}
                 <div className="col-span-2 row-span-2 min-h-[380px] sm:min-h-[420px] lg:min-h-full relative overflow-hidden rounded-xl shadow-lg bg-gray-900 flex flex-col justify-end p-4 lg:p-5 border border-gray-200 dark:border-gray-700 group">
                   <img
@@ -529,7 +560,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 sm:gap-3 lg:gap-3.5">
                 {displayed.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
@@ -537,7 +568,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
             )}
 
             {/* Show More (+) and Show Less (-) buttons side-by-side per category */}
-            {section.key !== "top-deals" && allSectionProducts.length > 12 && (
+            {section.key !== "top-deals" && section.key !== "fruits" && allSectionProducts.length > 12 && (
               <div className="flex items-center justify-center gap-4 mt-6">
                 {hasMore && (
                   <button

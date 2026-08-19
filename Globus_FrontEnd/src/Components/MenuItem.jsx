@@ -140,7 +140,7 @@ const MenuItem = () => {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-full lg:w-52 xl:w-64 2xl:w-72 p-2.5 lg:p-3 xl:p-4 border border-transparent dark:border-gray-700 shadow-sm">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-full lg:w-52 xl:w-64 2xl:w-80 p-2.5 lg:p-3 xl:p-3.5 2xl:p-4 border border-transparent dark:border-gray-700 shadow-sm">
         {menuData.map((item, index) => (
           <div key={index} className="relative">
 
@@ -152,8 +152,8 @@ const MenuItem = () => {
                 className="flex items-center space-x-2 flex-1 cursor-pointer min-w-0"
                 onClick={() => handleCategoryClick(item.name)}
               >
-                <img src={item.icon} alt={item.name} className="w-4 h-4 xl:w-5 xl:h-5 dark:invert flex-shrink-0" />
-                <span className="font-medium text-xs xl:text-sm text-gray-800 dark:text-gray-200 transition truncate">
+                <img src={item.icon} alt={item.name} className="w-4 h-4 xl:w-5 xl:h-5 2xl:w-6 2xl:h-6 dark:invert flex-shrink-0" />
+                <span className="font-medium text-xs xl:text-sm 2xl:text-base text-gray-800 dark:text-gray-200 transition truncate">
                   {item.name}
                 </span>
               </div>

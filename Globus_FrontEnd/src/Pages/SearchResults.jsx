@@ -96,7 +96,7 @@ const SearchResults = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-3.5 sm:gap-4 md:gap-5 lg:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2.5 sm:gap-3 lg:gap-3.5">
             {searchResults.map((product) => (
               <div
                 key={product._id}
@@ -107,7 +107,7 @@ const SearchResults = () => {
                   <img
                     src={product.images?.[0] || "/placeholder.png"}
                     alt={product.name}
-                    className="w-full h-36 sm:h-44 md:h-48 object-cover rounded-t-xl"
+                    className="w-full h-28 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover rounded-t-xl"
                   />
                   {product.discountPrice && (
                     <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-0.5 rounded text-[10px] sm:text-xs font-bold">

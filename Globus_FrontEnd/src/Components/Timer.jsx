@@ -48,23 +48,23 @@ const Timer = () => {
         <h1 className="text-gray-900 dark:text-gray-100">Monthly Deals</h1>
       </div>
 
-      <div className="text-center bg-red-600 text-white font-bold mt-2.5 lg:mt-3 p-2 lg:p-2.5 xl:p-3 rounded-lg w-full lg:w-52 xl:w-64 2xl:w-72 mx-auto flex justify-around shadow-md gap-1">
-        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px]">
+      <div className="text-center bg-red-600 text-white font-bold mt-2.5 lg:mt-3 p-2 lg:p-2.5 xl:p-3 rounded-lg w-full lg:w-52 xl:w-64 2xl:w-80 mx-auto flex justify-around shadow-md gap-1">
+        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 2xl:px-2 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px] 2xl:max-w-[60px]">
           <span className="text-sm lg:text-base xl:text-xl font-bold">{timeLeft.days}</span>
           <div className="text-[9px] lg:text-[10px] xl:text-xs">Days</div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px]">
+        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 2xl:px-2 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px] 2xl:max-w-[60px]">
           <span className="text-sm lg:text-base xl:text-xl font-bold">{timeLeft.hours}</span>
           <div className="text-[9px] lg:text-[10px] xl:text-xs">Hours</div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px]">
+        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 2xl:px-2 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px] 2xl:max-w-[60px]">
           <span className="text-sm lg:text-base xl:text-xl font-bold">{timeLeft.minutes}</span>
           <div className="text-[9px] lg:text-[10px] xl:text-xs">Min</div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px]">
+        <div className="bg-white dark:bg-gray-800 text-red-600 dark:text-red-400 rounded-md px-1 py-1 lg:px-1.5 lg:py-1.5 2xl:px-2 flex flex-col items-center flex-1 max-w-[48px] xl:max-w-[56px] 2xl:max-w-[60px]">
           <span className="text-sm lg:text-base xl:text-xl font-bold">{timeLeft.seconds}</span>
           <div className="text-[9px] lg:text-[10px] xl:text-xs">Sec</div>
         </div>
