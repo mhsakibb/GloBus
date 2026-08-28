@@ -28,26 +28,35 @@ const SignUp = () => {
       return setError("You must agree to the terms & conditions.");
 
     try {
-      const user = { name, email, phone, password };
+      const user = { name, email: email.trim().toLowerCase(), phone, password };
+      const targetUrl = API_URL ? `${API_URL}/signup` : "/signup";
 
-      const res = await fetch(`${API_URL}/signup`, {
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),
       });
 
-      if (!res.ok) {
-        const errMsg = await res.text();
-        return setError(errMsg);
+      let data = null;
+      try {
+        const contentType = res.headers.get("content-type") || "";
+        if (contentType.includes("application/json")) {
+          data = await res.json();
+        } else {
+          data = JSON.parse(await res.text());
+        }
+      } catch {
+        data = null;
       }
 
-      const createdUser = await res.json();
+      if (!res.ok) {
+        return setError(data?.message || "Registration failed. User may already exist.");
+      }
 
-      localStorage.setItem("user", JSON.stringify(createdUser));
-
+      localStorage.setItem("user", JSON.stringify(data));
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError("Unable to connect to the authentication server. Please try again.");
     }
   };
 

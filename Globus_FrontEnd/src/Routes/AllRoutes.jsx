@@ -7,6 +7,7 @@ import ErrorBoundary from "../Components/ErrorBoundary";
 const Home = lazy(() => import("../Pages/Home"));
 const SignIn = lazy(() => import("../Pages/SignIn"));
 const SignUp = lazy(() => import("../Pages/SignUp"));
+const ForgotPassword = lazy(() => import("../Pages/ForgotPassword"));
 const Error = lazy(() => import("../Pages/Error"));
 const ProductsDetail = lazy(() => import("../Pages/ProductsDetail"));
 const Checkout = lazy(() => import("../Pages/Checkout"));
@@ -38,9 +39,10 @@ const AllRoutes = () => {
     <ErrorBoundary>
       <Suspense fallback={<RouteLoadingFallback />}>
         <Routes>
-          {/* Signin/Signup Routes */}
+          {/* Signin/Signup/Forgot Password Routes */}
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* General Storefront Routes */}
           <Route element={<HeaderFooterWrap />}>

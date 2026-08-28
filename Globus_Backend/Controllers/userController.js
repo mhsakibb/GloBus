@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const { sendWelcomeEmail } = require("../utils/emailService");
+const { sendWelcomeEmail, sendPasswordResetEmail } = require("../utils/emailService");
 
 // Sign Up user
 const signupUser = async (req, res) => {
@@ -73,4 +73,188 @@ const signinUser = async (req, res) => {
 
 
 
-module.exports = { signupUser, signinUser };
+// Forgot Password - Generate and send 6-digit OTP code to user's email
+const forgotPassword = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const usersCollection = client.db("globusDB").collection("users");
+
+    const { email } = req.body;
+
+    if (!email || !email.includes("@")) {
+      return res.status(400).json({ success: false, message: "Please provide a valid email address." });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await usersCollection.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "No account found with this email address. Please check the spelling or sign up for a new account.",
+      });
+    }
+
+    // Generate cryptographically random 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashedOtp = await bcrypt.hash(otp, 10);
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes from now
+
+    // Save hashed OTP & expiration in user document
+    await usersCollection.updateOne(
+      { _id: user._id },
+      {
+        $set: {
+          resetPasswordOtp: hashedOtp,
+          resetPasswordExpires: expiresAt,
+          resetPasswordAttempts: 0,
+        },
+      }
+    );
+
+    // Send the password reset email
+    await sendPasswordResetEmail(normalizedEmail, user.name, otp);
+
+    res.json({
+      success: true,
+      message: "A 6-digit verification code has been sent to your email.",
+    });
+  } catch (err) {
+    console.error("Forgot password error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to send reset code. Please try again later.",
+    });
+  }
+};
+
+// Verify 6-digit Reset OTP Code
+const verifyResetCode = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const usersCollection = client.db("globusDB").collection("users");
+
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+      return res.status(400).json({ success: false, message: "Email and verification code are required." });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await usersCollection.findOne({ email: normalizedEmail });
+
+    if (!user || !user.resetPasswordOtp || !user.resetPasswordExpires) {
+      return res.status(400).json({
+        success: false,
+        message: "No active password reset request found. Please request a new code.",
+      });
+    }
+
+    // Check expiration
+    if (new Date() > new Date(user.resetPasswordExpires)) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification code has expired. Please request a new code.",
+      });
+    }
+
+    // Compare OTP
+    const isMatch = await bcrypt.compare(code.trim(), user.resetPasswordOtp);
+    if (!isMatch) {
+      // Increment attempt counter
+      const attempts = (user.resetPasswordAttempts || 0) + 1;
+      if (attempts >= 5) {
+        // Invalidate OTP after 5 failed attempts
+        await usersCollection.updateOne(
+          { _id: user._id },
+          { $unset: { resetPasswordOtp: "", resetPasswordExpires: "", resetPasswordAttempts: "" } }
+        );
+        return res.status(400).json({
+          success: false,
+          message: "Too many failed attempts. Please request a new verification code.",
+        });
+      }
+      await usersCollection.updateOne({ _id: user._id }, { $set: { resetPasswordAttempts: attempts } });
+      return res.status(400).json({ success: false, message: "Invalid verification code. Please try again." });
+    }
+
+    res.json({
+      success: true,
+      message: "Code verified successfully.",
+    });
+  } catch (err) {
+    console.error("Verify code error:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// Reset Password with verified code
+const resetPassword = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const usersCollection = client.db("globusDB").collection("users");
+
+    const { email, code, newPassword } = req.body;
+
+    if (!email || !code || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, verification code, and new password are required.",
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters long.",
+      });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await usersCollection.findOne({ email: normalizedEmail });
+
+    if (!user || !user.resetPasswordOtp || !user.resetPasswordExpires) {
+      return res.status(400).json({
+        success: false,
+        message: "No active password reset request found. Please request a new code.",
+      });
+    }
+
+    // Check expiration
+    if (new Date() > new Date(user.resetPasswordExpires)) {
+      return res.status(400).json({
+        success: false,
+        message: "Verification code has expired. Please request a new code.",
+      });
+    }
+
+    // Validate OTP
+    const isMatch = await bcrypt.compare(code.trim(), user.resetPasswordOtp);
+    if (!isMatch) {
+      return res.status(400).json({ success: false, message: "Invalid verification code." });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password and clear reset fields
+    await usersCollection.updateOne(
+      { _id: user._id },
+      {
+        $set: { password: hashedPassword },
+        $unset: { resetPasswordOtp: "", resetPasswordExpires: "", resetPasswordAttempts: "" },
+      }
+    );
+
+    res.json({
+      success: true,
+      message: "Password reset successful! You can now sign in with your new password.",
+    });
+  } catch (err) {
+    console.error("Reset password error:", err);
+    res.status(500).json({ success: false, message: "Failed to reset password. Please try again." });
+  }
+};
+
+module.exports = { signupUser, signinUser, forgotPassword, verifyResetCode, resetPassword };
+

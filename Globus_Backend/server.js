@@ -6,7 +6,13 @@ const rateLimit = require("express-rate-limit");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
-const { signupUser, signinUser } = require("./Controllers/userController");
+const {
+  signupUser,
+  signinUser,
+  forgotPassword,
+  verifyResetCode,
+  resetPassword,
+} = require("./Controllers/userController");
 const {
   createAdmin,
   getRole,
@@ -134,6 +140,11 @@ async function run() {
     // Auth Routes with Rate Limiting
     app.post("/signup", authLimiter, signupUser);
     app.post("/signin", authLimiter, signinUser);
+    app.post("/api/auth/forgot-password", authLimiter, forgotPassword);
+    app.post("/api/auth/verify-reset-code", authLimiter, verifyResetCode);
+    app.post("/api/auth/reset-password", authLimiter, resetPassword);
+    app.post("/forgot-password", authLimiter, forgotPassword);
+    app.post("/reset-password", authLimiter, resetPassword);
 
     // Admin User Management Routes
     app.get("/admin/users", showUsers);
