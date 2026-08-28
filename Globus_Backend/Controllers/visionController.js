@@ -24,21 +24,31 @@ const visionSearch = async (req, res) => {
 
     const ai = new GoogleGenAI({}); // Uses process.env.GEMINI_API_KEY
 
-    // Ask Gemini to describe the primary product in 1 or 2 keywords
-    const response = await ai.models.generateContent({
-      model: 'gemini-flash-latest',
-      contents: [
-        {
-          inlineData: {
-            data: base64Data,
-            mimeType: mimeType
-          }
-        },
-        "What is the primary product in this image? Reply with a comma-separated list of 3 to 5 related keywords, synonyms, or spelling variations of the product name (e.g. 'lichy, litchi, lychee', 'mango, mangoes', 'shoe, sneaker'). Do not include any other text."
-      ]
-    });
+    const candidateModels = ['gemini-3.6-flash', 'gemini-3.5-flash-lite', 'gemini-3.5-flash'];
+    let searchQuery = "";
 
-    const searchQuery = response.text.trim();
+    for (const modelName of candidateModels) {
+      try {
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: [
+            {
+              inlineData: {
+                data: base64Data,
+                mimeType: mimeType,
+              },
+            },
+            "What is the primary product in this image? Reply with a comma-separated list of 3 to 5 related keywords, synonyms, or spelling variations of the product name (e.g. 'lichy, litchi, lychee', 'mango, mangoes', 'shoe, sneaker'). Do not include any other text.",
+          ],
+        });
+        if (response && response.text) {
+          searchQuery = response.text.trim();
+          break;
+        }
+      } catch (e) {
+        console.warn(`Vision model ${modelName} failed:`, e.message);
+      }
+    }
 
     // Search the database using this query
     const client = req.app.locals.mongoClient;

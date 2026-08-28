@@ -37,19 +37,38 @@ Available Products:
 ${JSON.stringify(products)}
     `;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-flash-latest',
-      contents: message,
-      config: {
-        systemInstruction: systemInstruction,
-      }
-    });
+    const candidateModels = ['gemini-3.6-flash', 'gemini-3.5-flash-lite', 'gemini-3.5-flash'];
+    let replyText = null;
+    let lastError = null;
 
-    res.status(200).json({ reply: response.text });
+    for (const modelName of candidateModels) {
+      try {
+        const response = await ai.models.generateContent({
+          model: modelName,
+          contents: message,
+          config: {
+            systemInstruction: systemInstruction,
+          }
+        });
+        if (response && response.text) {
+          replyText = response.text;
+          break;
+        }
+      } catch (e) {
+        lastError = e;
+        console.warn(`Model ${modelName} failed, trying fallback:`, e.message);
+      }
+    }
+
+    if (!replyText) {
+      throw lastError || new Error("Failed to generate response");
+    }
+
+    res.status(200).json({ reply: replyText });
 
   } catch (err) {
     console.error("Chatbot Error:", err);
-    res.status(500).json({ error: "Something went wrong while processing your request." });
+    res.status(500).json({ error: "দুঃখিত, কোনো সমস্যা হয়েছে। একটু পর আবার চেষ্টা করুন।" });
   }
 };
 
