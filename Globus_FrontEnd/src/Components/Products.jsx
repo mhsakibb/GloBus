@@ -501,13 +501,43 @@ const Products = ({ visibleSectionCount = 4 }) => {
                     <div aria-hidden="true" className="pointer-events-none opacity-0 invisible" />
                   </div>
 
-                  {/* Clean Scalloped Teeth Bite Cutout perfectly flush with the borders and body background */}
+                  {/* Clean Scalloped Teeth Bite Cutout with Biscuit Layer */}
                   <div className="absolute -bottom-[2px] -right-[2px] z-20 pointer-events-none w-24 sm:w-32 md:w-36 lg:w-44 2xl:w-48 h-24 sm:h-32 md:h-36 lg:h-44 2xl:h-48 overflow-visible">
                     <svg
                       viewBox="0 0 200 200"
-                      className="w-full h-full text-gray-50 dark:text-gray-900 fill-current overflow-visible"
+                      className="w-full h-full overflow-visible"
                     >
-                      {/* Pure seamless bite cutout with natural smooth arcs and zero green border remnants */}
+                      <defs>
+                        {/* Realistic warm biscuit color gradient matching user swatch */}
+                        <linearGradient id="biscuitBiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#F5D8BA" />
+                          <stop offset="45%" stopColor="#ECC59D" />
+                          <stop offset="85%" stopColor="#DEB180" />
+                          <stop offset="100%" stopColor="#CA9B68" />
+                        </linearGradient>
+                        {/* Depth shadow for the biscuit bite mark */}
+                        <filter id="biteShadow" x="-30%" y="-30%" width="160%" height="160%">
+                          <feDropShadow dx="-2" dy="-2" stdDeviation="3" floodColor="#000000" floodOpacity="0.3" />
+                        </filter>
+                      </defs>
+
+                      {/* 1. Underlying Biscuit Bite Layer (enlarged for prominent mouth bite effect) */}
+                      <path
+                        d="
+                          M 225 -35
+                          L 225 225
+                          L -35 225
+                          L -25 200
+                          A 42 42 0 0 1 40 136
+                          A 62 62 0 0 1 120 64
+                          A 42 42 0 0 1 200 -25
+                          Z
+                        "
+                        fill="url(#biscuitBiteGrad)"
+                        filter="url(#biteShadow)"
+                      />
+
+                      {/* 2. Top Seamless Teeth Bite Cutout (matches theme background) */}
                       <path
                         d="
                           M 205 -5
@@ -519,6 +549,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
                           A 35 35 0 0 1 200 0
                           Z
                         "
+                        className="text-gray-50 dark:text-gray-900 fill-current"
                       />
                     </svg>
                   </div>
