@@ -21,7 +21,7 @@ import {
 import AddToCartButton from "./AddToCartButton";
 
 // Backend Api
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 const CACHE_KEY = "globus_products_cache";
 const CACHE_TIME_KEY = "globus_products_cache_time";
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache TTL
