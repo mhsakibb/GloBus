@@ -404,8 +404,17 @@ const getUserOrders = async (req, res) => {
         const db = client.db("globusDB");
         const ordersCollection = db.collection("orders");
         
-        const orders = await ordersCollection.find({ "userInfo.email": userEmail })
-            .sort({ "timestamps.created": -1 })
+        const filter = userEmail
+            ? {
+                $or: [
+                    { "userInfo.email": userEmail },
+                    { "shippingInfo.email": userEmail }
+                ]
+              }
+            : {};
+
+        const orders = await ordersCollection.find(filter)
+            .sort({ createdAt: -1, "timestamps.created": -1 })
             .toArray();
 
         return res.status(200).json({
