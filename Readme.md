@@ -1,6 +1,6 @@
 # 🛒 GloBus - Full-Stack E-Commerce Platform
 
-![GloBus Homepage](./Globus_FrontEnd/public/Images/image.png)
+![GloBus Homepage](./Globus_FrontEnd/src/assets/globusHOME.png)
 
 GloBus is a modern, feature-rich, and scalable e-commerce platform built with the MERN stack (MongoDB, Express, React, Node.js). It offers a seamless shopping experience for users with a clean UI, secure payments, and a powerful admin dashboard for store management.
 

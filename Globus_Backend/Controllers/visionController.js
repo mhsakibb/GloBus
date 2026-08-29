@@ -38,11 +38,15 @@ const visionSearch = async (req, res) => {
                 mimeType: mimeType,
               },
             },
-            "What is the primary product in this image? Reply with a comma-separated list of 3 to 5 related keywords, synonyms, or spelling variations of the product name (e.g. 'lichy, litchi, lychee', 'mango, mangoes', 'shoe, sneaker'). Do not include any other text.",
+            "What is the primary product in this image? Reply with ONLY the single most accurate and common name for this product (e.g. 'T-shirt', 'Mango', 'Sneaker'). Do not include any other text, synonyms, or punctuation.",
           ],
         });
         if (response && response.text) {
-          searchQuery = response.text.trim();
+          let rawText = response.text || "";
+          if (typeof rawText !== 'string') rawText = rawText.toString();
+          
+          // Split by comma, slash, or semicolon and take the first part
+          searchQuery = rawText.split(/[,/;|]/)[0].trim();
           break;
         }
       } catch (e) {

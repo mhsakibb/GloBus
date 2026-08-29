@@ -106,13 +106,7 @@ const Header = () => {
         const data = await response.json();
         setIsVisionSearching(false);
         if (response.ok) {
-          navigate(`/search?q=${encodeURIComponent(data.query)}`, {
-            state: {
-              searchResults: data.products,
-              searchQuery: data.query,
-              category: "All",
-            },
-          });
+          setSearchQuery(data.query);
         } else {
           alert(
             "Failed to search by image: " + (data.error || "Unknown error"),
