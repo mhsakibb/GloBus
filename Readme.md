@@ -126,3 +126,8 @@ GloBus/
     ├── server.js       # Entry point & Routes
     └── package.json    # Backend dependencies
 ```
+
+## License
+
+This project is licensed under a custom **Educational and Personal Use License**. 
+It is intended for learning and educational purposes only. **Professional and commercial use is strictly prohibited** without obtaining a separate commercial license from the author. See the [LICENSE](./LICENSE) file for more details.
