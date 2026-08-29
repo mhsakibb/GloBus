@@ -19,7 +19,9 @@ import {
   faMapMarkerAlt,
   faPhone,
   faEnvelope,
+  faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
+import { generateInvoicePDF } from "../utils/generateInvoicePDF";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
@@ -211,7 +213,12 @@ const OrderAndPayment = () => {
   };
 
   const handleDownloadInvoice = (order) => {
-    console.log("Download invoice for order:", order);
+    try {
+      generateInvoicePDF(order);
+    } catch (err) {
+      console.error("Error generating PDF invoice:", err);
+      alert("Failed to generate PDF invoice. Please try again.");
+    }
   };
 
   const handleRateReview = (order) => {
@@ -611,6 +618,178 @@ const OrderAndPayment = () => {
             ))
           )}
         </div>
+        {/* Order Details Modal */}
+        {selectedOrder && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-gray-700">
+              {/* Modal Header */}
+              <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50 rounded-t-3xl">
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                    Order #{selectedOrder.orderNumber || String(selectedOrder._id).slice(-8).toUpperCase()}
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
+                        selectedOrder.orderStatus
+                      )}`}
+                    >
+                      {selectedOrder.orderStatus?.charAt(0).toUpperCase() +
+                        selectedOrder.orderStatus?.slice(1)}
+                    </span>
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                    Placed on{" "}
+                    {new Date(
+                      selectedOrder.timestamps?.created ||
+                        selectedOrder.createdAt ||
+                        Date.now()
+                    ).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setSelectedOrder(null)}
+                  className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 hover:text-gray-800 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center"
+                >
+                  <FontAwesomeIcon icon={faTimesCircle} className="text-xl" />
+                </button>
+              </div>
+
+              <div className="p-6 space-y-6">
+                {/* Items */}
+                <div>
+                  <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
+                    <FontAwesomeIcon icon={faBox} className="text-orange-500" />
+                    Items Ordered ({selectedOrder.items?.length || 0})
+                  </h4>
+                  <div className="space-y-3">
+                    {selectedOrder.items?.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-4 p-3 bg-gray-50 dark:bg-gray-900/40 rounded-2xl border border-gray-100 dark:border-gray-800"
+                      >
+                        <img
+                          src={getImageUrl(item)}
+                          alt={getProductName(item)}
+                          className="w-14 h-14 object-cover rounded-xl border border-gray-200 dark:border-gray-700 bg-white"
+                          onError={(e) => {
+                            e.target.src = "/Images/logo.png";
+                          }}
+                        />
+                        <div className="flex-1 min-w-0">
+                          <h5 className="font-semibold text-gray-800 dark:text-gray-200 truncate">
+                            {getProductName(item)}
+                          </h5>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            Quantity: {item.quantity || 1}
+                            {item.variant &&
+                              ` • ${
+                                typeof item.variant === "string"
+                                  ? item.variant
+                                  : [item.variant.color, item.variant.size]
+                                      .filter(Boolean)
+                                      .join(", ")
+                              }`}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-gray-800 dark:text-gray-200">
+                            ৳{((item.price || 0) * (item.quantity || 1)).toFixed(2)}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            ৳{item.price} each
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Shipping & Payment Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-gray-50 dark:bg-gray-900/40 p-4 rounded-2xl border border-gray-100 dark:border-gray-800">
+                    <h5 className="font-bold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2 text-sm">
+                      <FontAwesomeIcon
+                        icon={faMapMarkerAlt}
+                        className="text-green-500"
+                      />
+                      Shipping Address
+                    </h5>
+                    <p className="font-semibold text-gray-800 dark:text-gray-200 text-sm">
+                      {selectedOrder.shippingInfo?.fullName || "N/A"}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      {selectedOrder.shippingInfo?.address}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                      {[
+                        selectedOrder.shippingInfo?.city,
+                        selectedOrder.shippingInfo?.state,
+                        selectedOrder.shippingInfo?.zipCode,
+                        selectedOrder.shippingInfo?.country,
+                      ]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                      Phone: {selectedOrder.shippingInfo?.phone || "N/A"}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 dark:bg-gray-900/40 p-4 rounded-2xl border border-gray-100 dark:border-gray-800 space-y-2">
+                    <h5 className="font-bold text-gray-800 dark:text-gray-200 mb-2 flex items-center gap-2 text-sm">
+                      <FontAwesomeIcon
+                        icon={faReceipt}
+                        className="text-blue-500"
+                      />
+                      Summary & Payment
+                    </h5>
+                    <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                      <span>Subtotal:</span>
+                      <span>৳{selectedOrder.orderSummary?.subtotal || selectedOrder.orderSummary?.totalAmount}</span>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                      <span>Shipping:</span>
+                      <span>
+                        {selectedOrder.orderSummary?.shipping
+                          ? `৳${selectedOrder.orderSummary.shipping}`
+                          : "FREE"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm font-bold text-gray-800 dark:text-gray-200 border-t border-gray-200 dark:border-gray-700 pt-2">
+                      <span>Total Amount:</span>
+                      <span className="text-orange-500">
+                        ৳{selectedOrder.orderSummary?.totalAmount}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500 pt-1">
+                      Payment Method: {selectedOrder.paymentMethod || "SSL Commerz"}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Download PDF Action in Modal */}
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button
+                    onClick={() => handleDownloadInvoice(selectedOrder)}
+                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3.5 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
+                  >
+                    <FontAwesomeIcon icon={faFilePdf} className="text-lg" />
+                    Download PDF Invoice
+                  </button>
+                  <button
+                    onClick={() => setSelectedOrder(null)}
+                    className="px-6 py-3.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-2xl font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -16,7 +16,9 @@ import {
   faSort,
   faSortUp,
   faSortDown,
+  faFilePdf,
 } from "@fortawesome/free-solid-svg-icons";
+import { generateInvoicePDF } from "../utils/generateInvoicePDF";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
@@ -529,8 +531,9 @@ const AdminOrder = () => {
                         >
                           <FontAwesomeIcon icon={faEye} />
                         </button>
-                        <button 
-                          title="Download Invoice"
+                        <button
+                          onClick={() => generateInvoicePDF(order)}
+                          title="Download PDF Invoice"
                           className="p-2 rounded-lg text-emerald-600 bg-emerald-50 hover:bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-500/10 dark:hover:bg-emerald-500/20 transition-colors"
                         >
                           <FontAwesomeIcon icon={faDownload} />
@@ -739,7 +742,7 @@ const AdminOrder = () => {
                       </div>
                     </div>
 
-                    {/* Order Status */}
+                    {/* Order Status & Actions */}
                     <div>
                       <h4 className="text-lg font-semibold mb-3">
                         Order Status
@@ -758,6 +761,16 @@ const AdminOrder = () => {
                           <option value="delivered">Delivered</option>
                           <option value="cancelled">Cancelled</option>
                         </select>
+                      </div>
+
+                      <div className="mt-4">
+                        <button
+                          onClick={() => generateInvoicePDF(selectedOrder)}
+                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors"
+                        >
+                          <FontAwesomeIcon icon={faFilePdf} />
+                          Download PDF Invoice
+                        </button>
                       </div>
                     </div>
                   </div>
