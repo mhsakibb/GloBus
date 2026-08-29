@@ -40,7 +40,7 @@ We chose the Agile Development model for our project. Agile is a faster, highly 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/Agile.png}
 \caption{Agile Development Model}
 \end{figure}
 
@@ -53,51 +53,67 @@ Reasons for choosing Agile Development for GloBus:
 \end{itemize}
 
 \subsection{Gantt Chart}
+A Gantt chart is a visual view of tasks scheduled over time. It represents the project timeline, showing the start and finish dates of the terminal elements and summary elements of the GloBus project, from initial requirement analysis and UI design to backend development and final deployment.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/gantt.png}
 \caption{Project Gantt Chart}
 \end{figure}
 
 \section{System Architecture Diagrams}
 \subsection{Data Flow Diagram (DFD)}
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Context Level DFD of GloBus}
-\end{figure}
+Data Flow Diagrams provide a graphical representation of the flow of data through an information system, modeling its process aspects. 
+
+\textbf{Context Level DFD:} The Context Level DFD represents the entire GloBus system as a single high-level process interacting with external entities. The primary external entities include the Customer (who browses and purchases), the Administrator (who manages inventory), and the Payment Gateway (SSLCommerz, which verifies transactions).
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/dfd_context.png}
+\caption{Context Level DFD of GloBus}
+\end{figure}
+
+\textbf{Level-0 DFD:} The Level-0 DFD breaks down the context diagram into major sub-processes. It illustrates how data flows between critical modules such as the Authentication System, Product Management, Shopping Cart, and Order Processing, providing a deeper look into the system's internal data routing and data stores (MongoDB).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/dfd_level0.png}
 \caption{Level-0 DFD of GloBus}
 \end{figure}
 
 \subsection{Entity Relationship (ER) Diagram}
+The ER Diagram outlines the logical structure of the database. For GloBus, it maps out the primary entities (Users, Products, Orders, Cart, Categories, Reviews) and their relationships. For instance, it displays the one-to-many relationship between a User and their Orders, and the many-to-many relationship between Orders and Products, serving as the blueprint for our MongoDB schema.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/er_diagram.png}
 \caption{ER Diagram of GloBus Database}
 \end{figure}
 
 \subsection{Use Case Diagram}
+The Use Case Diagram visualizes the functional requirements of the system from the users' perspective. It defines the primary actors (Customer, Admin, Guest) and the various use cases they can perform. For example, it illustrates how a Customer can "Add to Cart" or "Checkout", while an Admin can "Manage Inventory" and "Update Order Status".
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/use_case.png}
 \caption{Use Case Diagram for Customer and Admin}
 \end{figure}
 
 \subsection{Activity Diagram}
+The Activity Diagram represents the flow of control or object flow within the system. The depicted diagram focuses on the core Checkout Process. It illustrates the sequential decision-making steps a user takes: from verifying their cart, entering shipping details, selecting a payment method, to confirming the transaction and generating the final order invoice.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/activity_diagram.png}
 \caption{Activity Diagram of Checkout Process}
 \end{figure}
 
 \subsection{Sequence Diagram}
+The Sequence Diagram details how objects interact in a particular scenario along a chronological timeline. This specific diagram explains the Payment Gateway Integration, showing the exact sequence of API calls exchanged between the Client browser, the GloBus Node.js Server, and the external SSLCommerz server to validate and complete a secure transaction.
+
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/sequence_diagram.png}
 \caption{Sequence Diagram of Payment Gateway Integration}
 \end{figure}
 
@@ -106,42 +122,42 @@ The following figures demonstrate the core features and user interface of the Gl
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/home_globus.png}
 \caption{Feature: Home Page and Promotional Banner}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/product_search.png}
 \caption{Feature: Product Search and Categorized Browsing}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/chat_ai.jpeg}
 \caption{Feature: AI Vision Product Search}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/cart.png}
 \caption{Feature: Interactive Shopping Cart}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/checkout.png}
 \caption{Feature: Secure Checkout with SSLCommerz}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_dashboard_main.png}
 \caption{Feature: Admin Dashboard - Statistics Overview}
 \end{figure}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_dashboard_products.png}
 \caption{Feature: Admin Dashboard - Product Management}
 \end{figure}
