@@ -19,6 +19,7 @@ import {
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "./AddToCartButton";
+import { useLanguage } from "../Contexts/LanguageContext";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -27,6 +28,7 @@ const CACHE_TIME_KEY = "globus_products_cache_time";
 const CACHE_TTL_MS = 10 * 60 * 1000; // 10 minutes cache TTL
 
 const Products = ({ visibleSectionCount = 4 }) => {
+  const { t, tSection } = useLanguage();
   const [products, setProducts] = useState([]);
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [topDeals, setTopDeals] = useState([]);
@@ -218,7 +220,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
               )}
               %
             </span>
-            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">OFF</span>
+            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">{t("off")}</span>
           </div>
         )}
       </div>
@@ -364,7 +366,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
           <div className="flex items-center justify-between mb-4 lg:mb-6">
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2 lg:gap-3 text-gray-900 dark:text-gray-100">
               <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
-              Featured Products
+              {tSection("Featured Products")}
             </h2>
             <div className="flex gap-2">
               <button
@@ -424,7 +426,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
                           className="bg-gray-800 text-white px-4 lg:px-6 py-2 lg:py-3 text-sm lg:text-base rounded-lg hover:bg-black transition flex items-center gap-2"
                         >
                           <FontAwesomeIcon icon={faEye} />
-                          View Details
+                          {t("viewDetails")}
                         </button>
                       </div>
                     </div>
@@ -463,7 +465,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2 lg:gap-3 text-gray-900 dark:text-gray-100">
                 <FontAwesomeIcon icon={section.icon} className={section.color} />
-                {section.title}
+                {tSection(section.title)}
               </h2>
             </div>
 
@@ -571,16 +573,16 @@ const Products = ({ visibleSectionCount = 4 }) => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                   <div className="relative z-10 w-full">
                     <span className="text-[10px] lg:text-xs font-bold uppercase tracking-wider text-yellow-400 bg-black/50 backdrop-blur-md px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-md">
-                      Featured Tech
+                      {t("featuredTech")}
                     </span>
                     <h3 className="text-lg lg:text-xl font-extrabold text-white mt-1.5 lg:mt-2 mb-1">
-                      Latest Flagship Gadgets
+                      {t("latestFlagship")}
                     </h3>
                     <p className="text-[11px] lg:text-xs text-gray-200 mb-2.5 lg:mb-3">
-                      Smartphones, Laptops, Audio & Premium Drones
+                      {t("techSubtitle")}
                     </p>
                     <div className="bg-white text-gray-900 font-bold py-2 lg:py-2.5 px-3 lg:px-4 rounded-xl text-center text-xs lg:text-sm shadow-md cursor-pointer hover:bg-gray-100 transition-all duration-300">
-                      EXPLORE GADGETS
+                      {t("exploreGadgets")}
                     </div>
                   </div>
                 </div>
@@ -608,7 +610,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
                     title="Show More Products"
                   >
                     <FontAwesomeIcon icon={faPlus} className="text-xs text-blue-600 dark:text-blue-400" />
-                    <span>Show More ({allSectionProducts.length - limit} more)</span>
+                    <span>{t("showMore")} ({allSectionProducts.length - limit} more)</span>
                   </button>
                 )}
 
@@ -619,7 +621,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
                     title="Show Less Products"
                   >
                     <FontAwesomeIcon icon={faMinus} className="text-xs text-red-500" />
-                    <span>Show Less</span>
+                    <span>{t("showLess")}</span>
                   </button>
                 )}
               </div>

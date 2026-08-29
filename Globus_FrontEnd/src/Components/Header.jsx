@@ -19,17 +19,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../firebase.config";
 import { useTheme } from "../Contexts/ThemeContext";
+import { useLanguage } from "../Contexts/LanguageContext";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
-
-const langs = [
-  { code: "us", name: "English" },
-  { code: "es", name: "Spanish" },
-  { code: "fr", name: "French" },
-  { code: "de", name: "German" },
-  { code: "bd", name: "Bangla" },
-];
 
 const cats = [
   "All",
@@ -43,7 +36,7 @@ const cats = [
 ];
 
 const Header = () => {
-  const [lang, setLang] = useState(langs[0]);
+  const { lang, setLang, langs, t, tCategory } = useLanguage();
   const [cat, setCat] = useState(cats[0]);
   const [openLang, setOpenLang] = useState(false);
   const [openCat, setOpenCat] = useState(false);
@@ -294,62 +287,6 @@ const Header = () => {
   const firstName =
     user?.name?.split(" ")[0] || user?.displayName?.split(" ")[0] || "";
 
-  // Language translations
-  const translations = {
-    us: {
-      deliverTo: "Deliver to",
-      searchPlaceholder: "Search in",
-      cart: "Cart",
-      wishlist: "Wishlist",
-      ordersPayments: "Orders & Payments",
-      signIn: "Sign In",
-      hello: "Hello",
-      logout: "Logout",
-    },
-    es: {
-      deliverTo: "Entregar a",
-      searchPlaceholder: "Buscar en",
-      cart: "Carrito",
-      wishlist: "Lista de deseos",
-      ordersPayments: "Pedidos & Pagos",
-      signIn: "Iniciar Sesión",
-      hello: "Hola",
-      logout: "Cerrar Sesión",
-    },
-    fr: {
-      deliverTo: "Livrer à",
-      searchPlaceholder: "Rechercher dans",
-      cart: "Panier",
-      wishlist: "Lista de souhaits",
-      ordersPayments: "Commandes & Paiements",
-      signIn: "Se Connecter",
-      hello: "Bonjour",
-      logout: "Se Déconnecter",
-    },
-    de: {
-      deliverTo: "Liefern an",
-      searchPlaceholder: "Suchen in",
-      cart: "Warenkorb",
-      wishlist: "Wunschliste",
-      ordersPayments: "Bestellungen & Zahlungen",
-      signIn: "Anmelden",
-      hello: "Hallo",
-      logout: "Abmelden",
-    },
-    bd: {
-      deliverTo: "ডেলিভারি করুন",
-      searchPlaceholder: "খুঁজুন",
-      cart: "কার্ট",
-      wishlist: "উইশলিস্ট",
-      ordersPayments: "অর্ডার ও পেমেন্ট",
-      signIn: "সাইন ইন",
-      hello: "হ্যালো",
-      logout: "লগআউট",
-    },
-  };
-
-  const t = translations[lang.code];
-
   return (
     <>
       <header className="bg-gray-900 sticky z-50 top-0 shadow-lg border-b border-gray-700 w-full">
@@ -370,7 +307,7 @@ const Header = () => {
             <div className="hidden sm:flex text-white items-center flex-shrink-0">
               <FontAwesomeIcon icon={faLocationDot} className="text-base lg:text-lg mr-1.5 lg:mr-2 text-gray-300" />
               <div className="font-semibold leading-tight">
-                <h1 className="text-[11px] text-gray-400 font-normal">{t.deliverTo}</h1>
+                <h1 className="text-[11px] text-gray-400 font-normal">{t("deliverTo")}</h1>
                 <h1 className="text-xs lg:text-sm font-bold truncate max-w-[130px] lg:max-w-[160px]">
                   {loc ? `${loc.city}, ${loc.country}` : "Dhaka, Bangladesh"}
                 </h1>
@@ -394,7 +331,7 @@ const Header = () => {
                   onClick={() => setOpenCat(!openCat)}
                   className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2.5 lg:px-3.5 h-9 lg:h-10 rounded-l-md border-r border-gray-300 dark:border-gray-600 text-xs lg:text-sm font-medium flex items-center hover:bg-gray-200 dark:hover:bg-gray-600 transition whitespace-nowrap"
                 >
-                  <span className="truncate max-w-[65px] lg:max-w-[85px]">{cat}</span>
+                  <span className="truncate max-w-[65px] lg:max-w-[85px]">{tCategory(cat)}</span>
                   <FontAwesomeIcon
                     icon={faChevronDown}
                     className={`ml-1.5 text-[10px] transition-transform ${openCat ? "rotate-180" : ""}`}
@@ -412,7 +349,7 @@ const Header = () => {
                           setOpenCat(false);
                         }}
                       >
-                        {c}
+                        {tCategory(c)}
                       </button>
                     ))}
                   </div>
@@ -424,7 +361,7 @@ const Header = () => {
                 <div className="flex items-center bg-white dark:bg-gray-800 border-t border-b border-gray-300 dark:border-gray-600 h-9 lg:h-10 w-full">
                   <input
                     type="text"
-                    placeholder={`${t.searchPlaceholder}...`}
+                    placeholder={`${t("searchPlaceholder")}...`}
                     className="flex-1 min-w-0 px-2.5 lg:px-3 h-full text-black dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 outline-none bg-transparent w-full text-xs lg:text-sm"
                     value={searchQuery}
                     onChange={(e) => {
@@ -559,8 +496,8 @@ const Header = () => {
               >
                 <FontAwesomeIcon icon={faCreditCard} className="text-sm lg:text-base" />
                 <h1 className="ml-1.5 font-medium text-xs lg:text-sm whitespace-nowrap">
-                  <span className="hidden 2xl:inline">{t.ordersPayments}</span>
-                  <span className="2xl:hidden">Orders</span>
+                  <span className="hidden 2xl:inline">{t("ordersPayments")}</span>
+                  <span className="2xl:hidden">{t("orders")}</span>
                 </h1>
               </div>
 
@@ -571,7 +508,7 @@ const Header = () => {
                 title="Cart"
               >
                 <FontAwesomeIcon icon={faCartShopping} className="text-sm lg:text-base" />
-                <h1 className="ml-1 font-medium text-xs lg:text-sm">{t.cart}</h1>
+                <h1 className="ml-1 font-medium text-xs lg:text-sm">{t("cart")}</h1>
               </div>
 
               {/* Wishlist */}
@@ -593,7 +530,7 @@ const Header = () => {
                     </span>
                   )}
                 </div>
-                <h1 className="ml-1 font-medium text-xs lg:text-sm">{t.wishlist}</h1>
+                <h1 className="ml-1 font-medium text-xs lg:text-sm">{t("wishlist")}</h1>
               </div>
 
               {/* Dark/Light Mode Toggle */}
@@ -638,7 +575,7 @@ const Header = () => {
                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2 z-50">
                       <div className="px-4 py-2.5 border-b border-gray-200 dark:border-gray-700">
                         <p className="text-xs lg:text-sm font-medium text-gray-900 dark:text-gray-100">
-                          {t.hello}, {firstName}
+                          {t("hello")}, {firstName}
                         </p>
                         <p className="text-[11px] text-gray-500 truncate">{user?.email}</p>
                       </div>
@@ -646,7 +583,7 @@ const Header = () => {
                         onClick={handleLogout}
                         className="w-full text-left px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                       >
-                        {t.logout}
+                        {t("logout")}
                       </button>
                     </div>
                   )}
@@ -655,7 +592,7 @@ const Header = () => {
                 <Link to="/SignIn">
                   <div className="text-white cursor-pointer flex items-center hover:text-gray-300 transition px-2 py-1">
                     <FontAwesomeIcon icon={faUser} className="text-sm lg:text-base" />
-                    <h1 className="ml-1.5 font-medium text-xs lg:text-sm">{t.signIn}</h1>
+                    <h1 className="ml-1.5 font-medium text-xs lg:text-sm">{t("signIn")}</h1>
                   </div>
                 </Link>
               )}
@@ -673,9 +610,7 @@ const Header = () => {
             scrollamount="6"
             className="text-xs lg:text-sm xl:text-base text-gray-800 dark:text-gray-200 dark:text-orange-50"
           >
-            দ্রষ্টব্য: পণ্য গ্রহণ করার আগে প্যাকেট খুলে দেখুন—ড্যামেজ আছে কি না
-            নিশ্চিত করুন। সমস্যা থাকলে অবিলম্বে রাইডারকে দেখান ও গ্রহণ
-            বর্জন/রিপোর্ট করুন।
+            {t("marqueeNotice")}
           </marquee>
         </div>
       </section>

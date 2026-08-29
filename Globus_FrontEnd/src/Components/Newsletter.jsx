@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { useLanguage } from "../Contexts/LanguageContext";
 
 // Backend Api
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,17 +66,17 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
         <button
           onClick={handleButtonClick}
           className="bg-black text-white font-bold py-3 px-8 rounded-4xl hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl drop-shadow-2xl flex items-center gap-2"
-          title={isAllSectionsVisible ? "Back to top" : "Show more categories"}
+          title={isAllSectionsVisible ? t("backToTop") : t("showMore")}
         >
           <FontAwesomeIcon icon={isAllSectionsVisible ? faArrowUp : faArrowDown} />
-          {isAllSectionsVisible ? "Back" : "Show More"}
+          {isAllSectionsVisible ? t("back") : t("showMore")}
         </button>
       </div>
 
       {/* Newsletter Content */}
       <div className="max-w-md mx-auto text-center">
         <h2 className="text-2xl font-bold text-white mb-4">
-          Subscribe to our newsletter
+          {t("newsletterTitle")}
         </h2>
 
         {message && (
@@ -97,7 +99,7 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder={t("newsletterPlaceholder")}
             required
             disabled={isLoading}
             className="flex-1 px-4 py-3 rounded-lg text-black placeholder-gray-500 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-200"
@@ -107,12 +109,12 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
             disabled={isLoading}
             className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap"
           >
-            {isLoading ? "Subscribing..." : "Subscribe"}
+            {isLoading ? t("subscribing") : t("subscribe")}
           </button>
         </form>
 
         <p className="text-gray-400 text-sm mt-4">
-          We respect your privacy. Unsubscribe at any time.
+          {t("privacyNotice")}
         </p>
       </div>
     </div>
