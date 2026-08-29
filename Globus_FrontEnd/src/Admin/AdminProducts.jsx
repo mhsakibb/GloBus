@@ -91,14 +91,21 @@ const AdminProducts = () => {
     },
   ];
 
-  // Fetch products
+  // Fetch products live from Database
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${API_URL}/browseProduct`);
+      const targetUrl = API_URL || 'http://localhost:5000';
+      const res = await fetch(`${targetUrl}/admin/products?t=${Date.now()}`);
+      if (!res.ok) {
+        const fallback = await fetch(`${targetUrl}/browseProduct?nocache=true&t=${Date.now()}`);
+        const data = await fallback.json();
+        setProducts(Array.isArray(data) ? data : []);
+        return;
+      }
       const data = await res.json();
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.log(err);
+      console.error("Error fetching admin products:", err);
     }
   };
 

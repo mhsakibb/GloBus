@@ -40,12 +40,13 @@ const AdminDashboard = () => {
         setLoading(true);
 
         const targetUrl = API_URL || 'http://localhost:5000';
+        const timestamp = Date.now();
 
-        // Fetch all data concurrently
+        // Fetch all data concurrently with cache-busting
         const [ordersRes, usersRes, productsRes] = await Promise.all([
-          fetch(`${targetUrl}/api/orders/stats`).catch(() => null),
-          fetch(`${targetUrl}/admin/users`).catch(() => null),
-          fetch(`${targetUrl}/browseProduct`).catch(() => null),
+          fetch(`${targetUrl}/api/orders/stats?t=${timestamp}`).catch(() => null),
+          fetch(`${targetUrl}/admin/users?t=${timestamp}`).catch(() => null),
+          fetch(`${targetUrl}/admin/products?t=${timestamp}`).catch(() => null),
         ]);
 
         let ordersData = { data: { total: 0, revenue: 0, recentOrders: [], monthlyRevenue: [] } };

@@ -7,13 +7,14 @@ const API_URL = import.meta.env.VITE_API_URL;
 const AdminUser = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Fetch all users
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`${API_URL}/admin/users`);
+      const response = await fetch(`${API_URL}/admin/users?t=${Date.now()}`);
       const data = await response.json();
-      setUsers(data);
+      setUsers(Array.isArray(data) ? data : []);
       setLoading(false);
     } catch (err) {
       console.error("Error fetching users:", err);
@@ -66,6 +67,17 @@ const AdminUser = () => {
     fetchUsers();
   }, []);
 
+  const filteredUsers = users.filter((u) => {
+    if (!searchTerm) return true;
+    const q = searchTerm.toLowerCase();
+    return (
+      u.name?.toLowerCase().includes(q) ||
+      u.email?.toLowerCase().includes(q) ||
+      u.phone?.toLowerCase().includes(q) ||
+      u.role?.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <div className="animate-fade-in-up">
       {/* Page Header */}
@@ -84,12 +96,11 @@ const AdminUser = () => {
             <input
               type="text"
               placeholder="Search customers..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm transition-all"
             />
           </div>
-          <button className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl text-sm font-medium hover:from-indigo-600 hover:to-purple-700 shadow-md shadow-indigo-500/20 transition-all">
-            Add User
-          </button>
         </div>
       </div>
 
@@ -116,14 +127,14 @@ const AdminUser = () => {
                     </div>
                   </td>
                 </tr>
-              ) : users.length === 0 ? (
+              ) : filteredUsers.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     No users found matching your criteria.
                   </td>
                 </tr>
               ) : (
-                users.map((user) => (
+                filteredUsers.map((user) => (
                   <tr key={user._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">

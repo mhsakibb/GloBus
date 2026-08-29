@@ -41,7 +41,7 @@ const AdminOrder = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${API_URL}/api/orders/all`, {
+      const response = await fetch(`${API_URL}/api/orders/all?limit=1000&t=${Date.now()}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -53,10 +53,8 @@ const AdminOrder = () => {
 
       const data = await response.json();
 
-      console.log("API Response:", data); // Debug log
-
       if (data.success) {
-        if (data.data && data.data.orders) {
+        if (data.data && Array.isArray(data.data.orders)) {
           setOrders(data.data.orders);
         } else if (Array.isArray(data.data)) {
           setOrders(data.data);
@@ -493,13 +491,13 @@ const AdminOrder = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                        {order.timestamps?.created
-                          ? new Date(order.timestamps.created).toLocaleDateString()
+                        {order.createdAt || order.timestamps?.created
+                          ? new Date(order.createdAt || order.timestamps.created).toLocaleDateString()
                           : "N/A"}
                       </div>
                       <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                        {order.timestamps?.created
-                          ? new Date(order.timestamps.created).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                        {order.createdAt || order.timestamps?.created
+                          ? new Date(order.createdAt || order.timestamps.created).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
                           : ""}
                       </div>
                     </td>

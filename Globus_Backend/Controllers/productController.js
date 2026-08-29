@@ -3,7 +3,7 @@ const cacheService = require("../utils/cacheService");
 
 const ALL_PRODUCTS_CACHE_KEY = "globus_all_products";
 
-// Essential catalog card projection (saves ~80% memory & network payload)
+// Essential catalog card projection for fast public browsing
 const CATALOG_PROJECTION = {
   name: 1,
   slug: 1,
@@ -19,17 +19,21 @@ const CATALOG_PROJECTION = {
   ratings: 1,
   flashSale: 1,
   createdAt: 1,
+  updatedAt: 1,
 };
 
-// Get all products with lean projection and multi-tier in-memory caching
+// Get all products with lean projection for customer store
 const browseProduct = async (req, res) => {
   try {
-    // Check Cache first (0 database round-trip!)
-    const cachedData = cacheService.get(ALL_PRODUCTS_CACHE_KEY);
-    if (cachedData) {
-      res.setHeader("X-Cache", "HIT");
-      res.setHeader("Cache-Control", "public, max-age=600, s-maxage=1800");
-      return res.status(200).json(cachedData);
+    const isNoCache = req.query.nocache === "true" || req.headers["x-cache-bypass"];
+
+    // Check Cache first if not bypassing
+    if (!isNoCache) {
+      const cachedData = cacheService.get(ALL_PRODUCTS_CACHE_KEY);
+      if (cachedData) {
+        res.setHeader("X-Cache", "HIT");
+        return res.status(200).json(cachedData);
+      }
     }
 
     const client = req.app.locals.mongoClient;
@@ -42,13 +46,33 @@ const browseProduct = async (req, res) => {
       .sort({ createdAt: -1 })
       .toArray();
 
-    // Cache result in memory for 15 minutes (900 seconds)
-    cacheService.set(ALL_PRODUCTS_CACHE_KEY, products, 900);
+    // Cache in memory
+    cacheService.set(ALL_PRODUCTS_CACHE_KEY, products, 300);
 
     res.setHeader("X-Cache", "MISS");
-    res.setHeader("Cache-Control", "public, max-age=600, s-maxage=1800");
+    res.setHeader("Cache-Control", "no-cache");
     res.status(200).json(products);
   } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get all products for Admin panel (Full fields, 0 omissions, strictly live from DB)
+const getAllProductsAdmin = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const database = client.db("globusDB");
+    const productsCollection = database.collection("products");
+
+    const products = await productsCollection
+      .find({})
+      .sort({ createdAt: -1, updatedAt: -1 })
+      .toArray();
+
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.status(200).json(products);
+  } catch (err) {
+    console.error("Error in getAllProductsAdmin:", err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -69,6 +93,11 @@ const createProduct = async (req, res) => {
     product.createdAt = new Date();
     product.updatedAt = new Date();
 
+    // Ensure price and stock are clean numeric values
+    if (product.price) product.price = Number(product.price) || product.price;
+    if (product.discountPrice) product.discountPrice = Number(product.discountPrice) || product.discountPrice;
+    if (product.stock) product.stock = Number(product.stock) || product.stock;
+
     const result = await productsCollection.insertOne(product);
 
     // Invalidate product cache immediately
@@ -76,9 +105,10 @@ const createProduct = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Product created", productId: result.insertedId });
+      .json({ success: true, message: "Product created successfully", productId: result.insertedId });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error creating product:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -90,7 +120,8 @@ const updateProduct = async (req, res) => {
     const productsCollection = database.collection("products");
 
     const id = req.params.id;
-    const updateData = req.body;
+    const updateData = { ...req.body };
+    delete updateData._id;
     updateData.updatedAt = new Date();
 
     if (updateData.name) {
@@ -100,7 +131,11 @@ const updateProduct = async (req, res) => {
         .replace(/[^\w-]+/g, "");
     }
 
-    await productsCollection.updateOne(
+    if (updateData.price) updateData.price = Number(updateData.price) || updateData.price;
+    if (updateData.discountPrice) updateData.discountPrice = Number(updateData.discountPrice) || updateData.discountPrice;
+    if (updateData.stock) updateData.stock = Number(updateData.stock) || updateData.stock;
+
+    const result = await productsCollection.updateOne(
       { _id: new ObjectId(id) },
       { $set: updateData }
     );
@@ -108,9 +143,10 @@ const updateProduct = async (req, res) => {
     // Invalidate product cache
     cacheService.del(ALL_PRODUCTS_CACHE_KEY);
 
-    res.status(200).json({ message: "Product updated" });
+    res.status(200).json({ success: true, message: "Product updated successfully", matchedCount: result.matchedCount });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error updating product:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -122,19 +158,21 @@ const deleteProduct = async (req, res) => {
     const productsCollection = database.collection("products");
 
     const id = req.params.id;
-    await productsCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
 
     // Invalidate product cache
     cacheService.del(ALL_PRODUCTS_CACHE_KEY);
 
-    res.status(200).json({ message: "Product deleted" });
+    res.status(200).json({ success: true, message: "Product deleted successfully", deletedCount: result.deletedCount });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error deleting product:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
 module.exports = {
   browseProduct,
+  getAllProductsAdmin,
   createProduct,
   updateProduct,
   deleteProduct,

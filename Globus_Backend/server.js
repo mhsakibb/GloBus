@@ -23,6 +23,7 @@ const {
 
 const {
   browseProduct,
+  getAllProductsAdmin,
   createProduct,
   updateProduct,
   deleteProduct,
@@ -152,6 +153,8 @@ async function run() {
     app.patch("/admin/user/:id/status", toggleUserStatus);
 
     // Admin Products Routes
+    app.get("/admin/products", getAllProductsAdmin);
+    app.get("/api/products/all", getAllProductsAdmin);
     app.post("/addProducts", createProduct);
     app.put("/products/:id", updateProduct);
     app.delete("/products/:id", deleteProduct);

@@ -47,29 +47,33 @@ const initSSLCommerz = async (req, res) => {
                 phone: customer_phone,
                 address: customer_address,
                 city: customer_city,
-                state: shipping_info.state || 'Dhaka',
-                zipCode: shipping_info.zipCode || '1000',
-                country: customer_country
+                state: shipping_info?.state || 'Dhaka',
+                zipCode: shipping_info?.zipCode || '1000',
+                country: customer_country || 'Bangladesh'
             },
             items: cart_items.map(item => ({
                 productId: item._id || item.productId,
                 name: item.productName || item.name,
-                price: item.discountPrice || item.price,
-                quantity: item.quantity || 1,
+                price: Number(item.discountPrice || item.price) || 0,
+                quantity: Number(item.quantity) || 1,
                 image: item.image || item.productImage || item.images?.[0] || item.img || "/placeholder.png",
                 variant: item.selectedVariant || item.variant
             })),
             orderSummary: {
-                subtotal: total_amount,
+                subtotal: Number(total_amount) || 0,
                 shipping: 0,
                 tax: 0,
                 discount: 0,
-                totalAmount: total_amount,
-                currency: currency,
-                itemsCount: cart_items.reduce((sum, item) => sum + (item.quantity || 1), 0)
+                totalAmount: Number(total_amount) || 0,
+                currency: currency || "BDT",
+                itemsCount: cart_items.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0)
             },
             orderStatus: 'pending',
-            source: source,
+            paymentStatus: 'pending',
+            paymentMethod: 'SSLCommerz',
+            source: source || 'checkout',
+            createdAt: new Date(),
+            updatedAt: new Date(),
             timestamps: {
                 created: new Date(),
                 updated: new Date()
