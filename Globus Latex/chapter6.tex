@@ -1,0 +1,55 @@
+\chapter{USER MANUAL \& SYSTEM REQUIREMENTS}
+\section{Introduction}
+The GloBus e-commerce platform provides the capability to seamlessly manage, administer, and participate in digital retail. By creating a powerful, user-centric shopping interface and delivering advanced search resources (such as AI Vision); supporting highly secure online payments via SSLCommerz; and providing real-time order tracking, GloBus serves as a flexible and scalable e-commerce infrastructure. This user manual is designed to guide both everyday consumers and platform administrators on how to effectively utilize the platform's features.
+
+To deploy and utilize this project optimally, specific hardware and software configurations are recommended. In this chapter, we outline the prerequisites to run and use the system.
+
+\section{System Requirements}
+Since GloBus is a modern web application built on the MERN stack, the client-side requirements are minimal. The heavy lifting is managed by the backend servers and cloud databases.
+
+\subsection{Client-Side (User) Requirements}
+\begin{itemize}
+    \item \textbf{Device:} Any modern Smartphone, Tablet, or PC (Windows, macOS, Linux, Android, iOS).
+    \item \textbf{Web Browser:} Google Chrome, Mozilla Firefox, Safari, or Edge (Updated to a version released within the last 3 years).
+    \item \textbf{Internet Connection:} Minimum stable bandwidth of 512 kbps for smooth image loading and AI Vision processing.
+    \item \textbf{Display:} The platform is fully responsive, but a minimum resolution of 360x640 (Mobile) is recommended for the best experience.
+\end{itemize}
+
+\subsection{Server-Side (Deployment) Requirements}
+\begin{itemize}
+    \item \textbf{Environment:} Node.js Runtime (v18.0 or higher).
+    \item \textbf{Frontend Framework:} React 19 bundled with Vite.
+    \item \textbf{Backend Framework:} Express.js.
+    \item \textbf{Database:} MongoDB (Cloud Atlas Cluster or Local Instance).
+    \item \textbf{Third-Party Services:} Firebase (for Authentication) and SSLCommerz (for Payment Processing).
+    \item \textbf{Package Manager:} npm or yarn.
+\end{itemize}
+
+\section{User Interface \& Navigation Flow}
+The GloBus platform is divided into a public-facing storefront and a private administrative dashboard.
+
+\subsection{Customer Navigation}
+Upon visiting GloBus, users land on the \textbf{Home Page}, which features dynamic promotional banners, top deals, and categorized product listings. Users can toggle between Dark and Light mode using the icon in the navigation bar.
+
+To find products, users can utilize the traditional search bar or click on the \textbf{AI Vision Search} icon to upload an image of a product they are looking for. The system will process the image and return visually matching items. 
+
+Clicking on any product redirects the user to the \textbf{Product Details Page}, where they can view high-resolution images, read descriptions, and check stock availability. To purchase, the user clicks the \textbf{Add to Cart} button.
+
+The \textbf{Interactive Shopping Cart} is accessible from the top navigation bar. It updates total prices in real-time. From the cart, users proceed to the \textbf{Checkout Page}. 
+
+\textit{Note: Unauthenticated guests will be redirected to the \textbf{Login/Register Page} before they can finalize a checkout. Authentication requires an email and password.}
+
+During Checkout, users provide their delivery address and proceed to the \textbf{Payment Gateway} (SSLCommerz), where they can pay using Mobile Banking (bKash/Nagad) or Cards. Upon successful payment, users are redirected to their \textbf{Order History} page, where they can track the status of their purchase.
+
+\subsection{Administrator Navigation}
+Administrators access a secure, hidden route. Upon logging in with Admin credentials, they are greeted by the \textbf{Admin Dashboard}.
+
+The dashboard provides a statistical overview of Total Sales, Users, and Orders. The sidebar allows admins to navigate to different management modules:
+\begin{itemize}
+    \item \textbf{Product Management:} Admins can add new products (uploading images, setting prices/categories), edit existing stock, or delete obsolete items.
+    \item \textbf{Order Management:} Admins view all incoming orders. They can click on an order to update its status from "Processing" to "Shipped" or "Delivered".
+    \item \textbf{User Management:} Admins can view the registered user list, ban accounts, or elevate standard users to the Admin role.
+\end{itemize}
+
+\section{Conclusion}
+In this chapter, we described the system requirements needed to deploy and access the GloBus platform. Furthermore, we provided a comprehensive walkthrough of the Graphical User Interface (GUI) and the operational flow for both customers and administrators. Users can easily discover the platform's basic characteristics and advanced features, ensuring a smooth and intuitive digital shopping experience.
