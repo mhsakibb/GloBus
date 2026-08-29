@@ -85,15 +85,30 @@ const initSSLCommerz = async (req, res) => {
         const orderResult = await ordersCollection.insertOne(orderData);
         console.log('Order created with ID:', orderResult.insertedId);
 
-        // 2. Create Transaction collection
-        const frontendUrl = pay.success_url ? new URL(pay.success_url).origin : (process.env.FRONTEND_URL || 'http://localhost:5173');
+        // 2. Determine frontend URL dynamically (supports Vercel, production domain, and localhost)
+        let frontendUrl = 'https://glo-bus-virid.vercel.app';
+        if (pay.success_url) {
+            try {
+                frontendUrl = new URL(pay.success_url).origin;
+            } catch (e) {}
+        } else if (req.get('origin')) {
+            frontendUrl = req.get('origin');
+        } else if (req.get('referer')) {
+            try {
+                frontendUrl = new URL(req.get('referer')).origin;
+            } catch (e) {}
+        } else if (process.env.FRONTEND_URL) {
+            frontendUrl = process.env.FRONTEND_URL;
+        }
+        frontendUrl = frontendUrl.replace(/\/+$/, '');
+
         const transactionData = {
             orderId: orderResult.insertedId,
             orderNumber: order_number,
             userEmail: user_email,
             transactionId: tran_id,
-            amount: total_amount,
-            currency: currency,
+            amount: Number(total_amount) || 0,
+            currency: currency || "BDT",
             paymentMethod: 'SSLCommerz',
             paymentStatus: 'pending',
             frontendUrl: frontendUrl,
@@ -107,18 +122,29 @@ const initSSLCommerz = async (req, res) => {
         await transactionsCollection.insertOne(transactionData);
         console.log('Transaction created with ID:', tran_id, 'Frontend URL:', frontendUrl);
 
-        // SSL Commerz data
-        const backendUrl = process.env.BACKEND_URL || `${req.protocol}://${req.get('host')}`;
+        // 3. Determine backend URL dynamically (ensures SSLCommerz redirects to live server on Vercel/cloud)
+        const incomingHost = req.get('x-forwarded-host') || req.get('host');
+        const incomingProto = req.get('x-forwarded-proto') || (req.secure ? 'https' : (req.protocol || 'https'));
+        
+        let backendUrl = process.env.BACKEND_URL;
+        if (!backendUrl || (backendUrl.includes('localhost') && incomingHost && !incomingHost.includes('localhost'))) {
+            backendUrl = `${incomingProto}://${incomingHost}`;
+        } else if (!backendUrl) {
+            backendUrl = `${incomingProto}://${incomingHost}`;
+        }
+        backendUrl = backendUrl.replace(/\/+$/, '');
+        console.log('SSLCommerz Backend Callback URL:', backendUrl);
+
         const data = {
-            total_amount: total_amount,
-            currency: currency,
+            total_amount: Number(total_amount) || 0,
+            currency: currency || "BDT",
             tran_id: tran_id,
             success_url: `${backendUrl}/api/sslcommerz/success/${tran_id}`,
             fail_url: `${backendUrl}/api/sslcommerz/fail/${tran_id}`,
             cancel_url: `${backendUrl}/api/sslcommerz/cancel/${tran_id}`,
             ipn_url: `${backendUrl}/api/sslcommerz/ipn`,
             shipping_method: 'Courier',
-            product_name: cart_items.length === 1 ? cart_items[0].name : `Multiple Items (${cart_items.length})`,
+            product_name: cart_items.length === 1 ? (cart_items[0].name || "Item") : `Multiple Items (${cart_items.length})`,
             product_category: 'Ecommerce',
             product_profile: 'general',
             
@@ -297,11 +323,15 @@ const paymentSuccess = async (req, res) => {
             }
         }
 
-        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = transaction?.frontendUrl;
+        if (!frontendUrl || (frontendUrl.includes('localhost') && req.get('host') && !req.get('host').includes('localhost'))) {
+            frontendUrl = process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app';
+        }
+        frontendUrl = (frontendUrl || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/orderHistory?tran_id=${tran_id}&status=success`);
     } catch (error) {
         console.error('Payment Success Error:', error);
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = (process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/orderHistory?error=Payment verification failed`);
     }
 };
@@ -342,11 +372,15 @@ const paymentFailed = async (req, res) => {
             );
         }
 
-        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = transaction?.frontendUrl;
+        if (!frontendUrl || (frontendUrl.includes('localhost') && req.get('host') && !req.get('host').includes('localhost'))) {
+            frontendUrl = process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app';
+        }
+        frontendUrl = (frontendUrl || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/orderHistory?tran_id=${tran_id}&status=failed`);
     } catch (error) {
         console.error('Payment Failed Error:', error);
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = (process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/orderHistory?error=Payment processing error`);
     }
 };
@@ -387,11 +421,15 @@ const paymentCancel = async (req, res) => {
             );
         }
 
-        const frontendUrl = transaction?.frontendUrl || process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = transaction?.frontendUrl;
+        if (!frontendUrl || (frontendUrl.includes('localhost') && req.get('host') && !req.get('host').includes('localhost'))) {
+            frontendUrl = process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app';
+        }
+        frontendUrl = (frontendUrl || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/cart?message=Payment cancelled&tran_id=${tran_id}`);
     } catch (error) {
         console.error('Payment Cancel Error:', error);
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+        let frontendUrl = (process.env.FRONTEND_URL || 'https://glo-bus-virid.vercel.app').replace(/\/+$/, '');
         return res.redirect(`${frontendUrl}/cart?message=Payment cancellation failed`);
     }
 };
