@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center">
+        <div className="min-h-[60vh] flex flex-col items-center justify-center p-3 md:p-6 text-center">
           <div className="w-16 h-16 bg-red-100 dark:bg-red-950/50 text-red-500 rounded-full flex items-center justify-center mb-4 text-2xl font-bold">
             ⚠️
           </div>
@@ -32,7 +32,7 @@ class ErrorBoundary extends React.Component {
               this.setState({ hasError: false });
               window.location.reload();
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2.5 rounded-xl shadow-md transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 md:px-6 py-2.5 rounded-xl shadow-md transition"
           >
             Reload Page
           </button>

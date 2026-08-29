@@ -153,10 +153,10 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-12 relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-6 md:py-12 relative">
       {/* Toast Banner */}
       {toastMessage && (
-        <div className="fixed top-24 right-6 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 z-50 animate-fade-in-down border border-gray-700 dark:border-gray-300">
+        <div className="fixed top-24 right-6 bg-gray-900 text-white dark:bg-white dark:text-gray-900 px-3 md:px-6 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 z-50 animate-fade-in-down border border-gray-700 dark:border-gray-300">
           <FontAwesomeIcon icon={faCheckCircle} className="text-green-500 text-lg" />
           <span className="font-semibold text-sm">{toastMessage}</span>
         </div>
@@ -178,7 +178,7 @@ const Wishlist = () => {
 
         {wishlistItems.length === 0 ? (
           /* Empty State */
-          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-12 text-center max-w-2xl mx-auto border border-gray-200 dark:border-gray-700 transition-all duration-300">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 md:p-12 text-center max-w-2xl mx-auto border border-gray-200 dark:border-gray-700 transition-all duration-300">
             <div className="w-28 h-28 bg-gradient-to-br from-red-100 to-pink-200 dark:from-red-900/30 dark:to-pink-900/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
               <FontAwesomeIcon
                 icon={faHeart}
@@ -193,7 +193,7 @@ const Wishlist = () => {
             </p>
             <button
               onClick={() => navigate("/")}
-              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3.5 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 md:px-8 py-3.5 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               Explore Products
             </button>
@@ -262,7 +262,7 @@ const Wishlist = () => {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div className="p-3 md:p-6 flex-1 flex flex-col justify-between">
                       <div>
                         {item.category && (
                           <span className="text-xs font-bold uppercase tracking-wider text-orange-500 dark:text-orange-400 block mb-1">

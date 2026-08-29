@@ -259,7 +259,7 @@ const OrderAndPayment = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
@@ -280,7 +280,7 @@ const OrderAndPayment = () => {
 
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 md:p-6 border-l-4 border-blue-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -297,7 +297,7 @@ const OrderAndPayment = () => {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-yellow-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 md:p-6 border-l-4 border-yellow-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -314,7 +314,7 @@ const OrderAndPayment = () => {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-purple-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 md:p-6 border-l-4 border-purple-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -331,7 +331,7 @@ const OrderAndPayment = () => {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border-l-4 border-green-500">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 md:p-6 border-l-4 border-green-500">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
@@ -354,7 +354,7 @@ const OrderAndPayment = () => {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveTab("all")}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              className={`px-3 md:px-6 py-3 rounded-xl font-semibold transition-all ${
                 activeTab === "all"
                   ? "bg-orange-500 text-white shadow-lg"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200"
@@ -364,7 +364,7 @@ const OrderAndPayment = () => {
             </button>
             <button
               onClick={() => setActiveTab("processing")}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              className={`px-3 md:px-6 py-3 rounded-xl font-semibold transition-all ${
                 activeTab === "processing"
                   ? "bg-blue-500 text-white shadow-lg"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200"
@@ -374,7 +374,7 @@ const OrderAndPayment = () => {
             </button>
             <button
               onClick={() => setActiveTab("shipped")}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              className={`px-3 md:px-6 py-3 rounded-xl font-semibold transition-all ${
                 activeTab === "shipped"
                   ? "bg-purple-500 text-white shadow-lg"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200"
@@ -384,7 +384,7 @@ const OrderAndPayment = () => {
             </button>
             <button
               onClick={() => setActiveTab("delivered")}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+              className={`px-3 md:px-6 py-3 rounded-xl font-semibold transition-all ${
                 activeTab === "delivered"
                   ? "bg-green-500 text-white shadow-lg"
                   : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200"
@@ -398,7 +398,7 @@ const OrderAndPayment = () => {
         {/* Orders List */}
         <div className="space-y-6">
           {filteredOrders.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-12 text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-12 text-center">
               <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
                 <FontAwesomeIcon
                   icon={faBox}
@@ -413,7 +413,7 @@ const OrderAndPayment = () => {
               </p>
               <button
                 onClick={handleStartShopping}
-                className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold"
+                className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 md:px-8 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold"
               >
                 Start Shopping
               </button>
@@ -425,7 +425,7 @@ const OrderAndPayment = () => {
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-200 dark:border-gray-700"
               >
                 {/* Order Header */}
-                <div className="bg-gradient-to-r from-gray-50 dark:from-gray-900 to-blue-50 p-6 border-b border-gray-200 dark:border-gray-700">
+                <div className="bg-gradient-to-r from-gray-50 dark:from-gray-900 to-blue-50 p-3 md:p-6 border-b border-gray-200 dark:border-gray-700">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <div>
                       <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 flex items-center gap-3">
@@ -466,7 +466,7 @@ const OrderAndPayment = () => {
                 </div>
 
                 {/* Order Items */}
-                <div className="p-6">
+                <div className="p-3 md:p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Products */}
                     <div>
@@ -586,7 +586,7 @@ const OrderAndPayment = () => {
                 </div>
 
                 {/* Order Footer */}
-                <div className="bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 px-3 md:px-6 py-4 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                       <span className="flex items-center gap-2">
@@ -623,7 +623,7 @@ const OrderAndPayment = () => {
           <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
             <div className="bg-white dark:bg-gray-800 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 dark:border-gray-700">
               {/* Modal Header */}
-              <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50 rounded-t-3xl">
+              <div className="p-3 md:p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-gray-50 dark:bg-gray-900/50 rounded-t-3xl">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
                     Order #{selectedOrder.orderNumber || String(selectedOrder._id).slice(-8).toUpperCase()}
@@ -657,7 +657,7 @@ const OrderAndPayment = () => {
                 </button>
               </div>
 
-              <div className="p-6 space-y-6">
+              <div className="p-3 md:p-6 space-y-6">
                 {/* Items */}
                 <div>
                   <h4 className="font-bold text-gray-800 dark:text-gray-200 mb-3 flex items-center gap-2">
@@ -774,14 +774,14 @@ const OrderAndPayment = () => {
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <button
                     onClick={() => handleDownloadInvoice(selectedOrder)}
-                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3.5 px-6 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
+                    className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white py-3.5 px-3 md:px-6 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 transition-all duration-300 transform hover:-translate-y-0.5"
                   >
                     <FontAwesomeIcon icon={faFilePdf} className="text-lg" />
                     Download PDF Invoice
                   </button>
                   <button
                     onClick={() => setSelectedOrder(null)}
-                    className="px-6 py-3.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-2xl font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                    className="px-3 md:px-6 py-3.5 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-2xl font-semibold hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                   >
                     Close
                   </button>

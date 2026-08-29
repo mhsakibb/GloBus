@@ -19,6 +19,7 @@ import {
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import AddToCartButton from "./AddToCartButton";
+import SkeletonLoader from "./SkeletonLoader";
 import { useLanguage } from "../Contexts/LanguageContext";
 
 // Backend Api
@@ -75,7 +76,11 @@ const Products = ({ visibleSectionCount = 4 }) => {
       const cached = sessionStorage.getItem(CACHE_KEY);
       const cacheTime = sessionStorage.getItem(CACHE_TIME_KEY);
 
-      if (cached && cacheTime && Date.now() - Number(cacheTime) < CACHE_TTL_MS) {
+      if (
+        cached &&
+        cacheTime &&
+        Date.now() - Number(cacheTime) < CACHE_TTL_MS
+      ) {
         const parsed = JSON.parse(cached);
         if (Array.isArray(parsed) && parsed.length > 0) {
           processProductData(parsed);
@@ -136,7 +141,8 @@ const Products = ({ visibleSectionCount = 4 }) => {
   const prevSlide = () => {
     if (featuredProducts.length > 0) {
       setCurrentSlide(
-        (prev) => (prev - 1 + featuredProducts.length) % featuredProducts.length
+        (prev) =>
+          (prev - 1 + featuredProducts.length) % featuredProducts.length,
       );
     }
   };
@@ -144,7 +150,9 @@ const Products = ({ visibleSectionCount = 4 }) => {
   // Filter products by category
   const getProductsByCategory = (category) => {
     if (!Array.isArray(products)) return [];
-    return products.filter((product) => product && product.category === category);
+    return products.filter(
+      (product) => product && product.category === category,
+    );
   };
 
   const getNewArrivals = () => {
@@ -192,11 +200,15 @@ const Products = ({ visibleSectionCount = 4 }) => {
     >
       <div className="relative overflow-hidden rounded-t-xl">
         <img
-          src={product.images?.[0] || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"}
+          src={
+            product.images?.[0] ||
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
+          }
           alt={product.name}
           className="w-full h-28 sm:h-32 md:h-36 xl:h-38 2xl:h-44 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           onError={(e) => {
-            e.target.src = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
+            e.target.src =
+              "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80";
           }}
         />
         <button
@@ -204,7 +216,10 @@ const Products = ({ visibleSectionCount = 4 }) => {
           className="absolute top-1.5 right-1.5 text-gray-300 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 drop-shadow-md hover:scale-110 transition-all z-10 p-1"
           title="Add to Wishlist"
         >
-          <FontAwesomeIcon icon={faHeart} className="text-xs sm:text-sm 2xl:text-base" />
+          <FontAwesomeIcon
+            icon={faHeart}
+            className="text-xs sm:text-sm 2xl:text-base"
+          />
         </button>
         {product.discountPrice && (
           <div
@@ -216,11 +231,13 @@ const Products = ({ visibleSectionCount = 4 }) => {
           >
             <span className="text-[10px] 2xl:text-[11px] font-extrabold leading-none">
               {Math.round(
-                ((product.price - product.discountPrice) / product.price) * 100
+                ((product.price - product.discountPrice) / product.price) * 100,
               )}
               %
             </span>
-            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">{t("off")}</span>
+            <span className="text-[7px] 2xl:text-[8px] font-bold leading-none mt-0.5">
+              {t("off")}
+            </span>
           </div>
         )}
       </div>
@@ -352,8 +369,13 @@ const Products = ({ visibleSectionCount = 4 }) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-solid border-gray-200 dark:border-gray-700"></div>
+      <div className="p-3 sm:p-4 md:p-6 bg-gray-50 dark:bg-gray-900 min-h-screen space-y-8 md:space-y-12 xl:space-y-16 mx-2 sm:mx-4 md:mx-6 lg:mx-8 xl:mx-14 2xl:mx-20">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <section key={i} className="mb-8 lg:mb-12">
+            <div className="w-48 sm:w-64 h-8 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse mb-4 lg:mb-6"></div>
+            <SkeletonLoader count={12} />
+          </section>
+        ))}
       </div>
     );
   }
@@ -441,8 +463,9 @@ const Products = ({ visibleSectionCount = 4 }) => {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? "bg-blue-600" : "bg-gray-300"
-                    }`}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentSlide ? "bg-blue-600" : "bg-gray-300"
+                  }`}
                 />
               ))}
             </div>
@@ -456,7 +479,10 @@ const Products = ({ visibleSectionCount = 4 }) => {
         if (!allSectionProducts.length) return null;
 
         const limit = visibleCountMap[section.key] || 12;
-        const displayed = section.key === "top-deals" ? allSectionProducts : allSectionProducts.slice(0, limit);
+        const displayed =
+          section.key === "top-deals"
+            ? allSectionProducts
+            : allSectionProducts.slice(0, limit);
         const hasMore = allSectionProducts.length > limit;
         const canShowLess = limit > 12;
 
@@ -464,7 +490,10 @@ const Products = ({ visibleSectionCount = 4 }) => {
           <section key={section.key} className="mb-8 lg:mb-12">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold flex items-center gap-2 lg:gap-3 text-gray-900 dark:text-gray-100">
-                <FontAwesomeIcon icon={section.icon} className={section.color} />
+                <FontAwesomeIcon
+                  icon={section.icon}
+                  className={section.color}
+                />
                 {tSection(section.title)}
               </h2>
             </div>
@@ -500,7 +529,10 @@ const Products = ({ visibleSectionCount = 4 }) => {
                       <ProductCard key={product._id} product={product} />
                     ))}
                     {/* Empty 12th cell reserved for the Bite cutout - No product shown here */}
-                    <div aria-hidden="true" className="pointer-events-none opacity-0 invisible" />
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none opacity-0 invisible"
+                    />
                   </div>
 
                   {/* Clean Scalloped Teeth Bite Cutout with Biscuit Layer */}
@@ -511,15 +543,33 @@ const Products = ({ visibleSectionCount = 4 }) => {
                     >
                       <defs>
                         {/* Realistic warm biscuit color gradient matching user swatch */}
-                        <linearGradient id="biscuitBiteGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient
+                          id="biscuitBiteGrad"
+                          x1="0%"
+                          y1="0%"
+                          x2="100%"
+                          y2="100%"
+                        >
                           <stop offset="0%" stopColor="#F5D8BA" />
                           <stop offset="45%" stopColor="#ECC59D" />
                           <stop offset="85%" stopColor="#DEB180" />
                           <stop offset="100%" stopColor="#CA9B68" />
                         </linearGradient>
                         {/* Depth shadow for the biscuit bite mark */}
-                        <filter id="biteShadow" x="-30%" y="-30%" width="160%" height="160%">
-                          <feDropShadow dx="-2" dy="-2" stdDeviation="3" floodColor="#000000" floodOpacity="0.3" />
+                        <filter
+                          id="biteShadow"
+                          x="-30%"
+                          y="-30%"
+                          width="160%"
+                          height="160%"
+                        >
+                          <feDropShadow
+                            dx="-2"
+                            dy="-2"
+                            stdDeviation="3"
+                            floodColor="#000000"
+                            floodOpacity="0.3"
+                          />
                         </filter>
                       </defs>
 
@@ -601,31 +651,44 @@ const Products = ({ visibleSectionCount = 4 }) => {
             )}
 
             {/* Show More (+) and Show Less (-) buttons side-by-side per category */}
-            {section.key !== "top-deals" && section.key !== "fruits" && allSectionProducts.length > 12 && (
-              <div className="flex items-center justify-center gap-4 mt-6">
-                {hasMore && (
-                  <button
-                    onClick={() => handleShowMore(section.key, allSectionProducts.length)}
-                    className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-4 lg:px-5 py-2 text-xs lg:text-sm rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
-                    title="Show More Products"
-                  >
-                    <FontAwesomeIcon icon={faPlus} className="text-xs text-blue-600 dark:text-blue-400" />
-                    <span>{t("showMore")} ({allSectionProducts.length - limit} more)</span>
-                  </button>
-                )}
+            {section.key !== "top-deals" &&
+              section.key !== "fruits" &&
+              allSectionProducts.length > 12 && (
+                <div className="flex items-center justify-center gap-4 mt-6">
+                  {hasMore && (
+                    <button
+                      onClick={() =>
+                        handleShowMore(section.key, allSectionProducts.length)
+                      }
+                      className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-4 lg:px-5 py-2 text-xs lg:text-sm rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
+                      title="Show More Products"
+                    >
+                      <FontAwesomeIcon
+                        icon={faPlus}
+                        className="text-xs text-blue-600 dark:text-blue-400"
+                      />
+                      <span>
+                        {t("showMore")} ({allSectionProducts.length - limit}{" "}
+                        more)
+                      </span>
+                    </button>
+                  )}
 
-                {canShowLess && (
-                  <button
-                    onClick={() => handleShowLess(section.key)}
-                    className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-4 lg:px-5 py-2 text-xs lg:text-sm rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
-                    title="Show Less Products"
-                  >
-                    <FontAwesomeIcon icon={faMinus} className="text-xs text-red-500" />
-                    <span>{t("showLess")}</span>
-                  </button>
-                )}
-              </div>
-            )}
+                  {canShowLess && (
+                    <button
+                      onClick={() => handleShowLess(section.key)}
+                      className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-semibold px-4 lg:px-5 py-2 text-xs lg:text-sm rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm transition flex items-center gap-2"
+                      title="Show Less Products"
+                    >
+                      <FontAwesomeIcon
+                        icon={faMinus}
+                        className="text-xs text-red-500"
+                      />
+                      <span>{t("showLess")}</span>
+                    </button>
+                  )}
+                </div>
+              )}
           </section>
         );
       })}

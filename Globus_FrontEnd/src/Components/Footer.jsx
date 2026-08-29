@@ -4,7 +4,7 @@ import ContactUs from "./ContactUs";
 const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-12 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-8">
         <div>
           <h3 className="font-bold mb-4">Get to Know Us</h3>
           <ul className="space-y-2 text-sm text-gray-300">
@@ -105,7 +105,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-gray-800 py-6 text-gray-400 text-sm text-center">
+      <div className="bg-gray-800 py-3 md:py-6 text-gray-400 text-sm text-center">
         &copy; {new Date().getFullYear()} GloBus. All rights reserved.
         <div className="mt-2">
           <select className="bg-gray-700 text-white text-sm p-1 rounded">

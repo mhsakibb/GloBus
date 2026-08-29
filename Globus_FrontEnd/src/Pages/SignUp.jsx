@@ -71,7 +71,7 @@ const SignUp = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-700">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
+      <div className="bg-white dark:bg-gray-800 p-4 md:p-8 rounded-xl shadow-lg w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-6">Create Account</h1>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

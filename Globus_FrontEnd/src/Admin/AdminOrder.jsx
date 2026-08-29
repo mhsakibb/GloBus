@@ -319,13 +319,13 @@ const AdminOrder = () => {
           <div className="flex gap-4 justify-center">
             <button
               onClick={fetchAllOrders}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-3 md:px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
             >
               Try Again
             </button>
             <button
               onClick={loadMockData}
-              className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
+              className="bg-gray-600 text-white px-3 md:px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
             >
               Load Mock Data
             </button>
@@ -424,7 +424,7 @@ const AdminOrder = () => {
               <thead className="bg-slate-50 dark:bg-slate-800/50">
                 <tr>
                   <th
-                    className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
+                    className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
                     onClick={() => handleSort("orderNumber")}
                   >
                     <div className="flex items-center gap-2">
@@ -432,17 +432,17 @@ const AdminOrder = () => {
                       <FontAwesomeIcon icon={getSortIcon("orderNumber")} className="opacity-50" />
                     </div>
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Customer
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Items
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Amount
                   </th>
                   <th
-                    className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
+                    className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider cursor-pointer hover:text-indigo-500 transition-colors"
                     onClick={() => handleSort("createdAt")}
                   >
                     <div className="flex items-center gap-2">
@@ -450,10 +450,10 @@ const AdminOrder = () => {
                       <FontAwesomeIcon icon={getSortIcon("createdAt")} className="opacity-50" />
                     </div>
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th className="px-3 md:px-6 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -461,12 +461,12 @@ const AdminOrder = () => {
               <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-100 dark:divide-slate-800/60">
                 {currentOrders.map((order) => (
                   <tr key={order._id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
                         #{order.orderNumber}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0 h-10 w-10 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl flex items-center justify-center border border-indigo-100 dark:border-indigo-800/30">
                           <FontAwesomeIcon icon={faUser} className="text-indigo-500" />
@@ -481,17 +481,17 @@ const AdminOrder = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {order.orderSummary?.itemsCount || 0} items
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
                         ৳{order.orderSummary?.totalAmount || 0}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {order.createdAt || order.timestamps?.created
                           ? new Date(order.createdAt || order.timestamps.created).toLocaleDateString()
@@ -503,7 +503,7 @@ const AdminOrder = () => {
                           : ""}
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap">
                       <select
                         value={order.orderStatus || "pending"}
                         onChange={(e) => updateOrderStatus(order._id, e.target.value)}
@@ -522,7 +522,7 @@ const AdminOrder = () => {
                         <option value="cancelled" className="bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200">Cancelled</option>
                       </select>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <td className="px-3 md:px-6 py-4 whitespace-nowrap text-right">
                       <div className="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => setSelectedOrder(order)}
@@ -548,7 +548,7 @@ const AdminOrder = () => {
 
           {/* Empty State */}
           {currentOrders.length === 0 && (
-            <div className="text-center py-16 px-4">
+            <div className="text-center py-6 md:py-16 px-4">
               <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <FontAwesomeIcon icon={faBox} className="text-slate-300 dark:text-slate-600 text-3xl" />
               </div>
@@ -618,7 +618,7 @@ const AdminOrder = () => {
         {selectedOrder && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
+              <div className="p-3 md:p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h3 className="text-2xl font-bold text-gray-900">
                     Order #{selectedOrder.orderNumber}

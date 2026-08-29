@@ -96,23 +96,23 @@ const MenuItem = () => {
   const handleCategoryClick = (categoryName) => {
     setOpenIndex(null);
     const filtered = allProducts.filter((p) => p.category === categoryName);
-    navigate(
-      `/search?q=&category=${encodeURIComponent(categoryName)}`,
-      {
-        state: {
-          searchResults: filtered,
-          searchQuery: "",
-          category: categoryName,
-        },
-      }
-    );
+    navigate(`/search?q=&category=${encodeURIComponent(categoryName)}`, {
+      state: {
+        searchResults: filtered,
+        searchQuery: "",
+        category: categoryName,
+      },
+    });
   };
 
   const matchField = (field, query) => {
     if (!field) return false;
     if (typeof field === "string") return field.toLowerCase().includes(query);
     if (Array.isArray(field)) {
-      return field.some((item) => typeof item === "string" && item.toLowerCase().includes(query));
+      return field.some(
+        (item) =>
+          typeof item === "string" && item.toLowerCase().includes(query),
+      );
     }
     return String(field).toLowerCase().includes(query);
   };
@@ -124,7 +124,9 @@ const MenuItem = () => {
     const filtered = allProducts.filter((p) => {
       const matchesCategory = p.category === categoryName;
       const matchesSubCategory =
-        (p.subCategory && typeof p.subCategory === "string" && p.subCategory.toLowerCase() === query) ||
+        (p.subCategory &&
+          typeof p.subCategory === "string" &&
+          p.subCategory.toLowerCase() === query) ||
         matchField(p.name, query);
       return matchesCategory && matchesSubCategory;
     });
@@ -136,7 +138,7 @@ const MenuItem = () => {
           searchQuery: subName,
           category: categoryName,
         },
-      }
+      },
     );
   };
 
@@ -144,17 +146,24 @@ const MenuItem = () => {
     <div ref={containerRef} className="w-full">
       <div className="bg-gray-100 dark:bg-gray-800 rounded-xl w-full lg:w-52 xl:w-64 2xl:w-80 p-2.5 lg:p-3 xl:p-3.5 2xl:p-4 border border-transparent dark:border-gray-700 shadow-sm">
         {menuData.map((item, index) => (
-          <div key={index} className="relative">
-
+          <div
+            key={index}
+            className="relative"
+            onMouseEnter={() => setOpenIndex(index)}
+            onMouseLeave={() => setOpenIndex(null)}
+          >
             {/* Main Row */}
             <div className="flex items-center justify-between px-2 py-1 lg:py-1.5 xl:py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition group">
-
               {/* Left: icon + name → click to redirect */}
               <div
                 className="flex items-center space-x-2 flex-1 cursor-pointer min-w-0"
                 onClick={() => handleCategoryClick(item.name)}
               >
-                <img src={item.icon} alt={item.name} className="w-4 h-4 xl:w-5 xl:h-5 2xl:w-6 2xl:h-6 dark:invert flex-shrink-0" />
+                <img
+                  src={item.icon}
+                  alt={item.name}
+                  className="w-4 h-4 xl:w-5 xl:h-5 2xl:w-6 2xl:h-6 dark:invert flex-shrink-0"
+                />
                 <span className="font-medium text-xs xl:text-sm 2xl:text-base text-gray-800 dark:text-gray-200 transition truncate">
                   {tCategory(item.name)}
                 </span>
@@ -165,12 +174,13 @@ const MenuItem = () => {
                 <div
                   className="p-1 rounded cursor-pointer hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                   onClick={(e) => handleArrowToggle(e, index)}
-                  onMouseEnter={() => setOpenIndex(index)}
                 >
                   <FontAwesomeIcon
                     icon={faChevronRight}
                     className={`text-gray-500 dark:text-gray-400 text-base transition-transform duration-200 ${
-                      openIndex === index ? "rotate-90 text-gray-700 dark:text-gray-200" : ""
+                      openIndex === index
+                        ? "rotate-90 text-gray-700 dark:text-gray-200"
+                        : ""
                     }`}
                   />
                 </div>
@@ -179,10 +189,7 @@ const MenuItem = () => {
 
             {/* Submenu — appears to the right on hover/click of arrow */}
             {openIndex === index && item.subMenu && (
-              <div
-                className="absolute top-0 left-full ml-3 bg-white dark:bg-gray-800 rounded-xl w-52 py-2 shadow-xl border border-gray-100 dark:border-gray-700 z-20"
-                onMouseLeave={() => setOpenIndex(null)}
-              >
+              <div className="absolute top-0 left-full ml-3 bg-white dark:bg-gray-800 rounded-xl w-52 py-2 shadow-xl border border-gray-100 dark:border-gray-700 z-20">
                 <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider px-4 pb-1 border-b border-gray-100 dark:border-gray-700 mb-1">
                   {tCategory(item.name)}
                 </p>
