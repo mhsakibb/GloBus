@@ -36,7 +36,7 @@ const AdminLayout = () => {
     <div className="flex min-h-screen bg-slate-50 dark:bg-[#0B1120] text-slate-800 dark:text-slate-200 font-sans selection:bg-indigo-500/30">
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-slate-800/60 p-6 flex flex-col transition-all duration-300 z-30 shadow-2xl md:shadow-none
+        className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-slate-800/60 p-3 md:p-6 flex flex-col transition-all duration-300 z-30 shadow-2xl md:shadow-none
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         {/* Logo */}
@@ -105,7 +105,7 @@ const AdminLayout = () => {
       {/* Main Content */}
       <main className="flex-1 ml-0 md:ml-72 flex flex-col min-h-screen transition-all duration-300">
         {/* Top Header */}
-        <header className="sticky top-0 z-10 bg-white/70 dark:bg-[#0B1120]/70 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800/60 px-6 py-4 flex justify-between items-center transition-colors duration-300">
+        <header className="sticky top-0 z-10 bg-white/70 dark:bg-[#0B1120]/70 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800/60 px-3 md:px-6 py-4 flex justify-between items-center transition-colors duration-300">
           <div className="flex items-center gap-4">
             <button
               className="md:hidden p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
@@ -145,7 +145,7 @@ const AdminLayout = () => {
         </header>
 
         {/* Page Content Container */}
-        <div className="p-6 flex-1 overflow-x-hidden">
+        <div className="p-3 md:p-6 flex-1 overflow-x-hidden">
           <div className="max-w-7xl mx-auto">
              <Outlet />
           </div>
@@ -156,7 +156,7 @@ const AdminLayout = () => {
       {showLogoutModal &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-[100]">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl transform transition-all">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 md:p-6 w-[90%] max-w-sm shadow-2xl transform transition-all">
               <div className="w-12 h-12 bg-rose-100 dark:bg-rose-500/20 rounded-full flex items-center justify-center mb-4">
                  <svg className="w-6 h-6 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
               </div>

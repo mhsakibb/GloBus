@@ -197,7 +197,7 @@ const SearchResults = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 lg:py-10 transition-colors duration-200">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-3 md:py-6 lg:py-10 transition-colors duration-200">
       <div className="mx-2 sm:mx-4 md:mx-6 lg:mx-8 xl:mx-14 2xl:mx-20 px-2 sm:px-3 md:px-4 lg:px-6">
         {/* Header */}
         <div className="mb-6 lg:mb-8">
@@ -224,7 +224,7 @@ const SearchResults = () => {
 
         {/* Loading State */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
+          <div className="flex flex-col items-center justify-center py-8 md:py-20">
             <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
             <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">Finding products...</p>
           </div>
@@ -237,7 +237,7 @@ const SearchResults = () => {
           /* Empty Search Results + Recommendations Flow */
           <div className="space-y-10">
             {/* Empty State Banner */}
-            <div className="bg-white dark:bg-gray-800/90 rounded-2xl border border-gray-200 dark:border-gray-700/80 p-8 sm:p-10 text-center max-w-2xl mx-auto shadow-sm">
+            <div className="bg-white dark:bg-gray-800/90 rounded-2xl border border-gray-200 dark:border-gray-700/80 p-4 md:p-8 sm:p-10 text-center max-w-2xl mx-auto shadow-sm">
               <div className="w-16 h-16 rounded-2xl bg-amber-50 dark:bg-amber-900/20 text-amber-500 flex items-center justify-center mx-auto mb-4">
                 <FontAwesomeIcon icon={faSearch} className="text-2xl" />
               </div>

@@ -114,7 +114,7 @@ const AdminDashboard = () => {
   const maxRevenue = Math.max(...chartData.map((d) => d.revenue), 1000);
 
   const StatCard = ({ title, value, icon, trend, isPositive, colorClass, gradientClass }) => (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 md:p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
       <div
         className={`absolute -right-6 -top-6 w-24 h-24 rounded-full ${gradientClass} opacity-10 group-hover:scale-150 transition-transform duration-500`}
       ></div>
@@ -212,7 +212,7 @@ const AdminDashboard = () => {
       {/* Interactive Revenue Analytics Chart & Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
         {/* Real Dynamic Chart */}
-        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+        <div className="lg:col-span-2 bg-white dark:bg-slate-900 rounded-2xl p-3 md:p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
           <div>
             <div className="flex flex-wrap justify-between items-center gap-3 mb-6">
               <div>
@@ -293,7 +293,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Orders List */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl p-3 md:p-6 shadow-sm border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-bold text-slate-800 dark:text-white">Recent Orders</h2>
@@ -345,7 +345,7 @@ const AdminDashboard = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-sm text-slate-500 text-center py-6">No recent orders found</p>
+                <p className="text-sm text-slate-500 text-center py-3 md:py-6">No recent orders found</p>
               )}
             </div>
           </div>

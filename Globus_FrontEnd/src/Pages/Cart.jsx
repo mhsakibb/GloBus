@@ -286,9 +286,9 @@ const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-12">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="text-center bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-12 transform hover:scale-[1.01] transition-all duration-300">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-6 md:py-12">
+        <div className="max-w-4xl mx-auto px-3 md:px-6">
+          <div className="text-center bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 md:p-12 transform hover:scale-[1.01] transition-all duration-300">
             <div className="w-32 h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg">
               <FontAwesomeIcon
                 icon={faShoppingBag}
@@ -304,7 +304,7 @@ const Cart = () => {
             </p>
             <button
               onClick={continueShopping}
-              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-10 py-4 rounded-2xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 md:px-10 py-4 rounded-2xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Start Shopping Adventure
             </button>
@@ -315,7 +315,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between mb-8 gap-4">

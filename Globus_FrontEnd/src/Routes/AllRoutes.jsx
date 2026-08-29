@@ -26,7 +26,7 @@ const PrivateRoute = lazy(() => import("../Admin/PrivateRoute"));
 
 // Page Transition Skeleton / Loader
 const RouteLoadingFallback = () => (
-  <div className="min-h-[50vh] flex items-center justify-center p-8">
+  <div className="min-h-[50vh] flex items-center justify-center p-4 md:p-8">
     <div className="flex flex-col items-center gap-3">
       <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
       <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Loading GloBus...</span>

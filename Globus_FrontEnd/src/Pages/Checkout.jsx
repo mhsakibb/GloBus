@@ -176,7 +176,7 @@ const Checkout = () => {
   if (cartItems.length === 0 && activeStep !== 4) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 flex items-center justify-center">
-        <div className="text-center bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-12 max-w-md mx-4">
+        <div className="text-center bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 md:p-12 max-w-md mx-4">
           <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full flex items-center justify-center mx-auto mb-6">
             <FontAwesomeIcon
               icon={faCreditCard}
@@ -191,7 +191,7 @@ const Checkout = () => {
           </p>
           <button
             onClick={() => navigate("/products")}
-            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold"
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 md:px-8 py-3 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold"
           >
             Continue Shopping
           </button>
@@ -201,7 +201,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 dark:from-gray-900 to-blue-50 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -272,7 +272,7 @@ const Checkout = () => {
           <div className="lg:col-span-2 space-y-8">
             {/* Shipping Information */}
             {activeStep === 1 && (
-              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-4 md:p-8 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                     <FontAwesomeIcon icon={faUser} className="text-blue-600" />
@@ -436,7 +436,7 @@ const Checkout = () => {
                   <div className="flex justify-end pt-6">
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-4 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                      className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 md:px-12 py-4 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       Review Order
                     </button>
@@ -447,7 +447,7 @@ const Checkout = () => {
 
             {/* Order Review - Step 2 */}
             {activeStep === 2 && (
-              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-4 md:p-8 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
                     <FontAwesomeIcon
@@ -476,7 +476,7 @@ const Checkout = () => {
                 </div>
 
                 {/* Shipping Info Review */}
-                <div className="mb-8 p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 rounded-2xl">
+                <div className="mb-8 p-3 md:p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 rounded-2xl">
                   <h3 className="font-semibold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
                     <FontAwesomeIcon icon={faTruck} className="text-blue-500" />
                     Shipping Address
@@ -557,13 +557,13 @@ const Checkout = () => {
                 <div className="flex justify-between pt-6">
                   <button
                     onClick={() => setActiveStep(1)}
-                    className="px-8 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:border-gray-400 transition-all duration-300 font-semibold"
+                    className="px-4 md:px-8 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:border-gray-400 transition-all duration-300 font-semibold"
                   >
                     Back to Shipping
                   </button>
                   <button
                     onClick={() => setActiveStep(3)}
-                    className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-4 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 md:px-12 py-4 rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                   >
                     Proceed to Payment
                   </button>
@@ -573,7 +573,7 @@ const Checkout = () => {
 
             {/* Payment - Step 3 - SSL Commerz */}
             {activeStep === 3 && (
-              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700">
+              <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-4 md:p-8 border border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                     <FontAwesomeIcon
@@ -601,7 +601,7 @@ const Checkout = () => {
                     to complete your transaction.
                   </p>
 
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 mb-6">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-3 md:p-6 mb-6">
                     <h4 className="font-semibold text-yellow-800 mb-3">
                       Order Summary
                     </h4>
@@ -639,14 +639,14 @@ const Checkout = () => {
 
                   <button
                     onClick={() => setActiveStep(2)}
-                    className="w-full px-8 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:border-gray-400 transition-all duration-300 font-semibold"
+                    className="w-full px-4 md:px-8 py-4 border-2 border-gray-300 text-gray-700 dark:text-gray-300 rounded-xl hover:border-gray-400 transition-all duration-300 font-semibold"
                   >
                     Back to Review
                   </button>
                 </div>
 
                 {/* Security Badges */}
-                <div className="mt-8 p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700">
+                <div className="mt-8 p-3 md:p-6 bg-gray-50 dark:bg-gray-800 dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700">
                   <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-4 text-center">
                     100% Secure Payment
                   </h4>
@@ -673,7 +673,7 @@ const Checkout = () => {
 
           {/* Order Summary Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 sticky top-6 border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-3 md:p-6 sticky top-6 border border-gray-100 dark:border-gray-700">
               <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6">
                 Order Summary
               </h3>

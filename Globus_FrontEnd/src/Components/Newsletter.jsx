@@ -37,7 +37,7 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
     } catch (error) {
       console.error("Subscription error:", error);
       setMessage(
-        "Failed to subscribe. Please check your connection and try again."
+        "Failed to subscribe. Please check your connection and try again.",
       );
     } finally {
       setIsLoading(false);
@@ -60,15 +60,17 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
   };
 
   return (
-    <div className="bg-gray-800 py-8 px-4 mt-40 relative">
+    <div className="bg-gray-800 py-6 md:py-10 px-4 mt-16 md:mt-24 relative">
       {/* Dynamic Show More / Back to Top Button */}
-      <div className="absolute -top-24 left-1/2 transform -translate-x-1/2">
+      <div className="absolute -top-14 md:-top-16 left-1/2 transform -translate-x-1/2">
         <button
           onClick={handleButtonClick}
-          className="bg-black text-white font-bold py-3 px-8 rounded-4xl hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl drop-shadow-2xl flex items-center gap-2"
+          className="bg-black text-white font-bold py-3 px-4 md:px-8 rounded-4xl hover:bg-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl drop-shadow-2xl flex items-center gap-2"
           title={isAllSectionsVisible ? t("backToTop") : t("showMore")}
         >
-          <FontAwesomeIcon icon={isAllSectionsVisible ? faArrowUp : faArrowDown} />
+          <FontAwesomeIcon
+            icon={isAllSectionsVisible ? faArrowUp : faArrowDown}
+          />
           {isAllSectionsVisible ? t("back") : t("showMore")}
         </button>
       </div>
@@ -102,20 +104,18 @@ const Newsletter = ({ isAllSectionsVisible = false, onToggleFeed }) => {
             placeholder={t("newsletterPlaceholder")}
             required
             disabled={isLoading}
-            className="flex-1 px-4 py-3 rounded-lg text-black placeholder-gray-500 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-200"
+            className="flex-1 px-4 py-3 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 bg-white dark:bg-gray-700 border border-transparent dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:bg-gray-200 dark:disabled:bg-gray-800 transition-colors duration-300"
           />
           <button
             type="submit"
             disabled={isLoading}
-            className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap"
+            className="bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-semibold px-3 md:px-6 py-3 rounded-lg transition-colors duration-200 whitespace-nowrap"
           >
             {isLoading ? t("subscribing") : t("subscribe")}
           </button>
         </form>
 
-        <p className="text-gray-400 text-sm mt-4">
-          {t("privacyNotice")}
-        </p>
+        <p className="text-gray-400 text-sm mt-4">{t("privacyNotice")}</p>
       </div>
     </div>
   );

@@ -394,7 +394,7 @@ const AdminProducts = () => {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  className={`px-6 py-3 font-medium text-sm ${
+                  className={`px-3 md:px-6 py-3 font-medium text-sm ${
                     activeTab === tab.id
                       ? "text-indigo-600 border-b-2 border-indigo-600"
                       : "text-gray-500 hover:text-gray-700"
@@ -408,7 +408,7 @@ const AdminProducts = () => {
           </div>
 
           {/* Form */}
-          <form ref={formRef} className="p-6" onSubmit={handleSubmit}>
+          <form ref={formRef} className="p-3 md:p-6" onSubmit={handleSubmit}>
             {/* Basics */}
             {activeTab === "basic" && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -772,7 +772,7 @@ const AdminProducts = () => {
                   ))}
 
                   {formData.variants.length === 0 && (
-                    <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
+                    <div className="text-center py-4 md:py-8 border-2 border-dashed border-gray-300 rounded-lg">
                       <p className="text-gray-500">
                         No variants added yet. Click "Add Variant" to create
                         one.
@@ -920,7 +920,7 @@ const AdminProducts = () => {
 
                 <button
                   type="submit"
-                  className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
+                  className="bg-indigo-600 text-white px-3 md:px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
                 >
                   {isEditing ? "Update Product" : "Add Product"}
                 </button>
@@ -932,7 +932,7 @@ const AdminProducts = () => {
 
       {/* Products List */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800/60 overflow-hidden mt-8">
-        <div className="border-b border-slate-100 dark:border-slate-800/60 p-6 flex flex-col sm:flex-row justify-between items-center bg-slate-50 dark:bg-slate-900/50 gap-4">
+        <div className="border-b border-slate-100 dark:border-slate-800/60 p-3 md:p-6 flex flex-col sm:flex-row justify-between items-center bg-slate-50 dark:bg-slate-900/50 gap-4">
           <h2 className="text-lg font-bold text-slate-800 dark:text-white">
             All Products <span className="text-sm font-normal text-slate-500 dark:text-slate-400 ml-2">({products.length} items)</span>
           </h2>
@@ -945,9 +945,9 @@ const AdminProducts = () => {
           </div>
         </div>
 
-        <div className="p-6 bg-slate-50/50 dark:bg-[#0B1120]/50">
+        <div className="p-3 md:p-6 bg-slate-50/50 dark:bg-[#0B1120]/50">
           {products.length === 0 ? (
-            <div className="text-center py-16 px-4">
+            <div className="text-center py-6 md:py-16 px-4">
               <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-10 h-10 text-slate-300 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
               </div>

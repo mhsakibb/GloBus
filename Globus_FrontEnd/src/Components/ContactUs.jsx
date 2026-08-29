@@ -8,6 +8,27 @@ import {
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.config";
+import { Link } from "react-router-dom";
+
+const renderMessage = (text) => {
+  // Regex to match [text](url)
+  const parts = text.split(/(\[.*?\]\(.*?\))/g);
+  return parts.map((part, index) => {
+    const match = part.match(/\[(.*?)\]\((.*?)\)/);
+    if (match) {
+      return (
+        <Link
+          key={index}
+          to={match[2]}
+          className="text-blue-500 dark:text-blue-400 underline hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+        >
+          {match[1]}
+        </Link>
+      );
+    }
+    return <span key={index}>{part}</span>;
+  });
+};
 
 const ContactUs = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,12 +68,9 @@ const ContactUs = () => {
       const data = await response.json();
 
       setIsTyping(false);
-      
+
       if (response.ok) {
-        setMessages((prev) => [
-          ...prev,
-          { text: data.reply, from: "bot" },
-        ]);
+        setMessages((prev) => [...prev, { text: data.reply, from: "bot" }]);
       } else {
         setMessages((prev) => [
           ...prev,
@@ -145,7 +163,7 @@ const ContactUs = () => {
                     : "bg-gray-200 text-gray-800 dark:text-gray-200 self-start max-w-[70%] dark:bg-gray-800 dark:text-gray-200"
                 }`}
               >
-                {msg.text}
+                {renderMessage(msg.text)}
               </div>
             ))}
 

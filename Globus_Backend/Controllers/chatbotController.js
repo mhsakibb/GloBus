@@ -9,7 +9,7 @@ const chatWithBot = async (req, res) => {
     }
 
     if (!process.env.GEMINI_API_KEY || process.env.GEMINI_API_KEY === 'your_gemini_api_key_here') {
-       return res.status(500).json({ error: "Gemini API Key is missing. Please configure it in the backend .env file." });
+      return res.status(500).json({ error: "Gemini API Key is missing. Please configure it in the backend .env file." });
     }
 
     const client = req.app.locals.mongoClient;

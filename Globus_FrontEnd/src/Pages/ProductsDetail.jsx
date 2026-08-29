@@ -261,7 +261,7 @@ const ProductsDetail = () => {
           <div className="flex gap-3 mt-6">
             <button
               onClick={handleAddToWishlist}
-              className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold flex items-center justify-center gap-2"
+              className="flex-1 bg-blue-600 text-white px-3 md:px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold flex items-center justify-center gap-2"
             >
               <svg
                 className="w-5 h-5"
@@ -278,7 +278,7 @@ const ProductsDetail = () => {
               </svg>
               Add to Wishlist
             </button>
-            <button className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center justify-center gap-2">
+            <button className="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 md:px-6 py-3 rounded-lg hover:bg-gray-200 transition font-semibold flex items-center justify-center gap-2">
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -299,7 +299,7 @@ const ProductsDetail = () => {
 
         {/* Product Info */}
         <div className="flex-1">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-3 md:p-6 border border-gray-200 dark:border-gray-700">
             {/* Brand and Category */}
             <div className="flex items-center gap-4 mb-3">
               <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
@@ -451,7 +451,7 @@ const ProductsDetail = () => {
                 disabled={productData.stock === 0}
               />
               <button
-                className="flex-1 bg-orange-500 text-white px-8 py-4 rounded-lg hover:bg-orange-600 transition font-semibold text-lg"
+                className="flex-1 bg-orange-500 text-white px-4 md:px-8 py-4 rounded-lg hover:bg-orange-600 transition font-semibold text-lg"
                 onClick={handleBuyNow}
                 disabled={productData.stock === 0}
               >
@@ -543,7 +543,7 @@ const ProductsDetail = () => {
             ].map((tab) => (
               <button
                 key={tab.id}
-                className={`px-6 py-4 font-medium whitespace-nowrap ${
+                className={`px-3 md:px-6 py-4 font-medium whitespace-nowrap ${
                   activeTab === tab.id
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500 hover:text-gray-700 dark:text-gray-300"
@@ -556,7 +556,7 @@ const ProductsDetail = () => {
           </div>
         </div>
 
-        <div className="p-6">
+        <div className="p-3 md:p-6">
           {activeTab === "description" && (
             <div>
               <h3 className="text-xl font-semibold mb-4">
@@ -714,7 +714,7 @@ const ProductsDetail = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">
+                <p className="text-gray-500 text-center py-4 md:py-8">
                   No reviews yet. Be the first to review this product!
                 </p>
               )}
@@ -747,7 +747,7 @@ const ProductsDetail = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-8">
+                <p className="text-gray-500 text-center py-4 md:py-8">
                   No FAQs available for this product.
                 </p>
               )}
@@ -757,13 +757,13 @@ const ProductsDetail = () => {
       </div>
 
       {/* Related Products Section */}
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 md:p-6">
         <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Related Products
         </h3>
 
         {loadingRelated ? (
-          <div className="flex justify-center items-center py-8">
+          <div className="flex justify-center items-center py-4 md:py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           </div>
         ) : relatedProducts.length > 0 ? (
@@ -830,7 +830,7 @@ const ProductsDetail = () => {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500 text-center py-8">
+          <p className="text-gray-500 text-center py-4 md:py-8">
             No related products found.
           </p>
         )}
