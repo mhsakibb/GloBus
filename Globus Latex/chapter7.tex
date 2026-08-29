@@ -1,0 +1,41 @@
+\chapter{CONCLUSION AND FUTURE WORKS}
+\section{Conclusion}
+Our project, GloBus, is a successful venture into building a modern, highly scalable digital marketplace. Moving away from legacy monolithic structures, we adopted the robust MERN stack (MongoDB, Express.js, React.js, Node.js) to deliver a seamless shopping experience for consumers and a powerful management interface for administrators. The primary objective was to create a framework that handles complex e-commerce operations—such as real-time cart state management, AI-driven visual search, and secure payment processing—with absolute efficiency.
+
+At the end of this project lifecycle, it is concluded that we have successfully made efforts on the following points:
+\begin{itemize}
+    \item Developed a highly responsive frontend using React 19, Vite, and Tailwind CSS v4.
+    \item Engineered a secure backend architecture utilizing Express.js and MongoDB.
+    \item Integrated advanced AI capabilities, specifically an AI Vision product search module.
+    \item Secured user data using Bcrypt password hashing and JWT (JSON Web Tokens).
+    \item Implemented the SSLCommerz payment gateway to facilitate local transactions in Bangladesh.
+    \item Designed a comprehensive Admin Dashboard for full CRUD operations on products and orders.
+    \item Finally, the system was successfully tested across various modules ensuring error-free deployment.
+\end{itemize}
+
+\section{Outcomes}
+The deployment and testing of GloBus yielded the following positive outcomes:
+\begin{itemize}
+    \item \textbf{Enhanced Shopping Experience:} Provided an intuitive UI with Dark/Light mode and multi-language support.
+    \item \textbf{Secure Transactions:} Successfully bridged the trust gap by integrating verified local payment methods.
+    \item \textbf{Technological Advancement:} Showcased how AI (Vision Search and Chatbot) can drastically reduce the effort required for a consumer to find a desired product.
+    \item \textbf{Operational Efficiency:} Delivered a turnkey solution for administrators to manage inventory and fulfill orders digitally without requiring third-party software.
+\end{itemize}
+
+\section{Current Limitations}
+While GloBus is fully operational, there are a few limitations in the current architecture that we aim to overcome in the future:
+\begin{itemize}
+    \item \textbf{Single-Vendor Architecture:} Currently, GloBus operates on a B2C (Business to Consumer) model where only the central Administrator can upload and manage products. It does not yet support third-party sellers.
+    \item \textbf{Manual Logistics Tracking:} While order status can be updated manually in the admin panel, the system is not yet integrated with local courier APIs (e.g., Pathao, RedX) for automated real-time shipping updates.
+    \item \textbf{Cash on Delivery (COD) Verification:} Although SSLCommerz handles digital payments flawlessly, enabling a secure COD option in Bangladesh requires strict SMS OTP verification to prevent fake orders, which is currently missing.
+\end{itemize}
+
+\section{Future Works}
+GloBus has laid a powerful foundation. If the platform scales, several vital features can be integrated to compete directly with massive e-commerce giants.
+\begin{itemize}
+    \item \textbf{Multi-Vendor Marketplace Transition:} In the future, we aim to transition the database schema and routing to allow independent sellers to open their own "shops" within GloBus, complete with a vendor-specific dashboard and commission tracking.
+    \item \textbf{Mobile Application Development:} Utilizing our existing Node.js backend, we plan to develop a cross-platform mobile application using React Native to capture the massive mobile-first consumer base.
+    \item \textbf{AI Recommendation Engine:} We intend to implement a Machine Learning model that tracks user behavior (clicks, cart additions, previous purchases) to provide highly personalized product recommendations on the home page.
+    \item \textbf{Logistics \& Delivery API Integration:} Integrate third-party courier services directly into the backend so that when an order is marked as "Shipped", the tracking ID automatically fetches live geolocation data for the user.
+    \item \textbf{Advanced Security:} Implement Two-Factor Authentication (2FA) via SMS or Authenticator apps for both standard users and administrators to elevate platform security to enterprise standards.
+\end{itemize}

@@ -1,0 +1,123 @@
+\chapter{SYSTEM TESTING}
+\section{Introduction to Testing}
+Testing is the process in which the system is run using manually created or automated inputs to verify whether the system is working correctly as desired. During systems testing, the GloBus platform is used experimentally to ensure that the software does not fail under expected or unexpected loads. In other words, we verify that it runs according to its specifications and provides a seamless shopping experience for the users. Special test data are input for processing, and the results are examined to locate bugs before deployment.
+
+Testing of a system is generally done in two phases: Unit Testing, which is performed for each module (e.g., Cart, Checkout, Authentication) independently upon its completion, and System Testing, which is performed on the integrated system at the end of the development lifecycle.
+
+\section{Validation Criteria}
+The validation criteria for the GloBus e-commerce platform are as follows:
+\begin{itemize}
+    \item Form inputs (e.g., Registration, Checkout details) are rigorously validated on the frontend (React) before being sent, and re-validated on the backend (Node.js) before storing them in MongoDB.
+    \item All screens maintain a consistent UI/UX. They follow a strict Tailwind CSS utility class structure, maintaining consistent color palettes across both Dark and Light modes.
+    \item Unique constraints (e.g., Email addresses during registration) cannot be duplicated in the database.
+    \item Payment validation must strictly await server-side IPN (Instant Payment Notification) from SSLCommerz before fulfilling an order.
+\end{itemize}
+
+\section{Types of Testing Performed}
+
+\subsection{Functional Testing}
+Functional testing is executed to ensure that every feature of the platform works as intended. For GloBus, this meant verifying that users can successfully register, search for products using text or AI Vision, add items to the cart, and securely check out.
+
+\subsection{Unit Testing}
+Unit testing focuses on testing individual components in isolation. For our frontend, this meant testing individual React components (like the `AddToCartButton` or `Timer`). On the backend, controllers (like `productController.js` and `paymentController.js`) were tested in isolation to ensure data is fetched and manipulated correctly without running the entire server infrastructure.
+
+\subsection{Integration Testing}
+Integration testing verifies that different modules work together correctly. The main purpose was to ensure that the interface between the frontend (React/Vite) and the backend REST API (Express) functions perfectly. A critical integration test involved ensuring the Shopping Cart data synchronizes flawlessly with the database upon user login.
+
+\section{Test Data Used}
+The proper selection of data is very important. If the test data is not representative of real-world scenarios, the reliability of the system is questionable.
+\begin{itemize}
+    \item \textbf{Using Live Test Data:} Live tests were conducted using real sandbox credentials for the SSLCommerz payment gateway to simulate actual financial transactions without risking real money.
+    \item \textbf{Using Artificial Test Data:} Artificial data (dummy products, fake user accounts) were generated using our database seed script (`seedOrders.js`) to test how the UI handles large volumes of products and pagination.
+\end{itemize}
+
+\section{Test Cases}
+Every core functionality of the system was checked properly to see whether it yields the right result.
+
+\begin{table}[h]
+\centering
+\caption{Testing Cases for GloBus Platform}
+\begin{tabular}{|l|p{6cm}|l|l|}
+\hline
+\textbf{Module} & \textbf{Test Case Scenarios} & \textbf{Tested} & \textbf{Working} \\
+\hline
+Authentication & 1. Verify UI design and form validation \newline 2. Check MongoDB insertion on Sign Up \newline 3. Check JWT token generation on Login \newline 4. Verify warning for wrong password & Yes & Yes \\
+\hline
+Product Catalog & 1. Check database connection \newline 2. Verify Skeleton Loading UI \newline 3. Verify category filtering and sorting & Yes & Yes \\
+\hline
+AI Vision Search & 1. Upload sample image \newline 2. Verify AI processes image accurately \newline 3. Return visually similar products & Yes & Yes \\
+\hline
+Shopping Cart & 1. Add product to cart \newline 2. Increase/Decrease quantity \newline 3. Verify real-time total price calculation \newline 4. Check DB persistence & Yes & Yes \\
+\hline
+Checkout & 1. Validate shipping address form \newline 2. Check SSLCommerz gateway redirection \newline 3. Verify order success/fail IPN handling & Yes & Yes \\
+\hline
+Admin Panel & 1. Verify Admin-only route protection \newline 2. Add/Edit/Delete Product operations \newline 3. Update Order Status (Pending to Shipped) & Yes & Yes \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Testing Results}
+The authentication system works flawlessly. If a user provides an incorrect password or an unregistered email, the system displays a clear warning toast notification. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Successful Registration}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Warning for Invalid Credentials}
+\end{figure}
+
+We extensively tested the AI Vision search and standard text search. By inputting sample queries and uploading images, the platform successfully retrieved the correct matching items from the database.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: AI Vision Search Accurate Match}
+\end{figure}
+
+The Shopping Cart and Checkout pipeline was subjected to rigorous integration testing. Adding items, modifying quantities, and proceeding to the SSLCommerz sandbox payment gateway resulted in successful transaction processing and order generation in the database.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Cart Total Calculation Accuracy}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Successful SSLCommerz Sandbox Payment}
+\end{figure}
+
+Finally, Admin CRUD operations were tested. Using the Admin Dashboard, we successfully uploaded a new product with multiple images, updated its stock, and changed an existing order's status.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Admin Product Upload Success}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Test Result: Admin Order Status Update}
+\end{figure}
+
+\section{Testing Summary}
+We tested all the panels assigned for Users and Administrators. The project was tested locally and in the staging environment with all possible interaction flows. The testing involved using generated dummy records via `seedOrders.js` to populate the database and checking whether the frontend accurately reflects the backend state.
+
+The testing process involved:
+\begin{itemize}
+    \item Testing for successful and failed login processes.
+    \item Testing for form validation across Checkout and Contact pages.
+    \item Testing the accuracy of the AI Vision image processing.
+    \item Testing real-time Cart state management.
+    \item Testing the SSLCommerz payment pipeline and order generation.
+    \item Testing Admin CRUD operations on products and users.
+\end{itemize}
+
+The project was successfully tested, and several minor bugs related to responsive design on smaller screens and cart synchronization were fixed. The final system operates smoothly without any critical failures.

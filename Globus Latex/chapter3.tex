@@ -1,0 +1,147 @@
+\chapter{SYSTEM EVALUATION \& DESIGN}
+\section{Introduction}
+Research works in the arena of modern web applications emphasize the transition from monolithic structures to highly scalable, component-driven architectures. To overcome the limitations of legacy e-commerce systems—such as slow loading times, poor state management, and complex user interfaces—we have proposed and developed "GloBus" using the MERN stack (MongoDB, Express.js, React.js, Node.js). In this chapter, we evaluate the system requirements, present our chosen software development methodology, and provide comprehensive design diagrams (ERD, DFD, Use Case) that define the architectural blueprint of GloBus. Finally, we showcase the core features implemented within the platform.
+
+\section{Requirement Analysis}
+E-commerce has evolved over the last decade from being a supplementary retail tool to becoming the primary backbone of global trade. The initial focus of our research was to identify the pain points of existing platforms in Bangladesh. Based on user feedback and market analysis, we developed system conditions for a purpose-built digital marketplace. These findings led us to design GloBus with a focus on speed (React + Vite), localized secure payments (SSLCommerz), and advanced search capabilities (AI Vision). The system requirements are broadly categorized into non-functional and functional requirements.
+
+\subsection{Non-Functional Requirements}
+Requirement Analysis, also known as Requirement Engineering, is the process of defining user expectations for a new software being built. Non-functional requirements dictate the system's operational capabilities and constraints rather than specific behaviors. For GloBus, the critical non-functional demands include:
+\begin{itemize}
+    \item \textbf{Usability Demand:} The system must have an intuitive interface with seamless navigation (e.g., Dark/Light mode, multi-language support).
+    \item \textbf{Performance \& Capacity Demand:} The frontend must load quickly even on mid-range devices, managed efficiently by Vite and React's virtual DOM.
+    \item \textbf{Security Demand:} High security for user data and passwords using Bcrypt and JWT authentication.
+    \item \textbf{Data Integrity Demand:} Accurate real-time syncing of the shopping cart and inventory database.
+    \item \textbf{Availability Demand:} The system architecture should support continuous uptime.
+    \item \textbf{Manageability Demand:} A robust admin panel for effortless management of the platform.
+\end{itemize}
+
+\subsection{Functional Requirements}
+A Functional Requirement (FR) is a description of the service that the software must offer. It describes specific functionalities which define what the system is expected to perform.
+
+Functional Requirements of GloBus include:
+\begin{itemize}
+    \item User Registration (Sign Up) and Secure Sign In.
+    \item Browse and Search Products by category, keyword, or AI Vision (Image Search).
+    \item Add items to the Shopping Cart and manage cart quantities.
+    \item Add favorite items to a Wishlist.
+    \item Secure multi-step Checkout process with delivery information.
+    \item Process payments securely via SSLCommerz.
+    \item View Order History and Track Order Status.
+    \item Admin ability to Add, Update, and Delete Products (CRUD).
+    \item Admin ability to view, manage, and update Order statuses.
+    \item Admin ability to manage Users (Ban, Update Role).
+    \item Newsletter Subscription.
+\end{itemize}
+
+\section{Methodology}
+\subsection{Agile Development Model}
+We chose the Agile Development model for our project. Agile is a faster, highly iterative way to develop software. It is a people- and result-focused methodology that is highly flexible and makes it easy to improve software quality progressively. It works on the principle of fast and incremental delivery.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Agile Development Model}
+\end{figure}
+
+Reasons for choosing Agile Development for GloBus:
+\begin{itemize}
+    \item Allows for continuous integration of complex features (like AI Vision and SSLCommerz) in sprints.
+    \item Faster releases and continuous testing of individual components (React components).
+    \item Greater project transparency and easy adaptation to changing requirements.
+    \item Competitive advantage achieved by spotting defects (e.g., cart syncing issues) early in the development process rather than at the end.
+\end{itemize}
+
+\subsection{Gantt Chart}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Project Gantt Chart}
+\end{figure}
+
+\section{System Architecture Diagrams}
+\subsection{Data Flow Diagram (DFD)}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Context Level DFD of GloBus}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Level-0 DFD of GloBus}
+\end{figure}
+
+\subsection{Entity Relationship (ER) Diagram}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{ER Diagram of GloBus Database}
+\end{figure}
+
+\subsection{Use Case Diagram}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Use Case Diagram for Customer and Admin}
+\end{figure}
+
+\subsection{Activity Diagram}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Activity Diagram of Checkout Process}
+\end{figure}
+
+\subsection{Sequence Diagram}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Sequence Diagram of Payment Gateway Integration}
+\end{figure}
+
+\section{Feature Showcases}
+The following figures demonstrate the core features and user interface of the GloBus platform.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Home Page and Promotional Banner}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Product Search and Categorized Browsing}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: AI Vision Product Search}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Interactive Shopping Cart}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Secure Checkout with SSLCommerz}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Admin Dashboard - Statistics Overview}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Feature: Admin Dashboard - Product Management}
+\end{figure}

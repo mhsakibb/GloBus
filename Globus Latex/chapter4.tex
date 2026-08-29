@@ -1,0 +1,111 @@
+\chapter{IMPLEMENTATION \& SYSTEM FEATURES}
+\section{User Section}
+In the GloBus platform, we have implemented role-based access control (RBAC) to ensure security and proper functionality separation. We have three primary kinds of users interacting with the system:
+\begin{itemize}
+    \item \textbf{Guest User:} Unauthenticated users who can browse products, search, and view categories, but must log in to checkout.
+    \item \textbf{Customer:} Authenticated users who can manage their cart, save wishlists, checkout via SSLCommerz, and track their order history.
+    \item \textbf{Administrator:} Highly privileged users who access the secure admin panel to manage products, orders, users, and view platform statistics.
+\end{itemize}
+
+\section{Core System Implementations}
+In this section, we showcase the implementation of the core features of the GloBus system. As per modern software engineering practices, we focus on the user interface, system capabilities, and workflow implementations rather than raw backend code snippets.
+
+\subsection{Authentication \& Security}
+GloBus utilizes a hybrid authentication approach integrating Firebase Authentication for seamless user onboarding and JSON Web Tokens (JWT) for secure, stateless session management on our Node.js backend. User passwords are encrypted using Bcrypt before being stored in MongoDB.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Secure Login and Registration Interface}
+\end{figure}
+
+\subsection{Product Browsing \& AI Vision Search}
+The core of the e-commerce experience is finding the right product. GloBus implements a highly dynamic frontend using React 19 and Vite. Products can be filtered by categories, sorted, and searched. 
+A standout implementation is the AI Vision feature, which allows users to upload an image and let the system find visually similar products.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Dynamic Product Catalog and Filters}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: AI Vision Product Search Module}
+\end{figure}
+
+\subsection{Interactive Shopping Cart}
+The shopping cart state is managed globally using React Context API, ensuring that cart totals and item quantities update instantaneously across the application without requiring a page reload. Cart data is also persisted in the database so users do not lose their items upon logging out.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Interactive Shopping Cart Management}
+\end{figure}
+
+\subsection{Checkout \& SSLCommerz Integration}
+The checkout process is broken down into intuitive steps: verifying the cart, collecting delivery information, and finally, payment processing. We successfully integrated the SSLCommerz payment gateway, allowing customers to pay via local mobile financial services (bKash, Nagad) and cards.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Multi-step Checkout Process}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: SSLCommerz Payment Gateway Integration}
+\end{figure}
+
+\subsection{User Profile \& Order Tracking}
+Authenticated users have a dedicated profile dashboard where they can update their personal information and track the status of their ongoing and past orders.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: User Profile and Order History}
+\end{figure}
+
+\section{Admin Dashboard Implementation}
+The administrative backend is segregated into a private route structure, accessible only to users with the 'Admin' role.
+
+\subsection{Analytics \& Statistics Overview}
+Upon logging into the admin panel, administrators are presented with a real-time overview of the platform's health, including Total Sales, Active Users, and Pending Orders.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Admin Analytics Dashboard}
+\end{figure}
+
+\subsection{Product \& Inventory Management}
+Admins can perform full CRUD operations on the product catalog. This includes uploading product images (handled via Multer), setting prices, and managing stock levels.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Admin Product Management (Add/Edit)}
+\end{figure}
+
+\subsection{Order Fulfillment Management}
+The order management module allows admins to view incoming orders, verify payment statuses via IPN (Instant Payment Notification), and update fulfillment statuses (e.g., from Processing to Shipped).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Admin Order Fulfillment System}
+\end{figure}
+
+\subsection{User Access Management}
+Admins have the authority to view the user list, elevate standard users to administrators, or ban malicious users from the platform.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{images/logo.png}
+\caption{Implementation: Admin User Access Control}
+\end{figure}
+
+\section{Conclusion}
+The implementation of GloBus successfully translates our architectural designs into a functional, highly responsive digital marketplace. By leveraging the MERN stack and integrating modern features like AI Vision and localized payments, the system provides a robust foundation for scalable e-commerce operations.

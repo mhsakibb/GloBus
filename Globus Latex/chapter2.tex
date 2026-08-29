@@ -1,0 +1,107 @@
+\chapter{EXISTING SYSTEM \& LITERATURE REVIEW}
+\section{Introduction}
+E-commerce is among the most significant transformations propelled by the internet revolution. It has fundamentally altered the retail landscape by removing geographical barriers, allowing consumers to purchase goods anytime and anywhere. E-commerce platforms deliver digital storefronts through electronic information and communications technologies, providing structured catalog browsing, secure digital payments, and efficient order fulfillment. 
+
+The primary aim of analyzing existing systems is to understand the current e-commerce landscape, specifically within the context of Bangladesh. By identifying the strengths and limitations of current market leaders, we can establish the essential features required for a modern platform. This analysis directly informs the architecture and feature set of GloBus, ensuring it addresses existing pain points while providing a superior user experience.
+
+\section{Existing Systems in Bangladesh}
+We have analyzed several prominent e-commerce systems operating in Bangladesh. They are listed below.
+
+\subsection{Daraz Bangladesh}
+Daraz is the largest online general marketplace in Bangladesh, operating under the Alibaba Group. It connects thousands of sellers with millions of buyers across the country, offering a massive catalog ranging from electronics to fashion and groceries.
+
+\textbf{Advantages}
+\begin{itemize}
+    \item Offers the largest product catalog in the country.
+    \item Connects buyers and sellers from any part of Bangladesh through its extensive logistics network (Daraz Express).
+    \item Frequent massive promotional campaigns (e.g., 11.11, Eid Sales) that offer heavy discounts.
+    \item Features "Daraz Mall" for authentic, branded products.
+    \item Provides multiple payment options, including Cash on Delivery (COD) and mobile banking.
+\end{itemize}
+
+\textbf{Disadvantages}
+\begin{itemize}
+    \item Due to the multi-vendor model, quality control is often inconsistent, leading to frequent customer complaints about counterfeit or damaged goods.
+    \item The user interface can feel cluttered and overwhelming with excessive banners and pop-ups.
+    \item Customer support resolution times can be slow during peak sale seasons.
+\end{itemize}
+
+\subsection{Chaldal}
+Chaldal is the leading hyper-local online grocery delivery platform in Bangladesh. It focuses on delivering daily necessities rapidly to urban consumers through a network of micro-warehouses.
+
+\textbf{Advantages}
+\begin{itemize}
+    \item Extremely fast delivery times (often within an hour in Dhaka).
+    \item Highly optimized and localized inventory management system.
+    \item Excellent user interface that makes finding groceries effortless.
+    \item Strong customer trust built on a very reliable and instant refund/return policy.
+\end{itemize}
+
+\textbf{Disadvantages}
+\begin{itemize}
+    \item Limited primarily to groceries and daily household items; not a general e-commerce marketplace.
+    \item Delivery coverage is mostly restricted to major metropolitan areas.
+\end{itemize}
+
+\subsection{Pickaboo}
+Pickaboo is a specialized e-commerce platform focusing strictly on mobile phones, gadgets, and electronics. They operate on an omni-channel model, combining their online platform with physical offline stores.
+
+\textbf{Advantages}
+\begin{itemize}
+    \item Ensures 100\% authentic products with official warranties.
+    \item Offers attractive EMI (Equated Monthly Installment) facilities for expensive gadgets.
+    \item High consumer trust due to their physical hubs where customers can test devices.
+    \item Fast and secure delivery tailored for high-value items.
+\end{itemize}
+
+\textbf{Disadvantages}
+\begin{itemize}
+    \item Product catalog is limited exclusively to electronics and appliances.
+    \item Pricing is sometimes strictly tied to official MSRP, offering fewer "bargain" deals compared to open marketplaces.
+\end{itemize}
+
+\section{Supporting Literature}
+\subsection{Used Diagrams}
+\textbf{Entity Relationship Diagram (ERD)}\\
+An Entity-relationship model (ER model) describes the structure of a database with the help of a diagram. An ER model is a blueprint of a database that can later be implemented as a physical database schema. The main components of an E-R model are:
+\begin{itemize}
+    \item \textbf{Entity:} An entity set is a group of similar entities, representing tables or collections in a database. In our GloBus ER diagram, the primary entities include: \textit{User, Product, Order, Category, Cart, Payment, Wishlist, and Admin}.
+    \item \textbf{Attribute:} Attributes are the properties which define the entity type.
+    \item \textbf{Relationship:} A relationship is represented by a diamond shape in the ER diagram, showing the associations among entities.
+\end{itemize}
+
+\textbf{Mapping Cardinality of ERD}
+\begin{itemize}
+    \item \textbf{One-to-One:} One record in a table is associated with one and only one record in another table.
+    \item \textbf{One-to-Many:} A parent record in one table can reference several child records in another table (e.g., One User can have Many Orders).
+    \item \textbf{Many-to-Many:} An entity A may contain a parent instance for which there are many children in B and vice versa (e.g., Many Orders can contain Many Products).
+\end{itemize}
+
+\textbf{Data Flow Diagram (DFD)}\\
+A data-flow diagram represents the flow of data through a process or a system. It provides information about the outputs and inputs of each entity and the process itself without detailing control flows or loops.
+\begin{itemize}
+    \item \textbf{Process:} An activity that transforms data flows.
+    \item \textbf{Data Flow:} Movement of data between entities, represented with an arrow.
+    \item \textbf{Data Store:} A repository that holds data for later access.
+    \item \textbf{External Entity:} Actors or sources that produce and consume data interacting with the system (e.g., Customer, Admin, Payment Gateway).
+\end{itemize}
+
+\textbf{Use Case Diagram}\\
+A use case diagram summarizes the details of a system and the interactions between users (actors) and the system. It specifies the events in a system and how those events flow to achieve specific goals.
+\begin{itemize}
+    \item \textbf{System:} A sequence of actions and interactions.
+    \item \textbf{Use Case:} Ovals representing the different functions a user might perform (e.g., "Add to Cart", "Process Payment").
+    \item \textbf{Actors:} The users (Customer, Admin) that interact with the system.
+\end{itemize}
+
+\subsection{Technology Used}
+GloBus is a modern web application built using the highly robust MERN stack, moving away from legacy monolithic architectures to ensure speed, scalability, and security.
+\begin{itemize}
+    \item \textbf{Frontend:} Built with \textbf{React.js (v19)} and \textbf{Vite} for blazing-fast performance. \textbf{Tailwind CSS (v4)} is utilized for responsive, utility-first styling.
+    \item \textbf{Backend:} Engineered using \textbf{Node.js} and the \textbf{Express.js} framework to build RESTful APIs.
+    \item \textbf{Database:} \textbf{MongoDB}, a flexible NoSQL database, manages complex data structures for products and orders seamlessly.
+    \item \textbf{Authentication \& Payment:} Integrated with \textbf{Firebase} and \textbf{JWT} for secure logins, and \textbf{SSLCommerz} for handling localized payment processing.
+\end{itemize}
+
+\section{Conclusion}
+E-commerce is continually evolving, demanding faster interfaces, smarter search capabilities, and highly secure payment infrastructures. While several massive platforms exist in Bangladesh, they often suffer from cluttered user interfaces, quality control issues, or limited catalog focus. The analysis of these existing systems solidifies the requirement for GloBus: a platform that merges the extensive capabilities of a general marketplace with the premium user experience, AI integrations, and structural integrity of a modern MERN-stack application.
