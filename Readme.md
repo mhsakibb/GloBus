@@ -14,6 +14,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 - **Shopping Cart & Checkout**: Interactive cart management and seamless checkout process.
 - **Secure Payments**: Integrated with **SSLCommerz** for secure online transactions in Bangladesh.
 - **Authentication**: Secure user signup, login, and profile management (Firebase Auth & custom JWT).
+- **AI Customer Support**: Intelligent customer support chatbot powered by Google's Gemini AI, supporting Bengali and Banglish queries.
 - **Newsletter Subscription**: Keep up with the latest deals and offers.
 
 ### For Admins
@@ -39,6 +40,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 - **Framework**: Express.js
 - **Database**: MongoDB (Native Driver)
 - **Payment Gateway**: SSLCommerz (`sslcommerz-lts`)
+- **AI Integration**: Google GenAI for chatbot capabilities
 - **Other Utilities**: Multer (File Uploads), Bcrypt (Password Hashing), CORS, Dotenv
 
 # Getting Started
@@ -49,6 +51,8 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
 - MongoDB Connection URI
 - Firebase Project setup
 - SSLCommerz Sandbox/Live Store ID & Password
+- Gemini API Key (for Chatbot)
+- Docker & Docker Compose (optional, for containerized setup)
 
 ### Installation
 
@@ -66,6 +70,7 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    ```env
    PORT=5000
    MONGODB_URI=your_mongodb_connection_string
+   GEMINI_API_KEY=your_gemini_api_key
    ```
 
    Create a `.env.local` file in the `Globus_FrontEnd` directory:
@@ -95,10 +100,21 @@ GloBus is a modern, feature-rich, and scalable e-commerce platform built with th
    npm run dev
    ```
 
+### Running with Docker
+
+Alternatively, you can run the entire application using Docker:
+
+```bash
+docker-compose up --build
+```
+This will start both the frontend (http://localhost:5173) and backend (http://localhost:5000) services concurrently.
+
 # Project Structure
 
 ```text
 GloBus/
+├── docker-compose.yml  # Docker configuration for easy deployment
+├── Globus Latex/       # LaTeX source files for project documentation and reports
 ├── package.json        # Root package to run concurrently
 ├── Globus_FrontEnd/    # React/Vite Frontend
 │   ├── src/            # Components, Pages, Assets
