@@ -11,100 +11,136 @@ In the GloBus platform, we have implemented role-based access control (RBAC) to 
 In this section, we showcase the implementation of the core features of the GloBus system. As per modern software engineering practices, we focus on the user interface, system capabilities, and workflow implementations rather than raw backend code snippets.
 
 \subsection{Authentication \& Security}
-GloBus utilizes a hybrid authentication approach integrating Firebase Authentication for seamless user onboarding and JSON Web Tokens (JWT) for secure, stateless session management on our Node.js backend. User passwords are encrypted using Bcrypt before being stored in MongoDB.
+GloBus utilizes a hybrid authentication approach integrating Firebase Authentication for seamless user onboarding and JSON Web Tokens (JWT) for secure, stateless session management on our Node.js backend. User passwords are encrypted using Bcrypt before being stored in MongoDB. The implemented secure login and registration interface is shown in Figure \ref{fig:login_reg}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/login_reg.png}
 \caption{Implementation: Secure Login and Registration Interface}
+\label{fig:login_reg}
 \end{figure}
 
-\subsection{Product Browsing \& AI Vision Search}
-The core of the e-commerce experience is finding the right product. GloBus implements a highly dynamic frontend using React 19 and Vite. Products can be filtered by categories, sorted, and searched. 
-A standout implementation is the AI Vision feature, which allows users to upload an image and let the system find visually similar products.
+\subsection{Home Page Interface}
+The landing page of the GloBus platform is designed to immediately engage the user. It features dynamic promotional banners, featured product carousels, and quick category navigation to provide a seamless browsing entry point, as illustrated in Figure \ref{fig:home_globus}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/home_globus.png}
+\caption{Implementation: Home Page and Promotional Banner}
+\label{fig:home_globus}
+\end{figure}
+
+\subsection{Dynamic Product Catalog}
+The core of the e-commerce experience is finding the right product. GloBus implements a highly dynamic frontend using React 19 and Vite. As shown in Figure \ref{fig:product_search}, products can be instantly filtered by categories, sorted by price, and searched via the interactive catalog interface without reloading the page.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/product_search.png}
 \caption{Implementation: Dynamic Product Catalog and Filters}
+\label{fig:product_search}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{AI Vision Product Search}
+A standout technical implementation in GloBus is the AI Vision feature. Figure \ref{fig:chat_ai} demonstrates how this module allows users to upload a custom image directly from their device, letting the system analyze and find visually similar products across the entire catalog.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/ai_search_by_picture.png}
 \caption{Implementation: AI Vision Product Search Module}
+\label{fig:chat_ai}
+\end{figure}
+
+\subsection{Intelligent Chatbot \& Voice Assistant}
+To enhance customer support and user engagement, GloBus integrates an intelligent, context-aware chatbot. As shown in Figure \ref{fig:chatbot}, this AI-powered assistant analyzes the website's business data and product catalog in real-time to provide accurate, personalized answers to customer queries. Furthermore, it includes a robust voice interaction option, allowing users to speak their queries directly into the system for a highly accessible, hands-free shopping experience.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/chat_ai.jpeg}
+\caption{Implementation: Intelligent Chatbot with Voice Support}
+\label{fig:chatbot}
 \end{figure}
 
 \subsection{Interactive Shopping Cart}
-The shopping cart state is managed globally using React Context API, ensuring that cart totals and item quantities update instantaneously across the application without requiring a page reload. Cart data is also persisted in the database so users do not lose their items upon logging out.
+The shopping cart state is managed globally using React Context API, ensuring that cart totals and item quantities update instantaneously across the application. Figure \ref{fig:cart} displays the interactive shopping cart, which syncs with the database to ensure users do not lose their items upon logging out.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/cart.png}
 \caption{Implementation: Interactive Shopping Cart Management}
+\label{fig:cart}
 \end{figure}
 
-\subsection{Checkout \& SSLCommerz Integration}
-The checkout process is broken down into intuitive steps: verifying the cart, collecting delivery information, and finally, payment processing. We successfully integrated the SSLCommerz payment gateway, allowing customers to pay via local mobile financial services (bKash, Nagad) and cards.
+\subsection{Multi-step Checkout Process}
+The checkout process is broken down into intuitive steps for verifying the cart and collecting delivery information. Figure \ref{fig:checkout} shows the implementation of the checkout interface where users confirm their final order details before payment.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/multistep_checkout.png}
 \caption{Implementation: Multi-step Checkout Process}
+\label{fig:checkout}
 \end{figure}
 
-\begin{figure}[h]
+\subsection{SSLCommerz Payment Integration}
+We successfully integrated the SSLCommerz payment gateway, allowing customers to pay via local mobile financial services (such as bKash and Nagad) as well as credit/debit cards. The live gateway interface is captured in Figure \ref{fig:sslcommerz}.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/SSL_payment.png}
 \caption{Implementation: SSLCommerz Payment Gateway Integration}
+\label{fig:sslcommerz}
 \end{figure}
 
 \subsection{User Profile \& Order Tracking}
-Authenticated users have a dedicated profile dashboard where they can update their personal information and track the status of their ongoing and past orders.
+Authenticated users have a dedicated profile dashboard. As demonstrated in Figure \ref{fig:user_profile}, this interface allows customers to update their personal information, manage their addresses, and track the real-time status of their ongoing and past orders.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/my-account-page.png}
 \caption{Implementation: User Profile and Order History}
+\label{fig:user_profile}
 \end{figure}
 
 \section{Admin Dashboard Implementation}
-The administrative backend is segregated into a private route structure, accessible only to users with the 'Admin' role.
+The administrative backend is segregated into a private route structure, accessible only to users with the highly privileged 'Admin' role.
 
 \subsection{Analytics \& Statistics Overview}
-Upon logging into the admin panel, administrators are presented with a real-time overview of the platform's health, including Total Sales, Active Users, and Pending Orders.
+Upon logging into the admin panel, administrators are presented with a real-time analytics overview. Figure \ref{fig:admin_main} illustrates this dashboard, displaying critical platform health metrics including Total Sales, Active Users, and Pending Orders at a glance.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_dashboard_main.png}
 \caption{Implementation: Admin Analytics Dashboard}
+\label{fig:admin_main}
 \end{figure}
 
 \subsection{Product \& Inventory Management}
-Admins can perform full CRUD operations on the product catalog. This includes uploading product images (handled via Multer), setting prices, and managing stock levels.
+Admins can perform full CRUD (Create, Read, Update, Delete) operations on the product catalog. Figure \ref{fig:admin_products} shows the interface used for uploading product images (handled via Multer), setting discount prices, and managing stock levels.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_dashboard_products.png}
 \caption{Implementation: Admin Product Management (Add/Edit)}
+\label{fig:admin_products}
 \end{figure}
 
 \subsection{Order Fulfillment Management}
-The order management module allows admins to view incoming orders, verify payment statuses via IPN (Instant Payment Notification), and update fulfillment statuses (e.g., from Processing to Shipped).
+The order management module allows admins to view incoming orders and verify payment statuses via IPN (Instant Payment Notification). As shown in Figure \ref{fig:admin_orders}, administrators use this interface to update fulfillment statuses (e.g., from 'Processing' to 'Shipped').
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_orders.png}
 \caption{Implementation: Admin Order Fulfillment System}
+\label{fig:admin_orders}
 \end{figure}
 
 \subsection{User Access Management}
-Admins have the authority to view the user list, elevate standard users to administrators, or ban malicious users from the platform.
+Admins have the ultimate authority over platform access. Figure \ref{fig:admin_users} demonstrates the user management interface where admins can view the registered user list, elevate standard users to administrators, or ban malicious users from the platform.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/admin_users.png}
 \caption{Implementation: Admin User Access Control}
+\label{fig:admin_users}
 \end{figure}
 
 \section{Conclusion}
