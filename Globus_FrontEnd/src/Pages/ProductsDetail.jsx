@@ -17,6 +17,14 @@ const ProductsDetail = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loadingRelated, setLoadingRelated] = useState(false);
+  
+  // Review States
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewError, setReviewError] = useState("");
+  
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // Load product dynamically on state or id change
   useEffect(() => {
@@ -125,6 +133,59 @@ const ProductsDetail = () => {
       alert(`${productData.name || "Product"} added to wishlist!`);
     } catch (err) {
       console.error("Wishlist save error:", err);
+    }
+  };
+
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      setReviewError("Please login to submit a review.");
+      return;
+    }
+    if (reviewRating === 0) {
+      setReviewError("Please select a rating.");
+      return;
+    }
+    setReviewSubmitting(true);
+    setReviewError("");
+
+    try {
+      const targetUrl = API_URL.endsWith("/")
+        ? `${API_URL}api/products/${productData._id}/reviews`
+        : `${API_URL}/api/products/${productData._id}/reviews`;
+
+      const res = await fetch(targetUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user: user.name,
+          rating: reviewRating,
+          comment: reviewComment,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setReviewError(data.message || "Failed to submit review");
+        return;
+      }
+
+      // Update local productData to immediately show the new review and rating
+      setProductData({
+        ...productData,
+        reviews: [...(productData.reviews || []), data.review],
+        ratings: data.ratings,
+      });
+
+      // Reset form
+      setReviewRating(0);
+      setReviewComment("");
+      alert("Review submitted successfully!");
+    } catch (err) {
+      console.error(err);
+      setReviewError("An error occurred while submitting your review.");
+    } finally {
+      setReviewSubmitting(false);
     }
   };
 
@@ -685,6 +746,66 @@ const ProductsDetail = () => {
                     Based on {productData.ratings?.count || 0} reviews
                   </div>
                 </div>
+              </div>
+
+              <div className="mb-10 bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-xl border border-gray-100 dark:border-gray-700">
+                <h4 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+                  Write a Review
+                </h4>
+                {!user ? (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    Please <span className="font-semibold text-orange-600 cursor-pointer" onClick={() => navigate("/SignIn")}>login</span> to share your thoughts about this product.
+                  </p>
+                ) : (
+                  <form onSubmit={handleReviewSubmit} className="space-y-4">
+                    {reviewError && (
+                      <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+                        {reviewError}
+                      </div>
+                    )}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Your Rating
+                      </label>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setReviewRating(star)}
+                            className="focus:outline-none transition-transform hover:scale-110"
+                          >
+                            <svg
+                              className={`w-8 h-8 ${star <= reviewRating ? "text-yellow-400 fill-current" : "text-gray-300 dark:text-gray-600"}`}
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Your Review (Optional)
+                      </label>
+                      <textarea
+                        rows="3"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-orange-500 focus:border-orange-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="What did you like or dislike?"
+                        value={reviewComment}
+                        onChange={(e) => setReviewComment(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={reviewSubmitting || reviewRating === 0}
+                      className="px-6 py-2.5 bg-orange-600 text-white font-medium rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-200 disabled:opacity-50 transition-colors"
+                    >
+                      {reviewSubmitting ? "Submitting..." : "Submit Review"}
+                    </button>
+                  </form>
+                )}
               </div>
 
               {productData.reviews?.length > 0 ? (

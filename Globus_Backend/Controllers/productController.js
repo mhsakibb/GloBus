@@ -170,10 +170,82 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// Add Product Review
+const addReview = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const database = client.db("globusDB");
+    const productsCollection = database.collection("products");
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "Invalid product ID" });
+    }
+
+    const { user, rating, comment } = req.body;
+    
+    if (!user || !rating) {
+      return res.status(400).json({ success: false, message: "User name and rating are required" });
+    }
+
+    const product = await productsCollection.findOne({ _id: new ObjectId(id) });
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    const newReview = {
+      user,
+      rating: Number(rating),
+      comment: comment || "",
+      date: new Date()
+    };
+
+    const currentReviews = product.reviews || [];
+    const updatedReviews = [...currentReviews, newReview];
+    
+    const newCount = updatedReviews.length;
+    const newTotal = updatedReviews.reduce((acc, rev) => acc + rev.rating, 0);
+    const newAverage = Number((newTotal / newCount).toFixed(1));
+
+    const result = await productsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { 
+        $set: { 
+          reviews: updatedReviews,
+          "ratings.average": newAverage,
+          "ratings.count": newCount
+        } 
+      }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(500).json({ success: false, message: "Failed to add review" });
+    }
+
+    // Invalidate product cache
+    cacheService.del(ALL_PRODUCTS_CACHE_KEY);
+
+    res.json({
+      success: true,
+      message: "Review added successfully",
+      review: newReview,
+      ratings: {
+        average: newAverage,
+        count: newCount
+      }
+    });
+
+  } catch (err) {
+    console.error("Add review error:", err);
+    res.status(500).json({ success: false, message: "Failed to add review" });
+  }
+};
+
 module.exports = {
   browseProduct,
   getAllProductsAdmin,
   createProduct,
   updateProduct,
   deleteProduct,
+  addReview,
 };

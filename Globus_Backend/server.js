@@ -29,6 +29,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  addReview,
 } = require("./Controllers/productController");
 
 const { getProductById } = require("./Controllers/searchController");
@@ -167,6 +168,7 @@ async function run() {
 
     // General Products Routes
     app.get("/browseProduct", browseProduct);
+    app.post("/api/products/:id/reviews", addReview);
     app.get("/productDetail/:id", getProductById);
 
     // Order & Payment History Routes
