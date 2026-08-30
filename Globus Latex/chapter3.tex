@@ -1,9 +1,9 @@
 \chapter{SYSTEM EVALUATION \& DESIGN}
 \section{Introduction}
-Research works in the arena of modern web applications emphasize the transition from monolithic structures to highly scalable, component-driven architectures. To overcome the limitations of legacy e-commerce systems—such as slow loading times, poor state management, and complex user interfaces—we have proposed and developed "GloBus" using the MERN stack (MongoDB, Express.js, React.js, Node.js). In this chapter, we evaluate the system requirements, present our chosen software development methodology, and provide comprehensive design diagrams (ERD, DFD, Use Case) that define the architectural blueprint of GloBus. Finally, we showcase the core features implemented within the platform.
+Research works in the arena of modern web applications emphasize the transition from monolithic structures to highly scalable, component-driven architectures. To overcome the limitations of legacy e-commerce systems—such as slow loading times, poor state management, and complex user interfaces—we have proposed and developed "GloBus" using the MERN stack (MongoDB, Express.js, React.js, Node.js). In this chapter, we evaluate the system requirements, present our chosen software development methodology, and provide comprehensive design diagrams (ERD, DFD, Use Case) that define the architectural blueprint of GloBus.
 
 \section{Requirement Analysis}
-E-commerce has evolved over the last decade from being a supplementary retail tool to becoming the primary backbone of global trade. The initial focus of our research was to identify the pain points of existing platforms in Bangladesh. Based on user feedback and market analysis, we developed system conditions for a purpose-built digital marketplace. These findings led us to design GloBus with a focus on speed (React + Vite), localized secure payments (SSLCommerz), and advanced search capabilities (AI Vision). The system requirements are broadly categorized into non-functional and functional requirements.
+E-commerce has evolved over the last decade from being a supplementary retail tool to becoming the primary backbone of global trade. The initial focus of our research was to identify the pain points of existing platforms in Bangladesh. Based on user feedback and market analysis, we developed system conditions for a purpose-built digital marketplace. These findings led us to design GloBus with a focus on speed (React + Vite), localized secure payments (SSLCommerz), and advanced search capabilities (AI Vision). 
 
 \subsection{Non-Functional Requirements}
 Requirement Analysis, also known as Requirement Engineering, is the process of defining user expectations for a new software being built. Non-functional requirements dictate the system's operational capabilities and constraints rather than specific behaviors. For GloBus, the critical non-functional demands include:
@@ -31,117 +31,91 @@ Functional Requirements of GloBus include:
     \item Admin ability to Add, Update, and Delete Products (CRUD).
     \item Admin ability to view, manage, and update Order statuses.
     \item Admin ability to manage Users (Ban, Update Role).
-    \item Newsletter Subscription.
 \end{itemize}
 
 \section{Methodology}
-\subsection{Agile Development Model}
-We chose the Agile Development model for our project. Agile is a faster, highly iterative way to develop software. It is a people- and result-focused methodology that is highly flexible and makes it easy to improve software quality progressively. It works on the principle of fast and incremental delivery.
 
-\begin{figure}[h]
+\subsection{Agile Development Model}
+We chose the Agile Development model for our project. Agile is a faster, highly iterative way to develop software. It is a people- and result-focused methodology that is highly flexible and makes it easy to improve software quality progressively. It works on the principle of fast and incremental delivery. Reasons for choosing Agile Development for GloBus include allowing for continuous integration of complex features (like AI Vision and SSLCommerz) in sprints, faster releases and continuous testing of individual components (React components), greater project transparency and easy adaptation to changing requirements, and achieving a competitive advantage by spotting defects (e.g., cart syncing issues) early in the development process rather than at the end. As shown in Figure \ref{fig:agile}, the agile cycle ensures continuous improvement.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/Agile.png}
 \caption{Agile Development Model}
+\label{fig:agile}
 \end{figure}
 
-Reasons for choosing Agile Development for GloBus:
-\begin{itemize}
-    \item Allows for continuous integration of complex features (like AI Vision and SSLCommerz) in sprints.
-    \item Faster releases and continuous testing of individual components (React components).
-    \item Greater project transparency and easy adaptation to changing requirements.
-    \item Competitive advantage achieved by spotting defects (e.g., cart syncing issues) early in the development process rather than at the end.
-\end{itemize}
-
 \subsection{Gantt Chart}
-\begin{figure}[h]
+A Gantt chart is a visual view of tasks scheduled over time. It represents the project timeline, showing the start and finish dates of the terminal elements and summary elements of the GloBus project, from initial requirement analysis and UI design to backend development and final deployment. This is visually represented in Figure \ref{fig:gantt}.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/gantt.png}
 \caption{Project Gantt Chart}
+\label{fig:gantt}
 \end{figure}
 
 \section{System Architecture Diagrams}
+
 \subsection{Data Flow Diagram (DFD)}
-\begin{figure}[h]
+Data Flow Diagrams provide a graphical representation of the flow of data through an information system, modeling its process aspects. 
+
+\subsubsection{Context Level DFD}
+As shown in Figure \ref{fig:dfd_context}, the Context Level DFD represents the entire GloBus system as a single high-level process interacting with external entities. The primary external entities include the Customer (who browses and purchases), the Administrator (who manages inventory), and the Payment Gateway (SSLCommerz, which verifies transactions).
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/dfd_context.png}
 \caption{Context Level DFD of GloBus}
+\label{fig:dfd_context}
 \end{figure}
 
-\begin{figure}[h]
+\subsubsection{Level-0 DFD}
+Figure \ref{fig:dfd_level0} breaks down the context diagram into major sub-processes. It illustrates how data flows between critical modules such as the Authentication System, Product Management, Shopping Cart, and Order Processing, providing a deeper look into the system's internal data routing and data stores (MongoDB).
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/dfd_level0.png}
 \caption{Level-0 DFD of GloBus}
+\label{fig:dfd_level0}
 \end{figure}
 
 \subsection{Entity Relationship (ER) Diagram}
-\begin{figure}[h]
+As illustrated in Figure \ref{fig:er_diagram}, the ER Diagram outlines the logical structure of the database. For GloBus, it maps out the primary entities (Users, Products, Orders, Cart, Categories, Reviews) and their relationships. For instance, it displays the one-to-many relationship between a User and their Orders, and the many-to-many relationship between Orders and Products, serving as the blueprint for our MongoDB schema.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{ER Diagram of GloBus Database}
+\includegraphics[width=\textwidth]{images/er_diagram.png}
+\caption{Detailed Entity Relationship (ER) Diagram}
+\label{fig:er_diagram}
 \end{figure}
 
 \subsection{Use Case Diagram}
-\begin{figure}[h]
+Figure \ref{fig:use_case} visualizes the functional requirements of the system from the users' perspective. It defines the primary actors (Customer, Admin) and the various use cases they can perform. For example, it illustrates how a Customer can "Manage Cart" or "Checkout \& Pay", while an Admin can "Manage Products" and "Manage Orders".
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/use_case.png}
 \caption{Use Case Diagram for Customer and Admin}
+\label{fig:use_case}
 \end{figure}
 
 \subsection{Activity Diagram}
-\begin{figure}[h]
+The Activity Diagram (Figure \ref{fig:activity_diagram}) represents the flow of control or object flow within the system. The depicted diagram focuses on the core Checkout Process. It illustrates the sequential decision-making steps a user takes: from verifying their cart, entering shipping details, selecting a payment method, to confirming the transaction and generating the final order invoice.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/activity_diagram.png}
 \caption{Activity Diagram of Checkout Process}
+\label{fig:activity_diagram}
 \end{figure}
 
 \subsection{Sequence Diagram}
-\begin{figure}[h]
+The Sequence Diagram (Figure \ref{fig:sequence_diagram}) details how objects interact in a particular scenario along a chronological timeline. This specific diagram explains the Payment Gateway Integration, showing the exact sequence of API calls exchanged between the Client browser, the GloBus Node.js Server, and the external SSLCommerz server to validate and complete a secure transaction.
+
+\begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{images/logo.png}
+\includegraphics[width=\textwidth]{images/sequence_diagram.png}
 \caption{Sequence Diagram of Payment Gateway Integration}
-\end{figure}
-
-\section{Feature Showcases}
-The following figures demonstrate the core features and user interface of the GloBus platform.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Home Page and Promotional Banner}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Product Search and Categorized Browsing}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: AI Vision Product Search}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Interactive Shopping Cart}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Secure Checkout with SSLCommerz}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Admin Dashboard - Statistics Overview}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{images/logo.png}
-\caption{Feature: Admin Dashboard - Product Management}
+\label{fig:sequence_diagram}
 \end{figure}
