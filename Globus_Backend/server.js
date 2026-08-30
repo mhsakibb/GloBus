@@ -12,6 +12,8 @@ const {
   forgotPassword,
   verifyResetCode,
   resetPassword,
+  updateProfile,
+  googleLogin
 } = require("./Controllers/userController");
 const {
   createAdmin,
@@ -141,11 +143,15 @@ async function run() {
     // Auth Routes with Rate Limiting
     app.post("/signup", authLimiter, signupUser);
     app.post("/signin", authLimiter, signinUser);
+    app.post("/api/auth/google", authLimiter, googleLogin);
     app.post("/api/auth/forgot-password", authLimiter, forgotPassword);
     app.post("/api/auth/verify-reset-code", authLimiter, verifyResetCode);
     app.post("/api/auth/reset-password", authLimiter, resetPassword);
     app.post("/forgot-password", authLimiter, forgotPassword);
     app.post("/reset-password", authLimiter, resetPassword);
+
+    // User Profile Routes
+    app.put("/api/users/profile/:id", updateProfile);
 
     // Admin User Management Routes
     app.get("/admin/users", showUsers);

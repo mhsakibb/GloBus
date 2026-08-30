@@ -639,9 +639,7 @@ const Header = () => {
                         <div className="w-7 h-7 lg:w-8 lg:h-8 rounded-full overflow-hidden border border-white flex-shrink-0">
                           <img
                             src={
-                              user?.photoURL
-                                ? user.photoURL
-                                : "/placeholder.png"
+                              user?.avatar || user?.photoURL || "/placeholder.png"
                             }
                             alt={firstName}
                             className="w-full h-full object-cover"
@@ -663,6 +661,13 @@ const Header = () => {
                               {user?.email}
                             </p>
                           </div>
+                          <Link
+                            to="/profile"
+                            onClick={() => setOpenProfile(false)}
+                            className="block w-full text-left px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                          >
+                            Profile
+                          </Link>
                           <button
                             onClick={handleLogout}
                             className="w-full text-left px-4 py-2 text-xs lg:text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition"

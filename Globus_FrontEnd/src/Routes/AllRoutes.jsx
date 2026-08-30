@@ -15,6 +15,7 @@ const SearchResults = lazy(() => import("../Pages/SearchResults"));
 const Cart = lazy(() => import("../Pages/Cart"));
 const OrderAndPayment = lazy(() => import("../Pages/OrderAndPayment"));
 const Wishlist = lazy(() => import("../Pages/Wishlist"));
+const Profile = lazy(() => import("../Pages/Profile"));
 
 // Lazy load Admin panel pages
 const AdminLayout = lazy(() => import("../Admin/AdminLayout"));
@@ -54,6 +55,7 @@ const AllRoutes = () => {
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/orderHistory" element={<OrderAndPayment />} />
             <Route path="/search" element={<SearchResults />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           {/* Private Admin Routes */}

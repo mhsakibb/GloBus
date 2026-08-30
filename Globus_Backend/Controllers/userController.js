@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const { ObjectId } = require("mongodb");
 const { sendWelcomeEmail, sendPasswordResetEmail } = require("../utils/emailService");
 
 // Sign Up user
@@ -256,5 +257,112 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, signinUser, forgotPassword, verifyResetCode, resetPassword };
+// Update User Profile
+const updateProfile = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const usersCollection = client.db("globusDB").collection("users");
+    const { id } = req.params;
 
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "Invalid user ID format" });
+    }
+
+    const { phone, address, city, zipCode, country, bio, avatar } = req.body;
+
+    const updateData = {};
+    if (phone !== undefined) updateData.phone = phone;
+    if (address !== undefined) updateData.address = address;
+    if (city !== undefined) updateData.city = city;
+    if (zipCode !== undefined) updateData.zipCode = zipCode;
+    if (country !== undefined) updateData.country = country;
+    if (bio !== undefined) updateData.bio = bio;
+    if (avatar !== undefined) updateData.avatar = avatar;
+
+    const result = await usersCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updateData }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const updatedUser = await usersCollection.findOne(
+      { _id: new ObjectId(id) },
+      { projection: { password: 0, resetPasswordOtp: 0, resetPasswordExpires: 0 } }
+    );
+
+    res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Profile update error:", err);
+    res.status(500).json({ success: false, message: "Failed to update profile" });
+  }
+};
+
+// Google Login
+const googleLogin = async (req, res) => {
+  try {
+    const client = req.app.locals.mongoClient;
+    const usersCollection = client.db("globusDB").collection("users");
+    
+    const { email, name, avatar } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required for Google login" });
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    
+    let user = await usersCollection.findOne({ email: normalizedEmail });
+
+    if (user) {
+      const updateDoc = {};
+      if (avatar && !user.avatar) updateDoc.avatar = avatar;
+      if (user.authProvider !== "google") updateDoc.authProvider = "google";
+      
+      if (Object.keys(updateDoc).length > 0) {
+        await usersCollection.updateOne({ _id: user._id }, { $set: updateDoc });
+        user = await usersCollection.findOne({ _id: user._id });
+      }
+    } else {
+      const result = await usersCollection.insertOne({
+        name,
+        email: normalizedEmail,
+        avatar,
+        authProvider: "google",
+        role: "user",
+        createdAt: new Date(),
+      });
+      
+      user = await usersCollection.findOne({ _id: result.insertedId });
+      sendWelcomeEmail(normalizedEmail, name).catch(console.error);
+    }
+
+    const { password: pwd, resetPasswordOtp, resetPasswordExpires, ...userData } = user;
+    
+    res.json({
+      success: true,
+      message: "Logged in successfully",
+      user: {
+        _id: userData._id,
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        role: userData.role,
+        avatar: userData.avatar,
+        authProvider: userData.authProvider
+      }
+    });
+
+  } catch (err) {
+    console.error("Google login error:", err);
+    res.status(500).json({ success: false, message: "Failed to login with Google" });
+  }
+};
+
+module.exports = { signupUser, signinUser, forgotPassword, verifyResetCode, resetPassword, updateProfile, googleLogin };

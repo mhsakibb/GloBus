@@ -64,18 +64,33 @@ const SignIn = () => {
     setError("");
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const googleUser = result.user;
 
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        role: "user",
-      };
+      const targetUrl = API_URL.endsWith("/")
+        ? `${API_URL}api/auth/google`
+        : `${API_URL}/api/auth/google`;
 
-      login(userInfo);
+      const res = await fetch(targetUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: googleUser.email,
+          name: googleUser.displayName,
+          avatar: googleUser.photoURL,
+        }),
+      });
+
+      const data = await safeParseResponse(res);
+      
+      if (!res.ok) {
+        return setError(data?.message || "Failed to authenticate with server.");
+      }
+
+      login(data.user || data);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      console.error(err);
+      setError(err.message || "An error occurred during Google sign in.");
     }
   };
 
