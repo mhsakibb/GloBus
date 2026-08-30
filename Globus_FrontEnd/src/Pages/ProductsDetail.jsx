@@ -25,6 +25,11 @@ const ProductsDetail = () => {
   const [reviewError, setReviewError] = useState("");
   
   const user = JSON.parse(localStorage.getItem("user"));
+  
+  // Check if current user has already reviewed
+  const hasReviewed = user && productData?.reviews?.some((r) => 
+    (r.email && r.email === user.email) || (!r.email && r.user === user.name)
+  );
 
   // Load product dynamically on state or id change
   useEffect(() => {
@@ -159,6 +164,7 @@ const ProductsDetail = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user: user.name,
+          email: user.email,
           rating: reviewRating,
           comment: reviewComment,
         }),
@@ -756,6 +762,13 @@ const ProductsDetail = () => {
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Please <span className="font-semibold text-orange-600 cursor-pointer" onClick={() => navigate("/SignIn")}>login</span> to share your thoughts about this product.
                   </p>
+                ) : hasReviewed ? (
+                  <div className="p-4 bg-green-50 text-green-700 rounded-lg border border-green-100 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="font-medium">You have already reviewed this product. Thank you!</span>
+                  </div>
                 ) : (
                   <form onSubmit={handleReviewSubmit} className="space-y-4">
                     {reviewError && (

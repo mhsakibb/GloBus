@@ -182,7 +182,7 @@ const addReview = async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid product ID" });
     }
 
-    const { user, rating, comment } = req.body;
+    const { user, email, rating, comment } = req.body;
     
     if (!user || !rating) {
       return res.status(400).json({ success: false, message: "User name and rating are required" });
@@ -193,8 +193,19 @@ const addReview = async (req, res) => {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
 
+    // Check if user has already reviewed this product
+    const hasReviewed = product.reviews?.some(r => 
+      (email && r.email === email) || 
+      (!r.email && r.user === user)
+    );
+
+    if (hasReviewed) {
+      return res.status(400).json({ success: false, message: "You have already reviewed this product." });
+    }
+
     const newReview = {
       user,
+      email,
       rating: Number(rating),
       comment: comment || "",
       date: new Date()
