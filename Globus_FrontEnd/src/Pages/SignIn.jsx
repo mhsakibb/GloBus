@@ -191,39 +191,39 @@ const SignIn = () => {
 
       {/* ================= RIGHT COLUMN: SEPARATE SIGN IN FORM ================= */}
       <div className="w-full lg:w-5/12 h-full flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-950">
-        <div className="w-full max-w-md bg-white dark:bg-gray-900 p-5 sm:p-7 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800">
+        <div className="w-full max-w-[370px] bg-gradient-to-br from-green-600 via-green-600 to-emerald-700 text-white p-6 sm:p-8 rounded-3xl shadow-2xl shadow-green-900/25 border border-green-500/40">
           
-          <div className="mb-4 text-center lg:text-left">
+          <div className="mb-5 text-center lg:text-left">
             <div className="lg:hidden inline-block mb-2">
               <Link to="/">
-                <span className="font-extrabold text-3xl text-green-600">
-                  Glo<span className="text-gray-900 dark:text-white">Bus</span>
+                <span className="font-extrabold text-3xl text-white">
+                  Glo<span className="text-gray-900">Bus</span>
                 </span>
               </Link>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Welcome Back
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs sm:text-sm text-green-100/90 mt-1">
               Sign in to your GloBus account to continue
             </p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 text-xs font-medium flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-xl bg-red-500/20 backdrop-blur-md border border-red-300/40 text-white text-xs font-medium flex items-center gap-2">
               <span className="flex-shrink-0">⚠️</span>
               <span>{error}</span>
             </div>
           )}
 
-          <form onSubmit={handleEmailLogin} className="flex flex-col gap-3">
+          <form onSubmit={handleEmailLogin} className="flex flex-col gap-3.5">
             <div>
-              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
+              <label className="block text-xs font-semibold text-green-100 uppercase tracking-wider mb-1.5">
                 Email Address
               </label>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-                  <FaEnvelope className="w-3.5 h-3.5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-black">
+                  <FaEnvelope className="w-4 h-4 text-black" />
                 </div>
                 <input
                   type="email"
@@ -231,26 +231,26 @@ const SignIn = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/80 transition-all text-sm shadow-sm font-medium"
                 />
               </div>
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-semibold text-green-100 uppercase tracking-wider">
                   Password
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors"
+                  className="text-xs font-medium text-white hover:text-green-200 underline transition-colors"
                 >
                   Forgot password?
                 </Link>
               </div>
               <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-                  <FaLock className="w-3.5 h-3.5" />
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-black">
+                  <FaLock className="w-4 h-4 text-black" />
                 </div>
                 <input
                   type={showPassword ? "text" : "password"}
@@ -258,14 +258,14 @@ const SignIn = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                  className="w-full pl-10 pr-10 py-3 rounded-xl border-none bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/80 transition-all text-sm shadow-sm font-medium"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-black hover:text-gray-700 cursor-pointer"
                 >
-                  {showPassword ? <FaEyeSlash className="w-3.5 h-3.5" /> : <FaEye className="w-3.5 h-3.5" />}
+                  {showPassword ? <FaEyeSlash className="w-4 h-4 text-black" /> : <FaEye className="w-4 h-4 text-black" />}
                 </button>
               </div>
             </div>
@@ -273,7 +273,7 @@ const SignIn = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+              className="w-full mt-1.5 py-3 px-4 rounded-xl bg-gray-900 hover:bg-black active:bg-gray-950 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
             >
               {loading ? (
                 <>
@@ -286,24 +286,24 @@ const SignIn = () => {
             </button>
           </form>
 
-          <div className="my-3 text-center">
-            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+          <div className="my-3.5 text-center">
+            <span className="text-xs sm:text-sm text-green-100">
               Don't have an account?{" "}
-              <Link to="/SignUp" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+              <Link to="/SignUp" className="text-white font-bold underline hover:text-green-200">
                 Sign Up
               </Link>
             </span>
           </div>
 
-          <div className="my-2.5 flex items-center">
-            <hr className="flex-1 border-gray-200 dark:border-gray-700" />
-            <span className="mx-3 text-[11px] text-gray-400 dark:text-gray-500 uppercase font-medium">OR</span>
-            <hr className="flex-1 border-gray-200 dark:border-gray-700" />
+          <div className="my-3 flex items-center">
+            <hr className="flex-1 border-white/30" />
+            <span className="mx-3 text-[11px] text-green-100/80 uppercase font-semibold">OR</span>
+            <hr className="flex-1 border-white/30" />
           </div>
 
           <button
             onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 font-medium text-sm rounded-xl py-2.5 px-4 shadow-sm hover:shadow transition-all duration-200 cursor-pointer"
+            className="w-full flex items-center justify-center gap-3 border border-white/20 bg-white hover:bg-green-50 text-gray-800 font-semibold text-sm rounded-xl py-3 px-4 shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
           >
             <img src="Images/Google.png" className="h-4.5 w-4.5" alt="Google Logo" />
             Sign In with Google
