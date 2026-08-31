@@ -31,22 +31,43 @@ const ProductsDetail = () => {
     (r.email && r.email === user.email) || (!r.email && r.user === user.name)
   );
 
+  // Derived Review Metrics (Accurately calculates real review count and average rating)
+  const reviewsCount = Array.isArray(productData?.reviews)
+    ? productData.reviews.length
+    : (productData?.ratings?.count || 0);
+
+  const reviewsAverage = (Array.isArray(productData?.reviews) && productData.reviews.length > 0)
+    ? Number((productData.reviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / productData.reviews.length).toFixed(1))
+    : (productData?.ratings?.average || 0);
+
   // Load product dynamically on state or id change
   useEffect(() => {
     const loadProduct = async () => {
+      const targetId = id || state?.product?._id || state?.product?.id;
       if (state?.product) {
         setProductData(state.product);
-      } else if (id) {
+      }
+      
+      if (targetId) {
         try {
-          const res = await fetch(`${API_URL}/productDetail/${id}`);
-          const data = await res.json();
-          if (data) setProductData(data);
-          else navigate("/products");
+          const res = await fetch(`${API_URL}/productDetail/${targetId}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data._id) {
+              setProductData(data);
+              return;
+            }
+          }
+          if (!state?.product) {
+            navigate("/products");
+          }
         } catch (err) {
           console.error("Product fetch error:", err);
-          navigate("/products");
+          if (!state?.product) {
+            navigate("/products");
+          }
         }
-      } else {
+      } else if (!state?.product) {
         navigate("/products");
       }
     };
@@ -177,10 +198,14 @@ const ProductsDetail = () => {
       }
 
       // Update local productData to immediately show the new review and rating
+      const updatedReviews = [...(productData.reviews || []), data.review];
+      const newCount = updatedReviews.length;
+      const newAvg = Number((updatedReviews.reduce((sum, r) => sum + (Number(r.rating) || 0), 0) / newCount).toFixed(1));
+
       setProductData({
         ...productData,
-        reviews: [...(productData.reviews || []), data.review],
-        ratings: data.ratings,
+        reviews: updatedReviews,
+        ratings: data.ratings || { average: newAvg, count: newCount },
       });
 
       // Reset form
@@ -248,7 +273,7 @@ const ProductsDetail = () => {
 
   // Handle related product click
   const handleRelatedProductClick = (product) => {
-    navigate("/productDetail", { state: { product } });
+    navigate(`/productDetail/${product._id || product.id}`, { state: { product } });
     window.scrollTo(0, 0);
   };
 
@@ -393,7 +418,7 @@ const ProductsDetail = () => {
                 {[...Array(5)].map((_, i) => (
                   <svg
                     key={i}
-                    className={`w-5 h-5 ${i < Math.floor(productData.ratings?.average || 0) ? "fill-current" : "text-gray-300"}`}
+                    className={`w-5 h-5 ${i < Math.floor(reviewsAverage) ? "fill-current" : "text-gray-300"}`}
                     viewBox="0 0 20 20"
                   >
                     <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -401,7 +426,7 @@ const ProductsDetail = () => {
                 ))}
               </div>
               <span className="text-gray-600 dark:text-gray-400 text-sm">
-                ({productData.ratings?.count || 0} reviews)
+                ({reviewsCount} {reviewsCount === 1 ? "review" : "reviews"})
               </span>
             </div>
 
@@ -735,13 +760,13 @@ const ProductsDetail = () => {
               <div className="flex items-center gap-4 mb-6">
                 <div className="text-center">
                   <div className="text-4xl font-bold text-gray-900 dark:text-gray-100">
-                    {productData.ratings?.average || 0}
+                    {reviewsAverage}
                   </div>
                   <div className="flex text-yellow-400 justify-center">
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={`w-5 h-5 ${i < Math.floor(productData.ratings?.average || 0) ? "fill-current" : "text-gray-300"}`}
+                        className={`w-5 h-5 ${i < Math.floor(reviewsAverage) ? "fill-current" : "text-gray-300"}`}
                         viewBox="0 0 20 20"
                       >
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
@@ -749,7 +774,7 @@ const ProductsDetail = () => {
                     ))}
                   </div>
                   <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Based on {productData.ratings?.count || 0} reviews
+                    Based on {reviewsCount} {reviewsCount === 1 ? "review" : "reviews"}
                   </div>
                 </div>
               </div>

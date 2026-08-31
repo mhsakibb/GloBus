@@ -95,112 +95,221 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-950 p-4 sm:p-6 lg:p-8">
-      <div className="bg-white dark:bg-gray-800/95 backdrop-blur-md p-3 md:p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700/60 w-full max-w-md">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Welcome Back</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Sign in to your GloBus account</p>
+    <div className="h-screen w-full flex flex-col lg:flex-row bg-white dark:bg-gray-950 overflow-hidden select-none">
+      
+      {/* ================= LEFT COLUMN: BRANDING, ILLUSTRATION & DOODLES ================= */}
+      <div className="relative w-full lg:w-7/12 h-full flex flex-col justify-between items-center p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-950 overflow-hidden">
+        
+        {/* ===== LARGE BLACK DOODLE ARTS ===== */}
+        
+        {/* Doodle 1: Fashion / Shopping Bag */}
+        <img
+          src="/Images/ImageMenu/fashion.png"
+          alt="Fashion Doodle"
+          className="absolute top-4 left-4 sm:left-8 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 brightness-0 opacity-70 dark:invert dark:opacity-85 -rotate-12 animate-bounce select-none pointer-events-none"
+          style={{ animationDuration: "4s" }}
+        />
+
+        {/* Doodle 2: Device / Tech */}
+        <img
+          src="/Images/ImageMenu/device.png"
+          alt="Device Doodle"
+          className="absolute top-6 right-6 sm:right-10 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 brightness-0 opacity-70 dark:invert dark:opacity-85 rotate-12 select-none pointer-events-none"
+        />
+
+        {/* Doodle 3: Teddy Bear / Toys */}
+        <img
+          src="/Images/ImageMenu/teddy-bear.png"
+          alt="Toy Doodle"
+          className="absolute bottom-4 left-4 sm:left-8 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 brightness-0 opacity-70 dark:invert dark:opacity-85 rotate-6 select-none pointer-events-none"
+        />
+
+        {/* Doodle 4: Healthy Food Basket */}
+        <img
+          src="/Images/ImageMenu/healthy-food.png"
+          alt="Food Doodle"
+          className="absolute bottom-4 right-4 sm:right-8 w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 brightness-0 opacity-70 dark:invert dark:opacity-85 -rotate-12 select-none pointer-events-none"
+        />
+
+        {/* Doodle 5: Stationary */}
+        <img
+          src="/Images/ImageMenu/stationary.png"
+          alt="Stationary Doodle"
+          className="hidden md:block absolute top-1/2 left-4 w-14 h-14 lg:w-16 lg:h-16 brightness-0 opacity-60 dark:invert dark:opacity-75 -rotate-45 select-none pointer-events-none"
+        />
+
+        {/* Doodle 6: Kitchen Appliance */}
+        <img
+          src="/Images/ImageMenu/kitchen.png"
+          alt="Kitchen Doodle"
+          className="hidden md:block absolute top-1/2 right-4 w-14 h-14 lg:w-16 lg:h-16 brightness-0 opacity-60 dark:invert dark:opacity-75 rotate-45 select-none pointer-events-none"
+        />
+
+        {/* Doodle 7: Hand-Drawn Shopping Cart */}
+        <svg
+          className="hidden sm:block absolute top-8 left-1/2 -translate-x-1/2 w-14 h-14 text-black/65 dark:text-white/75 -rotate-6 select-none pointer-events-none"
+          viewBox="0 0 64 64"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M6 12h8l6 28h30l6-20H18" />
+          <circle cx="24" cy="48" r="4" fill="currentColor" />
+          <circle cx="46" cy="48" r="4" fill="currentColor" />
+          <path d="M30 22h14M37 15v14" strokeWidth="2.5" />
+        </svg>
+
+        {/* TOP BRANDING & HEADLINE */}
+        <div className="relative z-10 w-full max-w-xl text-center lg:text-left pt-1">
+          <Link to="/" className="inline-block group transition-transform hover:scale-105">
+            <span className="font-extrabold text-3xl sm:text-4xl lg:text-5xl tracking-tight text-green-600">
+              Glo<span className="text-gray-900 dark:text-white">Bus</span>
+            </span>
+          </Link>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mt-1">
+            Happiness in Every Click
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 max-w-md">
+            Shop anytime, anywhere with family & friends through our easy, secure gateway.
+          </p>
         </div>
 
-        {error && (
-          <div className="mb-5 p-3.5 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 text-xs sm:text-sm font-medium flex items-center gap-2">
-            <span className="flex-shrink-0">⚠️</span>
-            <span>{error}</span>
-          </div>
-        )}
+        {/* FULL SHOWCASE ILLUSTRATION (Fits nicely without scrolling) */}
+        <div className="relative z-10 w-full flex items-center justify-center my-auto flex-1 max-h-[58vh] overflow-hidden">
+          <img
+            src="/Images/signinBanner.jpg"
+            alt="Online Shopping Illustration"
+            className="w-auto h-full max-h-[54vh] max-w-full object-contain mix-blend-multiply dark:mix-blend-normal select-none pointer-events-none"
+          />
+        </div>
 
-        <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1.5">
-              Email Address
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-                <FaEnvelope className="w-4 h-4" />
-              </div>
-              <input
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
-              />
-            </div>
-          </div>
+        {/* Subtle spacing bottom */}
+        <div className="w-full h-2"></div>
+      </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
-                Password
-              </label>
-              <Link
-                to="/forgot-password"
-                className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors"
-              >
-                Forgot password?
+      {/* ================= RIGHT COLUMN: SEPARATE SIGN IN FORM ================= */}
+      <div className="w-full lg:w-5/12 h-full flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-950">
+        <div className="w-full max-w-md bg-white dark:bg-gray-900 p-5 sm:p-7 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-800">
+          
+          <div className="mb-4 text-center lg:text-left">
+            <div className="lg:hidden inline-block mb-2">
+              <Link to="/">
+                <span className="font-extrabold text-3xl text-green-600">
+                  Glo<span className="text-gray-900 dark:text-white">Bus</span>
+                </span>
               </Link>
             </div>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
-                <FaLock className="w-4 h-4" />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
-              >
-                {showPassword ? <FaEyeSlash className="w-4 h-4" /> : <FaEye className="w-4 h-4" />}
-              </button>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+              Welcome Back
+            </h1>
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+              Sign in to your GloBus account to continue
+            </p>
+          </div>
+
+          {error && (
+            <div className="mb-4 p-3 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-300 text-xs font-medium flex items-center gap-2">
+              <span className="flex-shrink-0">⚠️</span>
+              <span>{error}</span>
             </div>
+          )}
+
+          <form onSubmit={handleEmailLogin} className="flex flex-col gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">
+                Email Address
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
+                  <FaEnvelope className="w-3.5 h-3.5" />
+                </div>
+                <input
+                  type="email"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Password
+                </label>
+                <Link
+                  to="/forgot-password"
+                  className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 dark:text-gray-500">
+                  <FaLock className="w-3.5 h-3.5" />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
+                >
+                  {showPassword ? <FaEyeSlash className="w-3.5 h-3.5" /> : <FaEye className="w-3.5 h-3.5" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-1 py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {loading ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Signing in...</span>
+                </>
+              ) : (
+                <span>Sign In</span>
+              )}
+            </button>
+          </form>
+
+          <div className="my-3 text-center">
+            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+              Don't have an account?{" "}
+              <Link to="/SignUp" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+                Sign Up
+              </Link>
+            </span>
+          </div>
+
+          <div className="my-2.5 flex items-center">
+            <hr className="flex-1 border-gray-200 dark:border-gray-700" />
+            <span className="mx-3 text-[11px] text-gray-400 dark:text-gray-500 uppercase font-medium">OR</span>
+            <hr className="flex-1 border-gray-200 dark:border-gray-700" />
           </div>
 
           <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+            onClick={handleGoogleLogin}
+            className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-gray-700 dark:text-gray-200 font-medium text-sm rounded-xl py-2.5 px-4 shadow-sm hover:shadow transition-all duration-200 cursor-pointer"
           >
-            {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Signing in...</span>
-              </>
-            ) : (
-              <span>Sign In</span>
-            )}
+            <img src="Images/Google.png" className="h-4.5 w-4.5" alt="Google Logo" />
+            Sign In with Google
           </button>
-        </form>
-
-        <div className="my-4 text-center">
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            Don't have an account?{" "}
-            <Link to="/SignUp" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
-              Sign Up
-            </Link>
-          </span>
         </div>
 
-        <div className="my-5 flex items-center">
-          <hr className="flex-1 border-gray-200 dark:border-gray-700" />
-          <span className="mx-3 text-xs text-gray-400 dark:text-gray-500 uppercase font-medium">OR</span>
-          <hr className="flex-1 border-gray-200 dark:border-gray-700" />
-        </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/40 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-medium text-sm rounded-xl py-3 px-4 shadow-sm hover:shadow transition-all duration-200 cursor-pointer"
-        >
-          <img src="Images/Google.png" className="h-5 w-5" alt="Google Logo" />
-          Sign In with Google
-        </button>
       </div>
     </div>
   );

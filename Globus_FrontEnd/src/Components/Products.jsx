@@ -129,7 +129,7 @@ const Products = ({ visibleSectionCount = 4 }) => {
 
   // View detail button
   const handleViewDetail = (product) => {
-    navigate("/productDetail", { state: { product } });
+    navigate(`/productDetail/${product._id || product.id}`, { state: { product } });
   };
 
   const nextSlide = () => {

@@ -215,7 +215,7 @@ const addReview = async (req, res) => {
     const updatedReviews = [...currentReviews, newReview];
     
     const newCount = updatedReviews.length;
-    const newTotal = updatedReviews.reduce((acc, rev) => acc + rev.rating, 0);
+    const newTotal = updatedReviews.reduce((acc, rev) => acc + (Number(rev.rating) || 0), 0);
     const newAverage = Number((newTotal / newCount).toFixed(1));
 
     const result = await productsCollection.updateOne(
